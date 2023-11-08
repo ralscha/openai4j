@@ -1,7 +1,6 @@
 package ch.rasc.openai4j.embedding;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
@@ -9,6 +8,8 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -34,7 +35,8 @@ public interface EmbeddingRequest {
 	 * A unique identifier representing your end-user, which can help OpenAI to monitor
 	 * and detect abuse.
 	 */
-	Optional<String> user();
+	@Nullable
+	String user();
 
 	static Builder builder() {
 		return new Builder();

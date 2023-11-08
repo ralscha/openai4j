@@ -19,7 +19,7 @@ public interface ModelObject {
 	/**
 	 * The Unix timestamp (in seconds) when the model was created.
 	 */
-	Integer created();
+	int created();
 
 	/**
 	 * The object type, which is always "model".

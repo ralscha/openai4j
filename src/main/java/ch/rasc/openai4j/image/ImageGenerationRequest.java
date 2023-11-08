@@ -1,7 +1,5 @@
 package ch.rasc.openai4j.image;
 
-import java.util.Optional;
-
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
@@ -10,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -102,34 +102,39 @@ public interface ImageGenerationRequest {
 	/**
 	 * The model to use for image generation. Defaults to dall-e-2
 	 */
-	Optional<Model> model();
+	@Nullable
+	Model model();
 
 	/**
 	 * The number of images to generate. Must be between 1 and 10. For dall-e-3, only n=1
 	 * is supported. Defaults to 1
 	 */
-	Optional<Integer> n();
+	@Nullable
+	Integer n();
 
 	/**
 	 * The quality of the image that will be generated. hd creates images with finer
 	 * details and greater consistency across the image. This param is only supported for
 	 * dall-e-3. Defaults to standard
 	 */
-	Optional<Quality> quality();
+	@Nullable
+	Quality quality();
 
 	/**
 	 * The format in which the generated images are returned. Must be one of url or
 	 * b64_json. Defaults to url
 	 */
 	@JsonProperty("response_format")
-	Optional<ResponseFormat> responseFormat();
+	@Nullable
+	ResponseFormat responseFormat();
 
 	/**
 	 * The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024 for
 	 * dall-e-2. Must be one of 1024x1024, 1792x1024, or 1024x1792 for dall-e-3 models.
 	 * Defaults to 1024x1024
 	 */
-	Optional<Size> size();
+	@Nullable
+	Size size();
 
 	/**
 	 * The style of the generated images. Must be one of vivid or natural. Vivid causes
@@ -137,13 +142,15 @@ public interface ImageGenerationRequest {
 	 * the model to produce more natural, less hyper-real looking images. This param is
 	 * only supported for dall-e-3. Defaults to vivid
 	 */
-	Optional<Style> style();
+	@Nullable
+	Style style();
 
 	/**
 	 * A unique identifier representing your end-user, which can help OpenAI to monitor
 	 * and detect abuse.
 	 */
-	Optional<String> user();
+	@Nullable
+	String user();
 
 	static Builder builder() {
 		return new Builder();

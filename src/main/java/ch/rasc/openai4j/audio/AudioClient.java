@@ -2,7 +2,6 @@ package ch.rasc.openai4j.audio;
 
 import java.io.File;
 
-import ch.rasc.openai4j.audio.AudioTranscriptionRequest.ResponseFormat;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -28,9 +27,10 @@ public interface AudioClient {
 			AudioTranscriptionRequest request) {
 
 		return this.audioTranscription(request.file().toFile(), request.model().toValue(),
-				request.language().orElse(null), request.prompt().orElse(null),
-				request.responseFormat().map(ResponseFormat::toValue).orElse(null),
-				request.temperature().orElse(null));
+				request.language(), request.prompt(),
+				request.responseFormat() != null ? request.responseFormat().toValue()
+						: null,
+				request.temperature());
 	}
 
 	/**
@@ -55,11 +55,10 @@ public interface AudioClient {
 	@Headers("Content-Type: multipart/form-data")
 	default AudioTranslationResponse audioTranslation(AudioTranslationRequest request) {
 		return this.audioTranslation(request.file().toFile(), request.model().toValue(),
-				request.prompt().orElse(null),
-				request.responseFormat().map(
-						ch.rasc.openai4j.audio.AudioTranslationRequest.ResponseFormat::toValue)
-						.orElse(null),
-				request.temperature().orElse(null));
+				request.prompt(),
+				request.responseFormat() != null ? request.responseFormat().toValue()
+						: null,
+				request.temperature());
 	}
 
 	/**

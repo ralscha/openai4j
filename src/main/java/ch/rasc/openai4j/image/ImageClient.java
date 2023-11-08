@@ -1,7 +1,6 @@
 package ch.rasc.openai4j.image;
 
 import java.io.File;
-import java.nio.file.Path;
 
 import feign.Headers;
 import feign.Param;
@@ -25,13 +24,12 @@ public interface ImageClient {
 	 */
 	default ImageResponse imageEdit(ImageEditRequest request) {
 		return this.imageEdit(request.image().toFile(), request.prompt(),
-				request.mask().map(Path::toFile).orElse(null),
-				request.model().map(ImageEditRequest.Model::toValue).orElse(null),
-				request.n().orElse(null),
-				request.size().map(ImageEditRequest.Size::toValue).orElse(null),
-				request.responseFormat().map(ImageEditRequest.ResponseFormat::toValue)
-						.orElse(null),
-				request.user().orElse(null));
+				request.mask() != null ? request.mask().toFile() : null,
+				request.model() != null ? request.model().toValue() : null, request.n(),
+				request.size() != null ? request.size().toValue() : null,
+				request.responseFormat() != null ? request.responseFormat().toValue()
+						: null,
+				request.user());
 	}
 
 	/**

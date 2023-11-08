@@ -37,7 +37,7 @@ public class ImageVariationExample {
 						.size(Size.S_1024).build());
 		int i = 3;
 		for (ImageObject imageObject : response.data()) {
-			String b64Json = imageObject.b64Json().get();
+			String b64Json = imageObject.b64Json();
 			byte[] decodedBytes = Base64.getDecoder().decode(b64Json);
 			Files.write(Paths.get("image" + i + ".png"), decodedBytes);
 			i++;

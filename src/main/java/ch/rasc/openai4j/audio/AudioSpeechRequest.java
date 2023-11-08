@@ -1,7 +1,5 @@
 package ch.rasc.openai4j.audio;
 
-import java.util.Optional;
-
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
@@ -10,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -83,12 +83,14 @@ public interface AudioSpeechRequest {
 	 * The format to audio in. Defaults to mp3
 	 */
 	@JsonProperty("response_format")
-	Optional<ResponseFormat> responseFormat();
+	@Nullable
+	ResponseFormat responseFormat();
 
 	/**
 	 * The speed of the generated audio. Defaults to 1.0
 	 */
-	Optional<Double> speed();
+	@Nullable
+	Double speed();
 
 	static Builder builder() {
 		return new Builder();

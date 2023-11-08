@@ -1,12 +1,13 @@
 package ch.rasc.openai4j.image;
 
 import java.nio.file.Path;
-import java.util.Optional;
 
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -73,36 +74,42 @@ public interface ImageEditRequest {
 	 * indicate where image should be edited. Must be a valid PNG file, less than 4MB, and
 	 * have the same dimensions as image.
 	 */
-	Optional<Path> mask();
+	@Nullable
+	Path mask();
 
 	/**
 	 * The model to use for image generation. Only dall-e-2 is supported at this time.
 	 * Defaults to dall-e-2.
 	 */
-	Optional<Model> model();
+	@Nullable
+	Model model();
 
 	/**
 	 * The number of images to generate. Must be between 1 and 10. Defaults to 1.
 	 */
-	Optional<Integer> n();
+	@Nullable
+	Integer n();
 
 	/**
 	 * The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
 	 * Defaults to 1024x1024.
 	 */
-	Optional<Size> size();
+	@Nullable
+	Size size();
 
 	/**
 	 * The format in which the generated images are returned. Must be one of url or
 	 * b64_json. Defaults to url.
 	 */
-	Optional<ResponseFormat> responseFormat();
+	@Nullable
+	ResponseFormat responseFormat();
 
 	/**
 	 * A unique identifier representing your end-user, which can help OpenAI to monitor
 	 * and detect abuse.
 	 */
-	Optional<String> user();
+	@Nullable
+	String user();
 
 	static Builder builder() {
 		return new Builder();

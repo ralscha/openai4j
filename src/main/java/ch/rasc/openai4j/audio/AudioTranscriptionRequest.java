@@ -1,13 +1,14 @@
 package ch.rasc.openai4j.audio;
 
 import java.nio.file.Path;
-import java.util.Optional;
 
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -61,19 +62,22 @@ public interface AudioTranscriptionRequest {
 	 * The language of the input audio. Supplying the input language in ISO-639-1 format
 	 * will improve accuracy and latency.
 	 */
-	Optional<String> language();
+	@Nullable
+	String language();
 
 	/**
 	 * An optional text to guide the model's style or continue a previous audio segment.
 	 * The prompt should match the audio language.
 	 */
-	Optional<String> prompt();
+	@Nullable
+	String prompt();
 
 	/**
 	 * The format of the transcript output. Defaults to json.
 	 */
 	@JsonProperty("response_format")
-	Optional<ResponseFormat> responseFormat();
+	@Nullable
+	ResponseFormat responseFormat();
 
 	/**
 	 * The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
@@ -83,7 +87,8 @@ public interface AudioTranscriptionRequest {
 	 *
 	 * Defaults to 0.
 	 */
-	Optional<Double> temperature();
+	@Nullable
+	Double temperature();
 
 	static Builder builder() {
 		return new Builder();

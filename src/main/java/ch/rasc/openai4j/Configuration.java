@@ -1,7 +1,5 @@
 package ch.rasc.openai4j;
 
-import java.util.Optional;
-
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
@@ -11,12 +9,15 @@ public interface Configuration {
 
 	String apiKey();
 
-	Optional<String> organization();
+	@Nullable
+	String organization();
 
 	// Azure
-	Optional<String> baseUrl();
+	@Nullable
+	String baseUrl();
 
-	Optional<String> apiVersion();
+	@Nullable
+	String apiVersion();
 
 	static Builder builder() {
 		return new Builder();

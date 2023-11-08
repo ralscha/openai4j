@@ -1,13 +1,13 @@
 package ch.rasc.openai4j.file;
 
-import java.util.Optional;
-
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ch.rasc.openai4j.Nullable;
 
 /**
  * The File object represents a document that has been uploaded to OpenAI.
@@ -74,5 +74,6 @@ public interface FileObject {
 	 * field on fine_tuning.job.
 	 */
 	@JsonProperty("status_details")
-	Optional<String> statusDetails();
+	@Nullable
+	String statusDetails();
 }

@@ -42,7 +42,7 @@ public class ImageGenerationExample {
 		var url = response.data().get(0).url();
 
 		try (var httpClient = HttpClient.newHttpClient()) {
-			var request = HttpRequest.newBuilder().uri(URI.create(url.get())).build();
+			var request = HttpRequest.newBuilder().uri(URI.create(url)).build();
 			var resp = httpClient.send(request,
 					HttpResponse.BodyHandlers.ofInputStream());
 			var fileName = "image1.png";
@@ -59,7 +59,7 @@ public class ImageGenerationExample {
 				.style(ImageGenerationRequest.Style.NATURAL)
 				.responseFormat(ImageGenerationRequest.ResponseFormat.B64_JSON)
 				.size(Size.S_1024).build());
-		String b64Json = response.data().get(0).b64Json().get();
+		String b64Json = response.data().get(0).b64Json();
 		byte[] decodedBytes = Base64.getDecoder().decode(b64Json);
 		Files.write(Paths.get("image2.png"), decodedBytes);
 

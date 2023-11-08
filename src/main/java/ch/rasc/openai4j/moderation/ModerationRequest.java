@@ -1,12 +1,12 @@
 package ch.rasc.openai4j.moderation;
 
-import java.util.Optional;
-
 import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE)
@@ -45,7 +45,8 @@ public interface ModerationRequest {
 	 * Accuracy of text-moderation-stable may be slightly lower than for
 	 * text-moderation-latest
 	 */
-	Optional<Model> model();
+	@Nullable
+	Model model();
 
 	static Builder builder() {
 		return new Builder();
