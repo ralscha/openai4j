@@ -5,7 +5,7 @@ import feign.RequestTemplate;
 
 public class AuthorizationRequestInterceptor implements RequestInterceptor {
 
-	private String token;
+	private final String token;
 
 	public AuthorizationRequestInterceptor(String token) {
 		this.token = token;

@@ -55,7 +55,8 @@ public interface AudioTranscriptionRequest {
 	/**
 	 * ID of the model to use. Only whisper-1 is currently available.
 	 */
-	@Value.Default default Model model() {
+	@Value.Default
+	default Model model() {
 		return Model.WHISPER_1;
 	}
 
@@ -82,7 +83,7 @@ public interface AudioTranscriptionRequest {
 	 * output more random, while lower values like 0.2 will make it more focused and
 	 * deterministic. If set to 0, the model will use log probability to automatically
 	 * increase the temperature until certain thresholds are hit.
-	 * 
+	 *
 	 * Defaults to 0.
 	 */
 	Optional<Double> temperature();

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Value.Immutable(builder = false)
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 @JsonDeserialize(as = ImmutableModerationResult.class)
 public interface ModerationResult {
 
@@ -16,19 +16,16 @@ public interface ModerationResult {
 	 * <a href="https://platform.openai.com/policies/usage-policies">OpenAI's usage
 	 * policies</a>.
 	 */
-	@Value.Parameter
 	boolean flagged();
 
 	/**
 	 * A list of the categories, and whether they are flagged or not.
 	 */
-	@Value.Parameter
 	Categories categories();
 
 	/**
 	 * A list of the categories along with their scores as predicted by the model.
 	 */
-	@Value.Parameter
 	@JsonProperty("category_scores")
 	CategoryScores categoryScores();
 

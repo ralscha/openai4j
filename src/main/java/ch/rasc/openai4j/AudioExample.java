@@ -25,7 +25,7 @@ public class AudioExample {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new Jdk8Module());
 
-		Audio openAi = Feign.builder().decoder(new JacksonDecoder(om))
+		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
 				.target(Audio.class, "https://api.openai.com/v1");
@@ -35,7 +35,7 @@ public class AudioExample {
 				.model(AudioSpeechRequest.Model.TTS_1_HD)
 				.voice(AudioSpeechRequest.Voice.ALLOY).build();
 
-		try (Response response = openAi.audioSpeech(request);
+		try (Response response = client.audioSpeech(request);
 				FileOutputStream fos = new FileOutputStream("hello.mp3");
 				var body = response.body();
 				var is = body.asInputStream()) {
@@ -46,12 +46,12 @@ public class AudioExample {
 		}
 
 		Path inp = Paths.get("hello.mp3");
-		var resp = openAi.audioTranscriptions(
+		var resp = client.audioTranscription(
 				AudioTranscriptionRequest.builder().file(inp).build());
 		System.out.println(resp);
 
-		var resp2 = openAi
-				.audioTranslations(AudioTranslationRequest.builder().file(inp).build());
+		var resp2 = client
+				.audioTranslation(AudioTranslationRequest.builder().file(inp).build());
 		System.out.println(resp2);
 
 	}

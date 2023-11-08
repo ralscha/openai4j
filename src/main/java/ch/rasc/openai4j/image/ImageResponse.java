@@ -1,4 +1,6 @@
-package ch.rasc.openai4j.audio;
+package ch.rasc.openai4j.image;
+
+import java.util.List;
 
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
@@ -7,11 +9,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableAudioTranscriptionResponse.class)
-public interface AudioTranscriptionResponse {
+@JsonDeserialize(as = ImmutableImageResponse.class)
+public interface ImageResponse {
 
-	/**
-	 * The transcribed text.
-	 */
-	String text();
+	long created();
+
+	List<ImageObject> data();
 }

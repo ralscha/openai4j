@@ -5,7 +5,7 @@ import feign.RequestTemplate;
 
 public class OpenAiOrganizationRequestInterceptor implements RequestInterceptor {
 
-	private String organization;
+	private final String organization;
 
 	public OpenAiOrganizationRequestInterceptor(String organization) {
 		this.organization = organization;

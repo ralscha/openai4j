@@ -4,7 +4,7 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
 public class ApiVersionRequestInterceptor implements RequestInterceptor {
-	private String version;
+	private final String version;
 
 	public ApiVersionRequestInterceptor(String version) {
 		this.version = version;
