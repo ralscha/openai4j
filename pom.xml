@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ch.rasc</groupId>
+  <artifactId>openai4j</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+	  <openfeign.version>13.0</openfeign.version>
+	  <maven.compiler.release>21</maven.compiler.release>
+  </properties>
+	  
+	<dependencies>
+		
+		<dependency>
+		  <groupId>com.fasterxml.jackson.datatype</groupId>
+		  <artifactId>jackson-datatype-jdk8</artifactId>
+		  <version>2.15.3</version>
+		</dependency>    		
+				
+	    <dependency>
+	        <groupId>io.github.openfeign</groupId>
+	        <artifactId>feign-core</artifactId>
+	        <version>${openfeign.version}</version>
+	    </dependency>
+	
+	    <dependency>
+	        <groupId>io.github.openfeign</groupId>
+	        <artifactId>feign-jackson</artifactId>
+	        <version>${openfeign.version}</version>
+	    </dependency>
+	
+	    <dependency>
+	        <groupId>io.github.openfeign</groupId>
+	        <artifactId>feign-slf4j</artifactId>
+	        <version>${openfeign.version}</version>
+	    </dependency>
+	
+	    <dependency>
+	        <groupId>io.github.openfeign</groupId>
+	        <artifactId>feign-java11</artifactId>
+	        <version>${openfeign.version}</version>
+	    </dependency>  
+	    
+		  <dependency>
+		    <groupId>io.github.openfeign.form</groupId>
+		    <artifactId>feign-form</artifactId>
+		    <version>3.8.0</version>
+		  </dependency>	    
+	    
+	   <dependency>
+            <groupId>org.immutables</groupId>
+            <artifactId>value</artifactId>
+            <version>2.10.0</version>
+            <scope>provided</scope>
+        </dependency>
+	    
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
