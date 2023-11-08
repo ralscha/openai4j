@@ -51,13 +51,10 @@ public interface ImageClient {
 	 */
 	default ImageResponse imageVariation(ImageVariationRequest request) {
 		return this.imageVariation(request.image().toFile(),
-				request.model().map(ImageVariationRequest.Model::toValue).orElse(null),
-				request.n().orElse(null),
-				request.responseFormat()
-						.map(ImageVariationRequest.ResponseFormat::toValue).orElse(null),
-				request.size().map(ImageVariationRequest.Size::toValue).orElse(null),
-
-				request.user().orElse(null));
+				request.model() != null ? request.model().toValue() : null, request.n(),
+				request.responseFormat() != null ? request.responseFormat().toValue()
+						: null,
+				request.size() != null ? request.size().toValue() : null, request.user());
 	}
 
 	/**
