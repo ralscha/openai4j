@@ -1,17 +1,22 @@
-package ch.rasc.openai4j.model;
+package ch.rasc.openai4j.file;
+
+import java.util.List;
 
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableModelDeletionResponse.class)
-public interface ModelDeletionResponse {
-	String id();
+@JsonDeserialize(as = ImmutableFilesResponse.class)
+public interface FilesResponse {
 
 	String object();
 
-	boolean deleted();
+	List<FileObject> data();
+
+	@JsonProperty("has_more")
+	boolean hasMore();
 }

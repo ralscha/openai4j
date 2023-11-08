@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import ch.rasc.openai4j.audio.Audio;
+import ch.rasc.openai4j.audio.AudioClient;
 import ch.rasc.openai4j.audio.AudioSpeechRequest;
 import ch.rasc.openai4j.audio.AudioTranscriptionRequest;
 import ch.rasc.openai4j.audio.AudioTranslationRequest;
@@ -28,7 +28,7 @@ public class AudioExample {
 		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(Audio.class, "https://api.openai.com/v1");
+				.target(AudioClient.class, "https://api.openai.com/v1");
 
 		var input = "Hallo schöne Welt wie geht es dir?";
 		var request = AudioSpeechRequest.builder().input(input)

@@ -3,7 +3,7 @@ package ch.rasc.openai4j.model;
 import feign.Param;
 import feign.RequestLine;
 
-public interface Model {
+public interface ModelClient {
 
 	/**
 	 * Lists the currently available models, and provides basic information about each one
@@ -17,7 +17,7 @@ public interface Model {
 	/**
 	 * Retrieves a model instance, providing basic information about the model such as the
 	 * owner and permissioning.
-	 * 
+	 *
 	 * @return The model object matching the specified ID.
 	 */
 	@RequestLine("GET /models/{model}")
@@ -26,7 +26,7 @@ public interface Model {
 	/**
 	 * Delete a fine-tuned model. You must have the Owner role in your organization to
 	 * delete a model.
-	 * 
+	 *
 	 * @return Deletion status.
 	 */
 	@RequestLine("DELETE /models/{model}")

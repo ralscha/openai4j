@@ -7,7 +7,7 @@ import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 
-public interface Image {
+public interface ImageClient {
 
 	/**
 	 * Creates an image given a prompt.

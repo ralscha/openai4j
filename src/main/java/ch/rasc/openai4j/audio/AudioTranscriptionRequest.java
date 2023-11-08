@@ -6,14 +6,11 @@ import java.util.Optional;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@JsonInclude(Include.NON_ABSENT)
 public interface AudioTranscriptionRequest {
 
 	enum ResponseFormat {

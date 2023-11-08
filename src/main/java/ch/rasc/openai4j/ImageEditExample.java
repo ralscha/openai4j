@@ -8,7 +8,7 @@ import java.util.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import ch.rasc.openai4j.image.Image;
+import ch.rasc.openai4j.image.ImageClient;
 import ch.rasc.openai4j.image.ImageEditRequest;
 import ch.rasc.openai4j.image.ImageEditRequest.Size;
 import ch.rasc.openai4j.image.ImageObject;
@@ -28,7 +28,7 @@ public class ImageEditExample {
 		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(Image.class, "https://api.openai.com/v1");
+				.target(ImageClient.class, "https://api.openai.com/v1");
 
 		var response = client
 				.imageEdit(ImageEditRequest.builder().image(Paths.get("./input.png"))

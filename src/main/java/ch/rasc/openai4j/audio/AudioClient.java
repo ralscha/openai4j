@@ -8,7 +8,7 @@ import feign.Param;
 import feign.RequestLine;
 import feign.Response;
 
-public interface Audio {
+public interface AudioClient {
 
 	/**
 	 * Generates audio from the input text.

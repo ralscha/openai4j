@@ -3,7 +3,7 @@ package ch.rasc.openai4j.moderation;
 import feign.Headers;
 import feign.RequestLine;
 
-public interface Moderation {
+public interface ModerationClient {
 	/**
 	 * Classifies if text violates OpenAI's Content Policy
 	 *

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 @JsonDeserialize(as = ImmutableModelsResponse.class)
 public interface ModelsResponse {
-	
+
 	String object();
-	
+
 	List<ModelObject> data();
 }

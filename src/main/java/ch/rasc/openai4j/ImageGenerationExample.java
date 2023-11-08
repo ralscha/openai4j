@@ -13,7 +13,7 @@ import java.util.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import ch.rasc.openai4j.image.Image;
+import ch.rasc.openai4j.image.ImageClient;
 import ch.rasc.openai4j.image.ImageGenerationRequest;
 import ch.rasc.openai4j.image.ImageGenerationRequest.Size;
 import feign.Feign;
@@ -32,7 +32,7 @@ public class ImageGenerationExample {
 		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(Image.class, "https://api.openai.com/v1");
+				.target(ImageClient.class, "https://api.openai.com/v1");
 
 		var input = "A bunch of people are standing in a field. They are wearing colorful clothes and holding umbrellas.";
 		var response = client.imageGeneration(ImageGenerationRequest.builder()

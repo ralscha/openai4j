@@ -3,7 +3,7 @@ package ch.rasc.openai4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import ch.rasc.openai4j.moderation.Moderation;
+import ch.rasc.openai4j.moderation.ModerationClient;
 import ch.rasc.openai4j.moderation.ModerationRequest;
 import feign.Feign;
 import feign.form.FormEncoder;
@@ -21,7 +21,7 @@ public class ModerationExample {
 		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(Moderation.class, "https://api.openai.com/v1");
+				.target(ModerationClient.class, "https://api.openai.com/v1");
 
 		var input = "Hallo schöne Welt wie geht es dir?";
 		var response = client
