@@ -67,13 +67,13 @@ public class OpenAIClient {
 		client.models = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(interceptors)
 				.target(ModelsClient.class, "https://api.openai.com/v1");
-		
+
 		var betaInterceptors = new ArrayList<>(interceptors);
 		betaInterceptors.add(new OpenAIBetaRequestInterceptor());
 		client.threads = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsClient.class, "https://api.openai.com/v1");
-		
+
 		return client;
 	}
 
@@ -92,7 +92,7 @@ public class OpenAIClient {
 	public ModelsClient models;
 
 	public ModerationsClient moderations;
-	
+
 	public ThreadsClient threads;
 
 }

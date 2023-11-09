@@ -1,4 +1,4 @@
-package ch.rasc.openai4j.threads;
+package ch.rasc.openai4j.threads.messages;
 
 import java.util.List;
 import java.util.Map;
@@ -15,9 +15,9 @@ import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@JsonSerialize(as = ImmutableThreadMessage.class)
+@JsonSerialize(as = ImmutableThreadMessageCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface ThreadMessage {
+public interface ThreadMessageCreateRequest {
 	/**
 	 * The role of the entity that is creating the message. Currently only user is
 	 * supported.
@@ -42,9 +42,10 @@ public interface ThreadMessage {
 	List<String> fileIds();
 
 	/**
-	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for
-	 * storing additional information about the object in a structured format. Keys can be
-	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
+	 * SSet of 16 key-value pairs that can be attached to an object. This can be useful
+	 * for storing additional information about the object in a structured format. Keys
+	 * can be a maximum of 64 characters long and values can be a maxium of 512 characters
+	 * long.
 	 */
 	@Nullable
 	Map<String, Object> metadata();
@@ -53,6 +54,6 @@ public interface ThreadMessage {
 		return new Builder();
 	}
 
-	final class Builder extends ImmutableThreadMessage.Builder {
+	final class Builder extends ImmutableThreadMessageCreateRequest.Builder {
 	}
 }

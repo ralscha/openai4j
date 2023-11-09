@@ -15,8 +15,9 @@ public class ThreadsExample {
 		String apiKey = Util.getApiKey();
 		var client = OpenAIClient.create(Configuration.builder().apiKey(apiKey).build());
 
-		ThreadCreateRequest request = ThreadCreateRequest.builder().addMessages(ThreadMessage
-				.builder().content("hello").build()).putMetadata("name", "ralph").build();
+		ThreadCreateRequest request = ThreadCreateRequest.builder()
+				.addMessages(ThreadMessage.builder().content("hello").build())
+				.putMetadata("name", "ralph").build();
 		ObjectMapper om = new ObjectMapper();
 		System.out.println(om.writeValueAsString(request));
 		ThreadObject response = client.threads.create(request);
@@ -25,12 +26,13 @@ public class ThreadsExample {
 		var r = client.threads.retrieve(response.id());
 		System.out.println(r);
 
-		var ru = client.threads.update(response.id(), ThreadUpdateRequest.of(Map.of("name", "john")));
+		var ru = client.threads.update(response.id(),
+				ThreadUpdateRequest.of(Map.of("name", "john")));
 		System.out.println(ru);
-		
+
 		r = client.threads.retrieve(response.id());
 		System.out.println(r);
-		
+
 		var df = client.threads.delete(response.id());
 		System.out.println(df);
 	}

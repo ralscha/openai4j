@@ -1,6 +1,5 @@
 package ch.rasc.openai4j.threads;
 
-import java.util.Map;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
@@ -13,26 +12,26 @@ public interface ThreadsClient {
 
 	/**
 	 * Create a thread.
-	 * 
+	 *
 	 * @return A thread object.
 	 */
 	@RequestLine("POST /threads")
 	@Headers("Content-Type: application/json")
 	ThreadObject create(ThreadCreateRequest request);
-	
+
 	/**
 	 * Create a thread.
-	 * 
+	 *
 	 * @return A thread object.
 	 */
 	default ThreadObject create(
 			Function<ThreadCreateRequest.Builder, ThreadCreateRequest.Builder> fn) {
 		return this.create(fn.apply(ThreadCreateRequest.builder()).build());
 	}
-	
+
 	/**
 	 * Retrieves a thread.
-	 * 
+	 *
 	 * @return The thread object matching the specified ID.
 	 */
 	@RequestLine("GET /threads/{thread_id}")
@@ -40,13 +39,12 @@ public interface ThreadsClient {
 
 	/**
 	 * Modifies a thread.
-	 * 
+	 *
 	 * @return The modified thread object matching the specified ID.
 	 */
 	@RequestLine("POST /threads/{thread_id}")
 	@Headers("Content-Type: application/json")
-	ThreadObject update(@Param("thread_id") String threadId,
-			ThreadUpdateRequest request);
+	ThreadObject update(@Param("thread_id") String threadId, ThreadUpdateRequest request);
 
 	/**
 	 * Delete a thread
