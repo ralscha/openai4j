@@ -31,10 +31,9 @@ public interface ThreadsRunsClient {
 	 */
 	default ThreadRunObject create(@Param("thread_id") String threadId,
 			Function<ThreadRunCreateRequest.Builder, ThreadRunCreateRequest.Builder> fn) {
-		return this.create(threadId,
-				fn.apply(ThreadRunCreateRequest.builder()).build());
+		return this.create(threadId, fn.apply(ThreadRunCreateRequest.builder()).build());
 	}
-	
+
 	/**
 	 * Retrieves a run.
 	 * @param threadId The ID of the thread that was run.
@@ -44,7 +43,7 @@ public interface ThreadsRunsClient {
 	@RequestLine("GET /threads/{thread_id}/runs/{run_id}")
 	ThreadRunObject retrieve(@Param("thread_id") String threadId,
 			@Param("run_id") String runId);
-	
+
 	/**
 	 * Modifies a run.
 	 *
@@ -53,9 +52,8 @@ public interface ThreadsRunsClient {
 	@RequestLine("POST /threads/{thread_id}/runs/{run_id}")
 	@Headers("Content-Type: application/json")
 	ThreadRunObject update(@Param("thread_id") String threadId,
-			@Param("run_id") String runId, ThreadRunUpdateRequest request);	
-	
-	
+			@Param("run_id") String runId, ThreadRunUpdateRequest request);
+
 	/**
 	 * Cancels a run that is in_progress.
 	 *
@@ -64,14 +62,14 @@ public interface ThreadsRunsClient {
 	@RequestLine("POST /threads/{thread_id}/runs/{run_id}/cancel")
 	@Headers("Content-Type: application/json")
 	ThreadRunObject cancel(@Param("thread_id") String threadId,
-			@Param("run_id") String runId);	
-	
+			@Param("run_id") String runId);
+
 	/**
 	 * Returns a list of runs belonging to a thread.
 	 * @param threadId The ID of the thread the run belongs to.
 	 * @return A list of run objects.
 	 */
-	@RequestLine("POST /threads/{thread_id}/runs")
+	@RequestLine("GET /threads/{thread_id}/runs")
 	ListResponse<ThreadRunObject> list(@Param("thread_id") String threadId);
 
 	/**
@@ -79,7 +77,7 @@ public interface ThreadsRunsClient {
 	 * @param threadId The ID of the thread the run belongs to.
 	 * @return A list of run objects.
 	 */
-	@RequestLine("POST /threads/{thread_id}/runs")
+	@RequestLine("GET /threads/{thread_id}/runs")
 	ListResponse<ThreadRunObject> list(@Param("thread_id") String threadId,
 			@QueryMap Map<String, Object> queryParameters);
 
@@ -94,5 +92,4 @@ public interface ThreadsRunsClient {
 		return this.list(threadId, request.toMap());
 	}
 
-	
 }

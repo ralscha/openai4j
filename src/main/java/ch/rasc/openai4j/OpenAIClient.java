@@ -17,6 +17,7 @@ import ch.rasc.openai4j.threads.ThreadsClient;
 import ch.rasc.openai4j.threads.messages.ThreadsMessagesClient;
 import ch.rasc.openai4j.threads.messages.files.ThreadsMessagesFilesClient;
 import ch.rasc.openai4j.threads.runs.ThreadsRunsClient;
+import ch.rasc.openai4j.threads.runs.steps.ThreadsRunsStepsClient;
 import feign.Feign;
 import feign.RequestInterceptor;
 import feign.form.FormEncoder;
@@ -80,7 +81,10 @@ public class OpenAIClient {
 				.target(ThreadsClient.class, "https://api.openai.com/v1");
 		client.threadsRuns = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
-				.target(ThreadsRunsClient.class, "https://api.openai.com/v1");		
+				.target(ThreadsRunsClient.class, "https://api.openai.com/v1");
+		client.threadsRunsSteps = Feign.builder().decoder(jsonDecoder)
+				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
+				.target(ThreadsRunsStepsClient.class, "https://api.openai.com/v1");
 		client.threadsMessages = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsMessagesClient.class, "https://api.openai.com/v1");
@@ -114,8 +118,10 @@ public class OpenAIClient {
 	public ModerationsClient moderations;
 
 	public ThreadsClient threads;
-	
+
 	public ThreadsRunsClient threadsRuns;
+
+	public ThreadsRunsStepsClient threadsRunsSteps;
 
 	public ThreadsMessagesClient threadsMessages;
 

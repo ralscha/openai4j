@@ -71,14 +71,14 @@ public interface ThreadRunObject {
 	 */
 	Status status();
 
-	
 	/**
-	 * Details on the action required to continue the run. Will be null if no action is required.
+	 * Details on the action required to continue the run. Will be null if no action is
+	 * required.
 	 */
 	@Nullable
 	@JsonProperty("required_action")
 	RequiredAction requiredAction();
-	
+
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 			allParameters = true)
@@ -88,10 +88,10 @@ public interface ThreadRunObject {
 		 * For now, this is always submit_tool_outputs.
 		 */
 		String type();
-		
+
 		@JsonProperty("submit_tool_outputs")
 		SubmitToolOutputs submitToolOutputs();
-		
+
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 				allParameters = true)
@@ -99,24 +99,26 @@ public interface ThreadRunObject {
 		interface SubmitToolOutputs {
 			@JsonProperty("tool_calls")
 			ToolCall[] toolCalls();
-			
+
 			@Value.Immutable(builder = false)
 			@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 					allParameters = true)
 			@JsonDeserialize(as = ImmutableThreadRunObject.ToolCall.class)
 			interface ToolCall {
 				/**
-				 * The ID of the tool call. This ID must be referenced when you submit the tool outputs in using the Submit tool outputs to run endpoint.
+				 * The ID of the tool call. This ID must be referenced when you submit the
+				 * tool outputs in using the Submit tool outputs to run endpoint.
 				 */
 				String id();
-				
+
 				/**
-				 * The type of tool call the output is required for. For now, this is always function
+				 * The type of tool call the output is required for. For now, this is
+				 * always function
 				 */
 				String type();
-				
+
 				Function function();
-				
+
 				@Value.Immutable(builder = false)
 				@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 						allParameters = true)
@@ -126,7 +128,7 @@ public interface ThreadRunObject {
 					 * The name of the function.
 					 */
 					String name();
-					
+
 					/**
 					 * The arguments that the model expects you to pass to the function.
 					 */
@@ -135,7 +137,7 @@ public interface ThreadRunObject {
 			}
 		}
 	}
-	
+
 	/**
 	 * The last error associated with this run. Will be null if there are no errors.
 	 */
