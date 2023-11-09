@@ -8,10 +8,10 @@ import java.util.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import ch.rasc.openai4j.image.ImageClient;
-import ch.rasc.openai4j.image.ImageEditRequest;
-import ch.rasc.openai4j.image.ImageEditRequest.Size;
-import ch.rasc.openai4j.image.ImageObject;
+import ch.rasc.openai4j.images.ImagesClient;
+import ch.rasc.openai4j.images.ImageEditRequest;
+import ch.rasc.openai4j.images.ImageObject;
+import ch.rasc.openai4j.images.ImageEditRequest.Size;
 import feign.Feign;
 import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
@@ -20,7 +20,7 @@ import feign.jackson.JacksonEncoder;
 public class ImageEditExample {
 
 	public static void main(String[] args) throws IOException {
-		String token = Util.getToken();
+		String token = Util.getApiKey();
 
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new Jdk8Module());
@@ -28,7 +28,7 @@ public class ImageEditExample {
 		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(ImageClient.class, "https://api.openai.com/v1");
+				.target(ImagesClient.class, "https://api.openai.com/v1");
 
 		var response = client
 				.imageEdit(ImageEditRequest.builder().image(Paths.get("./input.png"))

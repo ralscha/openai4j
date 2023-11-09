@@ -11,7 +11,7 @@ import feign.jackson.JacksonEncoder;
 
 public class FineTuningExample {
 	public static void main(String[] args) {
-		String token = Util.getToken();
+		String token = Util.getApiKey();
 
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new Jdk8Module());

@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Util {
-	public static String getToken() {
+	public static String getApiKey() {
 		String token = System.getenv("OPENAI_API_KEY");
 		if (token == null || token.isBlank()) {
 			// read from .env in current directory

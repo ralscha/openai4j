@@ -14,11 +14,20 @@ public interface Configuration {
 
 	// Azure
 	@Nullable
-	String baseUrl();
+	String azureEndpoint();
 
 	@Nullable
 	String apiVersion();
 
+	@Nullable
+	String azureDeployment();
+	
+	@Nullable
+	String azureADToken();
+	
+	@Nullable
+	String azureADTokenProvider();	
+	
 	static Builder builder() {
 		return new Builder();
 	}

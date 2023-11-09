@@ -1,37 +1,21 @@
 package ch.rasc.openai4j;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
-import ch.rasc.openai4j.chat.ChatClient;
-import ch.rasc.openai4j.chat.ChatCompletionRequest;
-import ch.rasc.openai4j.chat.SystemMessage;
-import ch.rasc.openai4j.chat.UserMessage;
-import feign.Feign;
-import feign.form.FormEncoder;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest;
+import ch.rasc.openai4j.chatcompletions.SystemMessage;
+import ch.rasc.openai4j.chatcompletions.UserMessage;
 
 public class ChatExample {
-	public static void main(String[] args) throws JsonProcessingException {
-		String token = Util.getToken();
+	public static void main(String[] args) {
+		String apiKey = Util.getApiKey();
 
-		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new Jdk8Module());
+		var client = OpenAIClient.create(Configuration.builder().apiKey(apiKey).build());
 
-		var client = Feign.builder().decoder(new JacksonDecoder(om))
-				.encoder(new FormEncoder(new JacksonEncoder(om)))
-				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(ChatClient.class, "https://api.openai.com/v1");
-
-		var request = ChatCompletionRequest.builder()
+		var request = ChatCompletionCreateRequest.builder()
 				.addMessage(SystemMessage.of("You are a helpful assistant"))
 				.addMessage(UserMessage.of("What is the capital of Spain?"))
 				.model("gpt-4-1106-preview").build();
-		System.out.println(om.writeValueAsString(request));
 
-		var response = client.completion(request);
+		var response = client.chatCompletions.create(request);
 		System.out.println(response);
 	}
 

@@ -6,9 +6,9 @@ import java.nio.file.Paths;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import ch.rasc.openai4j.file.FileClient;
-import ch.rasc.openai4j.file.FileUploadRequest;
-import ch.rasc.openai4j.file.Purpose;
+import ch.rasc.openai4j.files.FileUploadRequest;
+import ch.rasc.openai4j.files.FilesClient;
+import ch.rasc.openai4j.files.Purpose;
 import feign.Feign;
 import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
@@ -16,7 +16,7 @@ import feign.jackson.JacksonEncoder;
 
 public class FileExample {
 	public static void main(String[] args) {
-		String token = Util.getToken();
+		String token = Util.getApiKey();
 
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new Jdk8Module());
@@ -24,7 +24,7 @@ public class FileExample {
 		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(FileClient.class, "https://api.openai.com/v1");
+				.target(FilesClient.class, "https://api.openai.com/v1");
 
 		var files = client.files();
 		System.out.println(files);

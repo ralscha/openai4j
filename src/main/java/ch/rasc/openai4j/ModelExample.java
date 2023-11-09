@@ -3,7 +3,7 @@ package ch.rasc.openai4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
-import ch.rasc.openai4j.model.ModelClient;
+import ch.rasc.openai4j.models.ModelsClient;
 import feign.Feign;
 import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
@@ -11,7 +11,7 @@ import feign.jackson.JacksonEncoder;
 
 public class ModelExample {
 	public static void main(String[] args) {
-		String token = Util.getToken();
+		String token = Util.getApiKey();
 
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new Jdk8Module());
@@ -19,7 +19,7 @@ public class ModelExample {
 		var client = Feign.builder().decoder(new JacksonDecoder(om))
 				.encoder(new FormEncoder(new JacksonEncoder(om)))
 				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(ModelClient.class, "https://api.openai.com/v1");
+				.target(ModelsClient.class, "https://api.openai.com/v1");
 
 		var models = client.models();
 		for (var response : models.data()) {
