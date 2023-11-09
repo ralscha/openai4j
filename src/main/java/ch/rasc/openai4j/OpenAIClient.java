@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.rasc.openai4j.assistants.AssistantsClient;
+import ch.rasc.openai4j.assistants.files.AssistantsFilesClient;
 import ch.rasc.openai4j.audio.AudioClient;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsClient;
 import ch.rasc.openai4j.embeddings.EmbeddingsClient;
@@ -77,6 +78,10 @@ public class OpenAIClient {
 		client.assistants = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(AssistantsClient.class, "https://api.openai.com/v1");
+		client.assistantsFiles = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(betaInterceptors)
+				.target(AssistantsFilesClient.class, "https://api.openai.com/v1");
+		
 		return client;
 	}
 
@@ -100,4 +105,5 @@ public class OpenAIClient {
 
 	public AssistantsClient assistants;
 
+	public AssistantsFilesClient assistantsFiles;
 }

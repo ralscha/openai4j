@@ -16,7 +16,6 @@ import ch.rasc.openai4j.Nullable;
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 @JsonDeserialize(as = ImmutableAssistantObject.class)
-@Value.Enclosing
 public interface AssistantObject {
 
 	/**
