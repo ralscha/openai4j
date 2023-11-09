@@ -6,6 +6,9 @@ import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import ch.rasc.openai4j.Nullable;
@@ -48,6 +51,8 @@ public interface ThreadMessageObject {
 
 	Content[] content();
 
+	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+	@JsonSubTypes({ @Type(ImageContent.class), @Type(TextContent.class) })
 	interface Content {
 		String type();
 	}
@@ -91,6 +96,8 @@ public interface ThreadMessageObject {
 
 			Annotation[] annotations();
 
+			@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+			@JsonSubTypes({ @Type(FileCitation.class), @Type(FilePath.class) })
 			interface Annotation {
 				String type();
 			}
