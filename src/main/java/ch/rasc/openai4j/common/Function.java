@@ -1,7 +1,8 @@
-package ch.rasc.openai4j.chatcompletions;
+package ch.rasc.openai4j.common;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,13 +12,16 @@ public class Function {
 	private final String name;
 	private final Object parameters;
 
-	public Function(String description, String name, Object parameters) {
+	private Function(String description, String name, Object parameters) {
 		this.description = description;
 		this.name = name;
 		this.parameters = parameters;
 	}
 
-	public static Function of(String description, String name, Object parameters) {
+	@JsonCreator
+	public static Function of(@JsonProperty("description") String description,
+			@JsonProperty("name") String name,
+			@JsonProperty("parameters") Object parameters) {
 		return new Function(description, name, parameters);
 	}
 

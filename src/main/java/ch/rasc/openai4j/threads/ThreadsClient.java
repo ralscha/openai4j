@@ -3,6 +3,7 @@ package ch.rasc.openai4j.threads;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
+import ch.rasc.openai4j.common.DeletionStatus;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -52,6 +53,6 @@ public interface ThreadsClient {
 	 * @return Deletion status.
 	 */
 	@RequestLine("DELETE /threads/{thread_id}")
-	ThreadDeletionResponse delete(@Param("thread_id") String threadId);
+	DeletionStatus delete(@Param("thread_id") String threadId);
 
 }

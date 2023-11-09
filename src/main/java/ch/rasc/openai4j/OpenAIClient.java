@@ -3,6 +3,7 @@ package ch.rasc.openai4j;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.rasc.openai4j.assistants.AssistantsClient;
 import ch.rasc.openai4j.audio.AudioClient;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsClient;
 import ch.rasc.openai4j.embeddings.EmbeddingsClient;
@@ -73,7 +74,9 @@ public class OpenAIClient {
 		client.threads = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsClient.class, "https://api.openai.com/v1");
-
+		client.assistants = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(betaInterceptors)
+				.target(AssistantsClient.class, "https://api.openai.com/v1");
 		return client;
 	}
 
@@ -94,5 +97,7 @@ public class OpenAIClient {
 	public ModerationsClient moderations;
 
 	public ThreadsClient threads;
+
+	public AssistantsClient assistants;
 
 }

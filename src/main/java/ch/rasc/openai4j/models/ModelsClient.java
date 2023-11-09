@@ -1,5 +1,6 @@
 package ch.rasc.openai4j.models;
 
+import ch.rasc.openai4j.common.DeletionStatus;
 import feign.Param;
 import feign.RequestLine;
 
@@ -30,6 +31,6 @@ public interface ModelsClient {
 	 * @return Deletion status.
 	 */
 	@RequestLine("DELETE /models/{model}")
-	ModelDeletionResponse delete(@Param("model") String model);
+	DeletionStatus delete(@Param("model") String model);
 
 }

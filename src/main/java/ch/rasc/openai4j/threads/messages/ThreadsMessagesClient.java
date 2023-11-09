@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
+import ch.rasc.openai4j.common.ListResponse;
+import ch.rasc.openai4j.common.SortOrder;
 import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
@@ -19,7 +21,7 @@ public interface ThreadsMessagesClient {
 	 * @return A list of message objects.
 	 */
 	@RequestLine("POST /threads/{thread_id}/messages")
-	ThreadMessagesResponse list(@Param("thread_id") String threadId);
+	ListResponse<ThreadMessageObject> list(@Param("thread_id") String threadId);
 
 	/**
 	 * Returns a list of messages for a given thread.
@@ -27,18 +29,8 @@ public interface ThreadsMessagesClient {
 	 * @return A list of message objects.
 	 */
 	@RequestLine("POST /threads/{thread_id}/messages")
-	ThreadMessagesResponse list(@Param("thread_id") String threadId,
+	ListResponse<ThreadMessageObject> list(@Param("thread_id") String threadId,
 			@QueryMap Map<String, Object> queryParameters);
-
-	enum SortOrder {
-		ASC("asc"), DESC("desc");
-
-		private final String value;
-
-		SortOrder(String value) {
-			this.value = value;
-		}
-	}
 
 	/**
 	 * Returns a list of messages for a given thread.
@@ -57,15 +49,14 @@ public interface ThreadsMessagesClient {
 	 * order to fetch the previous page of the list.
 	 * @return A list of message objects.
 	 */
-	@RequestLine("POST /threads/{thread_id}/messages")
-	default ThreadMessagesResponse list(@Param("thread_id") String threadId,
+	default ListResponse<ThreadMessageObject> list(@Param("thread_id") String threadId,
 			Integer limit, SortOrder order, String after, String before) {
 		Map<String, Object> queryParameters = new HashMap<>();
 		if (limit != null) {
 			queryParameters.put("limit", limit);
 		}
 		if (order != null) {
-			queryParameters.put("order", order.value);
+			queryParameters.put("order", order.value());
 		}
 		if (after != null && !after.isBlank()) {
 			queryParameters.put("after", after);

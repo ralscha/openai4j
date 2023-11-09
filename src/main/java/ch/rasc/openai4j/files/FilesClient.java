@@ -3,6 +3,7 @@ package ch.rasc.openai4j.files;
 import java.io.File;
 import java.util.function.Function;
 
+import ch.rasc.openai4j.common.DeletionStatus;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -70,7 +71,7 @@ public interface FilesClient {
 	 * @return Deletion status.
 	 */
 	@RequestLine("DELETE /files/{fileId}")
-	FileDeletionResponse delete(@Param("fileId") String fileId);
+	DeletionStatus delete(@Param("fileId") String fileId);
 
 	/**
 	 * Returns information about a specific file.

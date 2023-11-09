@@ -2,6 +2,8 @@ package ch.rasc.openai4j.chatcompletions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ch.rasc.openai4j.common.Function;
+
 public class Tool {
 	private final String type;
 	private final Function function;
