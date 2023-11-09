@@ -11,7 +11,7 @@ import ch.rasc.openai4j.Nullable;
 @Value.Immutable
 @Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE)
 @JsonSerialize(as = ImmutableModerationRequest.class)
-@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public interface ModerationRequest {
 
 	enum Model {

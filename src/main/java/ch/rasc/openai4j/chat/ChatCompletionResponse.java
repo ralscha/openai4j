@@ -15,8 +15,8 @@ import ch.rasc.openai4j.Nullable;
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableChatCompletionObject.class)
-public interface ChatCompletionObject {
+@JsonDeserialize(as = ImmutableChatCompletionResponse.class)
+public interface ChatCompletionResponse {
 
 	/**
 	 * A unique identifier for the chat completion.

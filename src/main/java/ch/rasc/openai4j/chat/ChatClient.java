@@ -10,7 +10,7 @@ public interface ChatClient {
 	 *
 	 * @return Returns a completion object
 	 */
-	@RequestLine("POST /completions")
+	@RequestLine("POST /chat/completions")
 	@Headers("Content-Type: application/json")
-	ChatCompletionObject completion(ChatCompletionRequest request);
+	ChatCompletionResponse completion(ChatCompletionRequest request);
 }

@@ -13,25 +13,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.chat.ChatCompletionObject.ToolCall;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 @JsonSerialize(as = ImmutableChatCompletionRequest.class)
-@JsonInclude(Include.NON_ABSENT)
+@JsonInclude(Include.NON_EMPTY)
 public interface ChatCompletionRequest {
 
-	enum ResponseFormatType {
-		TEXT("text"), JSON_OBJECT("json_object");
+	enum ResponseFormat {
+		TEXT(Map.of("type", "text")), JSON_OBJECT(Map.of("type", "json_object"));
 
-		private final String value;
+		private final Map<String, String> value;
 
-		ResponseFormatType(String value) {
+		ResponseFormat(Map<String, String> value) {
 			this.value = value;
 		}
 
 		@JsonValue
-		public String toValue() {
+		public Map<String, String> toValue() {
 			return this.value;
 		}
 	}
@@ -112,23 +111,6 @@ public interface ChatCompletionRequest {
 	@JsonProperty("response_format")
 	ResponseFormat responseFormat();
 
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableResponseFormat.class)
-	interface ResponseFormat {
-		/**
-		 * Must be one of text or json_object.
-		 */
-		ResponseFormatType type();
-
-		static Builder builder() {
-			return new Builder();
-		}
-
-		final class Builder extends ImmutableResponseFormat.Builder {
-		}
-	}
-
 	/**
 	 * This feature is in Beta. If specified, our system will make a best effort to sample
 	 * deterministically, such that repeated requests with the same seed and parameters
@@ -191,7 +173,44 @@ public interface ChatCompletionRequest {
 	 */
 	@Nullable
 	@JsonProperty("tool_choice")
-	Object toolChoice();
+	ToolChoice toolChoice();
+
+	class ToolChoice {
+		private final Object value;
+
+		ToolChoice(Object value) {
+			this.value = value;
+		}
+
+		/**
+		 * none means the model will not call a function and instead generates a message
+		 */
+		public static ToolChoice none() {
+			return new ToolChoice("none");
+		}
+
+		/**
+		 * auto means the model can pick between generating a message or calling a
+		 * function.
+		 */
+		public static ToolChoice auto() {
+			return new ToolChoice("auto");
+		}
+
+		/**
+		 * Specifying a particular function via {"type: "function", "function": {"name":
+		 * "my_function"}} forces the model to call that function.
+		 */
+		public static ToolChoice function(String functionName) {
+			return new ToolChoice(
+					Map.of("type", "function", "function", Map.of("name", functionName)));
+		}
+
+		@JsonValue
+		public Object value() {
+			return this.value;
+		}
+	}
 
 	/**
 	 * A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -199,154 +218,6 @@ public interface ChatCompletionRequest {
 	 */
 	@Nullable
 	String user();
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableTool.class)
-	interface Tool {
-		/**
-		 * Tpe type of the tool. Currently, only function is supported.
-		 */
-		String type();
-
-		Function function();
-	}
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableFunction.class)
-	interface Function {
-		/**
-		 * A description of what the function does, used by the model to choose when and
-		 * how
-		 */
-		@Nullable
-		String description();
-
-		/**
-		 * The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
-		 * underscores and dashes, with a maximum length of 64.
-		 */
-		String name();
-
-		/**
-		 * The parameters the functions accepts, described as a JSON Schema object.
-		 *
-		 * To describe a function that accepts no parameters, provide the value {"type":
-		 * "object", "properties": {}}.
-		 */
-		Object parameters();
-
-	}
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableMessage.class)
-	interface Message {
-		/**
-		 * The role of the messages author
-		 */
-		String role();
-	}
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableSystemMessage.class)
-	interface SystemMessage extends Message {
-		/**
-		 * The contents of the system message.
-		 */
-		String content();
-
-		@Override
-		default String role() {
-			return "system";
-		}
-
-		static Builder builder() {
-			return new Builder();
-		}
-
-		final class Builder extends ImmutableSystemMessage.Builder {
-		}
-	}
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableUserMessage.class)
-	interface UserMessage extends Message {
-		/**
-		 * The contents of the user message.
-		 */
-		String content();
-
-		@Override
-		default String role() {
-			return "user";
-		}
-
-		static Builder builder() {
-			return new Builder();
-		}
-
-		final class Builder extends ImmutableUserMessage.Builder {
-		}
-	}
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableAssistantMessage.class)
-	interface AssistantMessage extends Message {
-
-		/**
-		 * The contents of the assistant message.
-		 */
-		String content();
-
-		@Override
-		default String role() {
-			return "assistant";
-		}
-
-		@JsonProperty("tool_calls")
-		List<ToolCall> toolCalls();
-
-		static Builder builder() {
-			return new Builder();
-		}
-
-		final class Builder extends ImmutableAssistantMessage.Builder {
-		}
-	}
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableToolMessage.class)
-	interface ToolMessage extends Message {
-		/**
-		 * The contents of the tool message.
-		 */
-		@Nullable
-		String content();
-
-		/**
-		 * Tool call that this message is responding to.
-		 */
-		@JsonProperty("tool_call_id")
-		String toolCallId();
-
-		@Override
-		default String role() {
-			return "tool";
-		}
-
-		static Builder builder() {
-			return new Builder();
-		}
-
-		final class Builder extends ImmutableToolMessage.Builder {
-		}
-	}
 
 	static Builder builder() {
 		return new Builder();

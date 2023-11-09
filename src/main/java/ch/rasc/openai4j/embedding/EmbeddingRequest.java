@@ -16,7 +16,7 @@ import ch.rasc.openai4j.Nullable;
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @JsonSerialize(as = ImmutableEmbeddingRequest.class)
-@JsonInclude(Include.NON_ABSENT)
+@JsonInclude(Include.NON_EMPTY)
 public interface EmbeddingRequest {
 
 	enum EncodingFormat {
