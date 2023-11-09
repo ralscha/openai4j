@@ -25,7 +25,7 @@ public interface ModerationsRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}

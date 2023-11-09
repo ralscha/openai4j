@@ -27,7 +27,7 @@ public interface AudioSpeechRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -43,7 +43,7 @@ public interface AudioSpeechRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -58,7 +58,7 @@ public interface AudioSpeechRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}

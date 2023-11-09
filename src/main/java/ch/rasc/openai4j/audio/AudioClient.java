@@ -49,8 +49,8 @@ public interface AudioClient {
 			AudioTranscriptionRequest request) {
 
 		return this.transcriptionsCreate(request.file().toFile(),
-				request.model().toValue(), request.language(), request.prompt(),
-				request.responseFormat() != null ? request.responseFormat().toValue()
+				request.model().value(), request.language(), request.prompt(),
+				request.responseFormat() != null ? request.responseFormat().value()
 						: null,
 				request.temperature());
 	}
@@ -89,9 +89,9 @@ public interface AudioClient {
 	@RequestLine("POST /audio/translations")
 	@Headers("Content-Type: multipart/form-data")
 	default AudioTranslationResponse translationsCreate(AudioTranslationRequest request) {
-		return this.translationsCreate(request.file().toFile(), request.model().toValue(),
+		return this.translationsCreate(request.file().toFile(), request.model().value(),
 				request.prompt(),
-				request.responseFormat() != null ? request.responseFormat().toValue()
+				request.responseFormat() != null ? request.responseFormat().value()
 						: null,
 				request.temperature());
 	}

@@ -24,7 +24,7 @@ public interface AudioTranslationRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -39,7 +39,7 @@ public interface AudioTranslationRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}

@@ -29,7 +29,7 @@ public interface EmbeddingsRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}

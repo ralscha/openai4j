@@ -27,7 +27,7 @@ public interface ImageGenerationRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -42,7 +42,7 @@ public interface ImageGenerationRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -57,7 +57,7 @@ public interface ImageGenerationRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -73,7 +73,7 @@ public interface ImageGenerationRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -88,7 +88,7 @@ public interface ImageGenerationRequest {
 		}
 
 		@JsonValue
-		public String toValue() {
+		public String value() {
 			return this.value;
 		}
 	}

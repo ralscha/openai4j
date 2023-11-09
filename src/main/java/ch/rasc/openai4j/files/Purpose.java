@@ -13,7 +13,7 @@ public enum Purpose {
 	}
 
 	@JsonValue
-	public String toValue() {
+	public String value() {
 		return this.value;
 	}
 }

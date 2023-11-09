@@ -29,6 +29,16 @@ public interface FilesClient {
 	FilesResponse list(@Param("purpose") String purpose);
 
 	/**
+	 * Returns a list of files that belong to the user's organization with the given
+	 * purpose.
+	 *
+	 * @return A list of File objects.
+	 */
+	default FilesResponse list(Purpose purpose) {
+		return this.list(purpose.value());
+	}
+	
+	/**
 	 * Upload a file that can be used across various endpoints/features. The size of all
 	 * the files uploaded by one organization can be up to 100 GB. The size of individual
 	 * files for can be a maximum of 512MB. The Fine-tuning API only supports .jsonl
@@ -37,7 +47,7 @@ public interface FilesClient {
 	 * @return The uploaded File object.
 	 */
 	default FileObject create(FileUploadRequest request) {
-		return this.create(request.file().toFile(), request.purpose().toValue());
+		return this.create(request.file().toFile(), request.purpose().value());
 	}
 
 	/**

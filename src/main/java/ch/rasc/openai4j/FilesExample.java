@@ -21,7 +21,7 @@ public class FilesExample {
 
 		System.out.println();
 
-		var filesWithAPurpose = client.files.list(Purpose.FINE_TUNE.toValue());
+		var filesWithAPurpose = client.files.list(Purpose.FINE_TUNE);
 		System.out.println(filesWithAPurpose);
 
 		var p = Paths.get("./image1.png");
