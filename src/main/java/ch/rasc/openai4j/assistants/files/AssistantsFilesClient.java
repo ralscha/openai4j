@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListResponse;
 import ch.rasc.openai4j.common.SortOrder;
@@ -12,6 +13,7 @@ import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
 
+@Beta
 public interface AssistantsFilesClient {
 	/**
 	 * Create an assistant file by attaching a File to an assistant.
