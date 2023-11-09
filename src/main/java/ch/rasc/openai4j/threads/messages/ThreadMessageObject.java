@@ -53,14 +53,15 @@ public interface ThreadMessageObject {
 
 	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 	@JsonSubTypes({ @Type(ImageContent.class), @Type(TextContent.class) })
-	interface Content {
-		String type();
+	interface Content {	
 	}
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 	@JsonDeserialize(as = ImmutableThreadMessageObject.ImageContent.class)
 	interface ImageContent extends Content {
+		String type();
+		
 		/**
 		 * References an image File in the content of a message.
 		 */
@@ -80,6 +81,7 @@ public interface ThreadMessageObject {
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 	@JsonDeserialize(as = ImmutableThreadMessageObject.TextContent.class)
 	interface TextContent extends Content {
+		String type();
 		/**
 		 * The text content that is part of a message.
 		 */
@@ -99,7 +101,6 @@ public interface ThreadMessageObject {
 			@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 			@JsonSubTypes({ @Type(FileCitation.class), @Type(FilePath.class) })
 			interface Annotation {
-				String type();
 			}
 
 			@Value.Immutable(builder = false)
@@ -107,6 +108,7 @@ public interface ThreadMessageObject {
 					allParameters = true)
 			@JsonDeserialize(as = ImmutableThreadMessageObject.FileCitation.class)
 			interface FileCitation extends Annotation {
+				String type();
 				/**
 				 * The text in the message content that needs to be replaced.
 				 */
@@ -145,6 +147,7 @@ public interface ThreadMessageObject {
 					allParameters = true)
 			@JsonDeserialize(as = ImmutableThreadMessageObject.FilePath.class)
 			interface FilePath extends Annotation {
+				String type();
 				/**
 				 * The text in the message content that needs to be replaced.
 				 */
