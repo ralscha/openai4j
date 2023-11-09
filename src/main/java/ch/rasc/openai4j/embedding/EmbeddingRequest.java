@@ -7,6 +7,8 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import ch.rasc.openai4j.Nullable;
@@ -16,6 +18,21 @@ import ch.rasc.openai4j.Nullable;
 @JsonSerialize(as = ImmutableEmbeddingRequest.class)
 @JsonInclude(Include.NON_ABSENT)
 public interface EmbeddingRequest {
+
+	enum EncodingFormat {
+		FLOAT("float"), BASE64("base64");
+
+		private final String value;
+
+		EncodingFormat(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public String toValue() {
+			return this.value;
+		}
+	}
 
 	/**
 	 * Input text to embed, encoded as a string or array of tokens. To embed multiple
@@ -30,6 +47,14 @@ public interface EmbeddingRequest {
 	 * available models, or see our Model overview for descriptions of them.
 	 */
 	String model();
+
+	/**
+	 * The format to return the embeddings in. Can be either float or base64. Defaults to
+	 * float.
+	 */
+	@Nullable
+	@JsonProperty("encoding_format")
+	EncodingFormat encodingFormat();
 
 	/**
 	 * A unique identifier representing your end-user, which can help OpenAI to monitor
