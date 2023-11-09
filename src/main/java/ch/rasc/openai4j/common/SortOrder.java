@@ -1,4 +1,5 @@
 package ch.rasc.openai4j.common;
+
 public enum SortOrder {
 	ASC("asc"), DESC("desc");
 
@@ -7,7 +8,7 @@ public enum SortOrder {
 	SortOrder(String value) {
 		this.value = value;
 	}
-	
+
 	public String value() {
 		return this.value;
 	}

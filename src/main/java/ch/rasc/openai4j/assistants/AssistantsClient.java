@@ -105,8 +105,8 @@ public interface AssistantsClient {
 	 * order to fetch the previous page of the list.
 	 * @return A list of assistant objects.
 	 */
-	default ListResponse<AssistantObject> list(Integer limit, SortOrder order, String after,
-			String before) {
+	default ListResponse<AssistantObject> list(Integer limit, SortOrder order,
+			String after, String before) {
 		Map<String, Object> queryParameters = new HashMap<>();
 		if (limit != null) {
 			queryParameters.put("limit", limit);

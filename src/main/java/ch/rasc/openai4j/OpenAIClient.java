@@ -14,6 +14,8 @@ import ch.rasc.openai4j.images.ImagesClient;
 import ch.rasc.openai4j.models.ModelsClient;
 import ch.rasc.openai4j.moderations.ModerationsClient;
 import ch.rasc.openai4j.threads.ThreadsClient;
+import ch.rasc.openai4j.threads.messages.ThreadsMessagesClient;
+import ch.rasc.openai4j.threads.messages.files.ThreadsMessagesFilesClient;
 import feign.Feign;
 import feign.RequestInterceptor;
 import feign.form.FormEncoder;
@@ -75,13 +77,19 @@ public class OpenAIClient {
 		client.threads = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsClient.class, "https://api.openai.com/v1");
+		client.threadsMessages = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(betaInterceptors)
+				.target(ThreadsMessagesClient.class, "https://api.openai.com/v1");
+		client.threadsMessagesFiles = Feign.builder().decoder(jsonDecoder)
+				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
+				.target(ThreadsMessagesFilesClient.class, "https://api.openai.com/v1");
 		client.assistants = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(AssistantsClient.class, "https://api.openai.com/v1");
 		client.assistantsFiles = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(AssistantsFilesClient.class, "https://api.openai.com/v1");
-		
+
 		return client;
 	}
 
@@ -102,6 +110,10 @@ public class OpenAIClient {
 	public ModerationsClient moderations;
 
 	public ThreadsClient threads;
+
+	public ThreadsMessagesClient threadsMessages;
+
+	public ThreadsMessagesFilesClient threadsMessagesFiles;
 
 	public AssistantsClient assistants;
 

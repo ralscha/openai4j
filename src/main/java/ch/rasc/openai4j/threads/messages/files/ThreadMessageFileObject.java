@@ -1,9 +1,9 @@
 package ch.rasc.openai4j.threads.messages.files;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
