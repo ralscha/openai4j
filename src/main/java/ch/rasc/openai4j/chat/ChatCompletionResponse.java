@@ -16,6 +16,7 @@ import ch.rasc.openai4j.Nullable;
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 @JsonDeserialize(as = ImmutableChatCompletionResponse.class)
+@Value.Enclosing
 public interface ChatCompletionResponse {
 
 	/**
@@ -59,7 +60,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableChoice.class)
+	@JsonDeserialize(as = ImmutableChatCompletionResponse.Choice.class)
 	interface Choice {
 		/**
 		 * The index of the choice in the list of choices.
@@ -82,7 +83,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableMessage.class)
+	@JsonDeserialize(as = ImmutableChatCompletionResponse.Message.class)
 	interface Message {
 		/**
 		 * The contents of the message.
@@ -104,7 +105,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableToolCall.class)
+	@JsonDeserialize(as = ImmutableChatCompletionResponse.ToolCall.class)
 	interface ToolCall {
 		/**
 		 * The ID of the tool call.
@@ -121,7 +122,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableFunction.class)
+	@JsonDeserialize(as = ImmutableChatCompletionResponse.Function.class)
 	interface Function {
 		/**
 		 * The name of the function to call.
@@ -139,7 +140,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableUsage.class)
+	@JsonDeserialize(as = ImmutableChatCompletionResponse.Usage.class)
 	interface Usage {
 		/**
 		 * Number of tokens in the generated completion.

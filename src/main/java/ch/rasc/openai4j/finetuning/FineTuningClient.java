@@ -10,6 +10,14 @@ import feign.RequestLine;
 public interface FineTuningClient {
 
 	/**
+	 * Creates a job that fine-tunes a specified model from a given dataset.
+	 *
+	 * @return Fine-tuning job object.
+	 */
+	@RequestLine("POST /fine_tuning/jobs")
+	FineTuningJobObject create(FineTuningJobCreateRequest request);
+
+	/**
 	 * List your organization's fine-tuning jobs
 	 *
 	 * @return A list of paginated fine-tuning job objects.

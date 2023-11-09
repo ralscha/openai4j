@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 @JsonDeserialize(as = ImmutableEmbeddingResponse.class)
+@Value.Enclosing
 public interface EmbeddingResponse {
 
 	String object();
@@ -21,7 +22,7 @@ public interface EmbeddingResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableUsage.class)
+	@JsonDeserialize(as = ImmutableEmbeddingResponse.Usage.class)
 	interface Usage {
 		@JsonProperty("prompt_tokens")
 		int promptTokens();
