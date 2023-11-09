@@ -12,7 +12,7 @@ public interface ModelsClient {
 	 * @return Returns a list of model objects.
 	 */
 	@RequestLine("GET /models")
-	ModelsResponse models();
+	ModelsResponse list();
 
 	/**
 	 * Retrieves a model instance, providing basic information about the model such as the
@@ -21,7 +21,7 @@ public interface ModelsClient {
 	 * @return The model object matching the specified ID.
 	 */
 	@RequestLine("GET /models/{model}")
-	ModelObject model(@Param("model") String model);
+	ModelObject retrieve(@Param("model") String model);
 
 	/**
 	 * Delete a fine-tuned model. You must have the Owner role in your organization to

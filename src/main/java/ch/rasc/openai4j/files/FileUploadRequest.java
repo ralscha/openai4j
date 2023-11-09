@@ -5,8 +5,6 @@ import java.nio.file.Path;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.files.ImmutableFileUploadRequest;
-
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 public interface FileUploadRequest {

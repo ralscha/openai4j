@@ -9,16 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.chatcompletions.ImmutableChatCompletionResponse;
 
 /**
  * Represents a chat completion response returned by model, based on the provided input.
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableChatCompletionResponse.class)
+@JsonDeserialize(as = ImmutableChatCompletionsResponse.class)
 @Value.Enclosing
-public interface ChatCompletionResponse {
+public interface ChatCompletionsResponse {
 
 	/**
 	 * A unique identifier for the chat completion.
@@ -61,7 +60,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableChatCompletionResponse.Choice.class)
+	@JsonDeserialize(as = ImmutableChatCompletionsResponse.Choice.class)
 	interface Choice {
 		/**
 		 * The index of the choice in the list of choices.
@@ -84,7 +83,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableChatCompletionResponse.Message.class)
+	@JsonDeserialize(as = ImmutableChatCompletionsResponse.Message.class)
 	interface Message {
 		/**
 		 * The contents of the message.
@@ -106,7 +105,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableChatCompletionResponse.ToolCall.class)
+	@JsonDeserialize(as = ImmutableChatCompletionsResponse.ToolCall.class)
 	interface ToolCall {
 		/**
 		 * The ID of the tool call.
@@ -123,7 +122,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableChatCompletionResponse.Function.class)
+	@JsonDeserialize(as = ImmutableChatCompletionsResponse.Function.class)
 	interface Function {
 		/**
 		 * The name of the function to call.
@@ -141,7 +140,7 @@ public interface ChatCompletionResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableChatCompletionResponse.Usage.class)
+	@JsonDeserialize(as = ImmutableChatCompletionsResponse.Usage.class)
 	interface Usage {
 		/**
 		 * Number of tokens in the generated completion.

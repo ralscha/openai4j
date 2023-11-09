@@ -13,13 +13,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.chatcompletions.ImmutableChatCompletionCreateRequest;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableChatCompletionCreateRequest.class)
+@JsonSerialize(as = ImmutableChatCompletionsCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface ChatCompletionCreateRequest {
+public interface ChatCompletionsCreateRequest {
 
 	enum ResponseFormat {
 		TEXT(Map.of("type", "text")), JSON_OBJECT(Map.of("type", "json_object"));
@@ -224,7 +223,7 @@ public interface ChatCompletionCreateRequest {
 		return new Builder();
 	}
 
-	final class Builder extends ImmutableChatCompletionCreateRequest.Builder {
+	final class Builder extends ImmutableChatCompletionsCreateRequest.Builder {
 	}
 
 }

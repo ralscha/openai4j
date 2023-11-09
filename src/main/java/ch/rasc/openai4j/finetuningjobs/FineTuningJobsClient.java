@@ -1,13 +1,14 @@
-package ch.rasc.openai4j.finetuning;
+package ch.rasc.openai4j.finetuningjobs;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
 
-public interface FineTuningClient {
+public interface FineTuningJobsClient {
 
 	/**
 	 * Creates a job that fine-tunes a specified model from a given dataset.
@@ -18,12 +19,14 @@ public interface FineTuningClient {
 	FineTuningJobObject create(FineTuningJobCreateRequest request);
 
 	/**
-	 * List your organization's fine-tuning jobs
+	 * Creates a job that fine-tunes a specified model from a given dataset.
 	 *
-	 * @return A list of paginated fine-tuning job objects.
+	 * @return Fine-tuning job object.
 	 */
-	@RequestLine("GET /fine_tuning/jobs")
-	FineTuningJobResponse jobs();
+	default FineTuningJobObject create(
+			Function<FineTuningJobCreateRequest.Builder, FineTuningJobCreateRequest.Builder> fn) {
+		return this.create(fn.apply(FineTuningJobCreateRequest.builder()).build());
+	}
 
 	/**
 	 * List your organization's fine-tuning jobs
@@ -31,7 +34,15 @@ public interface FineTuningClient {
 	 * @return A list of paginated fine-tuning job objects.
 	 */
 	@RequestLine("GET /fine_tuning/jobs")
-	FineTuningJobResponse jobs(@QueryMap Map<String, Object> queryParameters);
+	FineTuningJobResponse list();
+
+	/**
+	 * List your organization's fine-tuning jobs
+	 *
+	 * @return A list of paginated fine-tuning job objects.
+	 */
+	@RequestLine("GET /fine_tuning/jobs")
+	FineTuningJobResponse list(@QueryMap Map<String, Object> queryParameters);
 
 	/**
 	 *
@@ -41,7 +52,7 @@ public interface FineTuningClient {
 	 * @param limit Number of fine-tuning jobs to retrieve. Optional. Defaults to 20.
 	 * @return A list of paginated fine-tuning job objects.
 	 */
-	default FineTuningJobResponse jobs(String after, Integer limit) {
+	default FineTuningJobResponse list(String after, Integer limit) {
 		Map<String, Object> queryParameters = new HashMap<>();
 		if (after != null && !after.isBlank()) {
 			queryParameters.put("after", after);
@@ -49,7 +60,7 @@ public interface FineTuningClient {
 		if (limit != null) {
 			queryParameters.put("limit", limit);
 		}
-		return this.jobs(queryParameters);
+		return this.list(queryParameters);
 	}
 
 	/**
@@ -58,7 +69,7 @@ public interface FineTuningClient {
 	 * @return The fine-tuning object with the given ID.
 	 */
 	@RequestLine("GET /fine_tuning/jobs/{fine_tuning_job_id}")
-	FineTuningJobObject job(@Param("fine_tuning_job_id") String fineTuningJobId);
+	FineTuningJobObject retrieve(@Param("fine_tuning_job_id") String fineTuningJobId);
 
 	/**
 	 * Immediately cancel a fine-tune job.
@@ -74,7 +85,7 @@ public interface FineTuningClient {
 	 * @return A list of fine-tuning event objects.
 	 */
 	@RequestLine("GET /fine_tuning/jobs/{fine_tuning_job_id}/events")
-	FineTuningJobEventsResponse jobEvents(
+	FineTuningJobEventsResponse listEvents(
 			@Param("fine_tuning_job_id") String fineTuningJobId);
 
 	/**
@@ -83,7 +94,7 @@ public interface FineTuningClient {
 	 * @return A list of fine-tuning event objects.
 	 */
 	@RequestLine("GET /fine_tuning/jobs/{fine_tuning_job_id}/events")
-	FineTuningJobEventsResponse jobEvents(
+	FineTuningJobEventsResponse listEvents(
 			@Param("fine_tuning_job_id") String fineTuningJobId,
 			@QueryMap Map<String, Object> queryParameters);
 
@@ -94,7 +105,7 @@ public interface FineTuningClient {
 	 * @param limit Number of events to retrieve. Optional. Defaults to 20.
 	 * @return A list of fine-tuning event objects.
 	 */
-	default FineTuningJobEventsResponse jobEvents(String fineTuningJobId, String after,
+	default FineTuningJobEventsResponse listEvents(String fineTuningJobId, String after,
 			Integer limit) {
 		Map<String, Object> queryParameters = new HashMap<>();
 		if (after != null && !after.isBlank()) {
@@ -103,6 +114,6 @@ public interface FineTuningClient {
 		if (limit != null) {
 			queryParameters.put("limit", limit);
 		}
-		return this.jobEvents(fineTuningJobId, queryParameters);
+		return this.listEvents(fineTuningJobId, queryParameters);
 	}
 }

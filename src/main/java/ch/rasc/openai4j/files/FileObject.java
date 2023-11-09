@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.files.ImmutableFileObject;
 
 /**
  * The File object represents a document that has been uploaded to OpenAI.

@@ -1,6 +1,7 @@
 package ch.rasc.openai4j.audio;
 
 import java.io.File;
+import java.util.function.Function;
 
 import feign.Headers;
 import feign.Param;
@@ -16,18 +17,39 @@ public interface AudioClient {
 	 */
 	@RequestLine("POST /audio/speech")
 	@Headers("Content-Type: application/json")
-	Response audioSpeech(AudioSpeechRequest request);
+	Response create(AudioSpeechRequest request);
+
+	/**
+	 * Generates audio from the input text.
+	 *
+	 * @return The audio file content.
+	 */
+	default Response create(
+			Function<AudioSpeechRequest.Builder, AudioSpeechRequest.Builder> fn) {
+		return this.create(fn.apply(AudioSpeechRequest.builder()).build());
+	}
 
 	/**
 	 * Transcribes audio into the input language.
 	 *
 	 * @return The transcribed text.
 	 */
-	default AudioTranscriptionResponse audioTranscription(
+	default AudioTranscriptionResponse transcriptionsCreate(
+			Function<AudioTranscriptionRequest.Builder, AudioTranscriptionRequest.Builder> fn) {
+		return this.transcriptionsCreate(
+				fn.apply(AudioTranscriptionRequest.builder()).build());
+	}
+
+	/**
+	 * Transcribes audio into the input language.
+	 *
+	 * @return The transcribed text.
+	 */
+	default AudioTranscriptionResponse transcriptionsCreate(
 			AudioTranscriptionRequest request) {
 
-		return this.audioTranscription(request.file().toFile(), request.model().toValue(),
-				request.language(), request.prompt(),
+		return this.transcriptionsCreate(request.file().toFile(),
+				request.model().toValue(), request.language(), request.prompt(),
 				request.responseFormat() != null ? request.responseFormat().toValue()
 						: null,
 				request.temperature());
@@ -40,7 +62,7 @@ public interface AudioClient {
 	 */
 	@RequestLine("POST /audio/transcriptions")
 	@Headers("Content-Type: multipart/form-data")
-	AudioTranscriptionResponse audioTranscription(@Param("file") File file,
+	AudioTranscriptionResponse transcriptionsCreate(@Param("file") File file,
 			@Param("model") String model, @Param("language") String language,
 			@Param("prompt") String prompt,
 			@Param("response_format") String responseFormat,
@@ -53,8 +75,21 @@ public interface AudioClient {
 	 */
 	@RequestLine("POST /audio/translations")
 	@Headers("Content-Type: multipart/form-data")
-	default AudioTranslationResponse audioTranslation(AudioTranslationRequest request) {
-		return this.audioTranslation(request.file().toFile(), request.model().toValue(),
+	default AudioTranslationResponse translationsCreate(
+			Function<AudioTranslationRequest.Builder, AudioTranslationRequest.Builder> fn) {
+		return this
+				.translationsCreate(fn.apply(AudioTranslationRequest.builder()).build());
+	}
+
+	/**
+	 * Translates audio into English.
+	 *
+	 * @return The translated text.
+	 */
+	@RequestLine("POST /audio/translations")
+	@Headers("Content-Type: multipart/form-data")
+	default AudioTranslationResponse translationsCreate(AudioTranslationRequest request) {
+		return this.translationsCreate(request.file().toFile(), request.model().toValue(),
 				request.prompt(),
 				request.responseFormat() != null ? request.responseFormat().toValue()
 						: null,
@@ -68,7 +103,7 @@ public interface AudioClient {
 	 */
 	@RequestLine("POST /audio/translations")
 	@Headers("Content-Type: multipart/form-data")
-	AudioTranslationResponse audioTranslation(@Param("file") File file,
+	AudioTranslationResponse translationsCreate(@Param("file") File file,
 			@Param("model") String model, @Param("prompt") String prompt,
 			@Param("response_format") String responseFormat,
 			@Param("temperature") Double temperature);

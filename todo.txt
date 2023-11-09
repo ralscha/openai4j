@@ -1,0 +1,15 @@
+openai.FineTune.cancel() -> client.fine_tunes.cancel()
+openai.FineTune.list() -> client.fine_tunes.list()
+openai.FineTune.list_events() -> client.fine_tunes.list_events()
+openai.FineTune.stream_events() -> client.fine_tunes.list_events(stream=True)
+openai.FineTune.retrieve() -> client.fine_tunes.retrieve()
+openai.FineTune.delete() -> client.fine_tunes.delete()
+openai.FineTune.create() -> client.fine_tunes.create()
+
+*openai.FineTuningJob.create() -> client.fine_tuning.jobs.create()
+*openai.FineTuningJob.cancel() -> client.fine_tuning.jobs.cancel()
+openai.FineTuningJob.delete() -> client.fine_tuning.jobs.create()
+*openai.FineTuningJob.retrieve() -> client.fine_tuning.jobs.retrieve()
+*openai.FineTuningJob.list() -> client.fine_tuning.jobs.list()
+openai.FineTuningJob.list_events() -> client.fine_tuning.jobs.list_events()
+

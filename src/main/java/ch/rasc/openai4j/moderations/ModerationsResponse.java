@@ -7,11 +7,10 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableModerationResponse.class)
-public interface ModerationResponse {
+@JsonDeserialize(as = ImmutableModerationsResponse.class)
+public interface ModerationsResponse {
 
 	/**
 	 * The unique identifier for the moderation request.
@@ -26,6 +25,6 @@ public interface ModerationResponse {
 	/**
 	 * A list of moderation objects.
 	 */
-	List<ModerationResult> results();
+	List<ModerationsResult> results();
 
 }

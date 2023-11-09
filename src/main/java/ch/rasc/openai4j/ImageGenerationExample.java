@@ -10,35 +10,20 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
-import ch.rasc.openai4j.images.ImagesClient;
 import ch.rasc.openai4j.images.ImageGenerationRequest;
 import ch.rasc.openai4j.images.ImageGenerationRequest.Size;
-import feign.Feign;
-import feign.form.FormEncoder;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
 
 public class ImageGenerationExample {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		String token = Util.getApiKey();
+		String apiKey = Util.getApiKey();
+		var client = OpenAIClient.create(Configuration.builder().apiKey(apiKey).build());
 
-		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new Jdk8Module());
-
-		var client = Feign.builder().decoder(new JacksonDecoder(om))
-				.encoder(new FormEncoder(new JacksonEncoder(om)))
-				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(ImagesClient.class, "https://api.openai.com/v1");
-
-		var input = "A bunch of people are standing in a field. They are wearing colorful clothes and holding umbrellas.";
-		var response = client.imageGeneration(ImageGenerationRequest.builder()
-				.model(ImageGenerationRequest.Model.DALL_E_3)
-				.quality(ImageGenerationRequest.Quality.HD).prompt(input)
-				.style(ImageGenerationRequest.Style.NATURAL).size(Size.S_1024).build());
+		String input = "A bunch of people are standing in a field. They are wearing colorful clothes and holding umbrellas.";
+		var response = client.images
+				.generate(r -> r.model(ImageGenerationRequest.Model.DALL_E_3)
+						.quality(ImageGenerationRequest.Quality.HD).prompt(input)
+						.style(ImageGenerationRequest.Style.NATURAL).size(Size.S_1024));
 		var url = response.data().get(0).url();
 
 		try (var httpClient = HttpClient.newHttpClient()) {
@@ -52,13 +37,13 @@ public class ImageGenerationExample {
 			}
 		}
 
-		input = "A couple of cats are sitting on a couch.";
-		response = client.imageGeneration(ImageGenerationRequest.builder()
-				.model(ImageGenerationRequest.Model.DALL_E_3)
-				.quality(ImageGenerationRequest.Quality.HD).prompt(input)
-				.style(ImageGenerationRequest.Style.NATURAL)
-				.responseFormat(ImageGenerationRequest.ResponseFormat.B64_JSON)
-				.size(Size.S_1024).build());
+		String input2 = "A couple of cats are sitting on a couch.";
+		response = client.images
+				.generate(r -> r.model(ImageGenerationRequest.Model.DALL_E_3)
+						.quality(ImageGenerationRequest.Quality.HD).prompt(input2)
+						.style(ImageGenerationRequest.Style.NATURAL)
+						.responseFormat(ImageGenerationRequest.ResponseFormat.B64_JSON)
+						.size(Size.S_1024));
 		String b64Json = response.data().get(0).b64Json();
 		byte[] decodedBytes = Base64.getDecoder().decode(b64Json);
 		Files.write(Paths.get("image2.png"), decodedBytes);

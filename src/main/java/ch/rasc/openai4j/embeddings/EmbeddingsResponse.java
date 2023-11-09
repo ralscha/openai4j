@@ -8,12 +8,11 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableEmbeddingResponse.class)
+@JsonDeserialize(as = ImmutableEmbeddingsResponse.class)
 @Value.Enclosing
-public interface EmbeddingResponse {
+public interface EmbeddingsResponse {
 
 	String object();
 
@@ -23,7 +22,7 @@ public interface EmbeddingResponse {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableEmbeddingResponse.Usage.class)
+	@JsonDeserialize(as = ImmutableEmbeddingsResponse.Usage.class)
 	interface Usage {
 		@JsonProperty("prompt_tokens")
 		int promptTokens();

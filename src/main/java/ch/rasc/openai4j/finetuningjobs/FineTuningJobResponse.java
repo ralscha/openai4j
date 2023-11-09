@@ -1,4 +1,4 @@
-package ch.rasc.openai4j.finetuning;
+package ch.rasc.openai4j.finetuningjobs;
 
 import java.util.List;
 

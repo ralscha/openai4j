@@ -5,32 +5,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
-import ch.rasc.openai4j.images.ImagesClient;
 import ch.rasc.openai4j.images.ImageObject;
 import ch.rasc.openai4j.images.ImageVariationRequest;
 import ch.rasc.openai4j.images.ImageVariationRequest.Size;
-import feign.Feign;
-import feign.form.FormEncoder;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
 
 public class ImageVariationExample {
 
 	public static void main(String[] args) throws IOException {
-		String token = Util.getApiKey();
+		String apiKey = Util.getApiKey();
+		var client = OpenAIClient.create(Configuration.builder().apiKey(apiKey).build());
 
-		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new Jdk8Module());
-
-		var client = Feign.builder().decoder(new JacksonDecoder(om))
-				.encoder(new FormEncoder(new JacksonEncoder(om)))
-				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(ImagesClient.class, "https://api.openai.com/v1");
-
-		var response = client.imageVariation(
+		var response = client.images.createVariation(
 				ImageVariationRequest.builder().image(Paths.get("./image2.png"))
 						.model(ImageVariationRequest.Model.DALL_E_2).n(4)
 						.responseFormat(ImageVariationRequest.ResponseFormat.B64_JSON)

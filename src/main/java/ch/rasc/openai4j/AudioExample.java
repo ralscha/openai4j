@@ -4,38 +4,20 @@ import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-
-import ch.rasc.openai4j.audio.AudioClient;
 import ch.rasc.openai4j.audio.AudioSpeechRequest;
-import ch.rasc.openai4j.audio.AudioTranscriptionRequest;
-import ch.rasc.openai4j.audio.AudioTranslationRequest;
-import feign.Feign;
 import feign.Response;
-import feign.form.FormEncoder;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
 
 public class AudioExample {
 
 	public static void main(String[] args) {
-		String token = Util.getApiKey();
-
-		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new Jdk8Module());
-
-		var client = Feign.builder().decoder(new JacksonDecoder(om))
-				.encoder(new FormEncoder(new JacksonEncoder(om)))
-				.requestInterceptor(new AuthorizationRequestInterceptor(token))
-				.target(AudioClient.class, "https://api.openai.com/v1");
+		String apiKey = Util.getApiKey();
+		var client = OpenAIClient.create(Configuration.builder().apiKey(apiKey).build());
 
 		var input = "Hallo schöne Welt wie geht es dir?";
-		var request = AudioSpeechRequest.builder().input(input)
-				.model(AudioSpeechRequest.Model.TTS_1_HD)
-				.voice(AudioSpeechRequest.Voice.ALLOY).build();
 
-		try (Response response = client.audioSpeech(request);
+		try (Response response = client.audio
+				.create(r -> r.input(input).model(AudioSpeechRequest.Model.TTS_1_HD)
+						.voice(AudioSpeechRequest.Voice.ALLOY));
 				FileOutputStream fos = new FileOutputStream("hello.mp3");
 				var body = response.body();
 				var is = body.asInputStream()) {
@@ -46,12 +28,10 @@ public class AudioExample {
 		}
 
 		Path inp = Paths.get("hello.mp3");
-		var resp = client.audioTranscription(
-				AudioTranscriptionRequest.builder().file(inp).build());
+		var resp = client.audio.transcriptionsCreate(r -> r.file(inp));
 		System.out.println(resp);
 
-		var resp2 = client
-				.audioTranslation(AudioTranslationRequest.builder().file(inp).build());
+		var resp2 = client.audio.translationsCreate(r -> r.file(inp));
 		System.out.println(resp2);
 
 	}

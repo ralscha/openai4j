@@ -21,13 +21,13 @@ public interface Configuration {
 
 	@Nullable
 	String azureDeployment();
-	
+
 	@Nullable
 	String azureADToken();
-	
+
 	@Nullable
-	String azureADTokenProvider();	
-	
+	String azureADTokenProvider();
+
 	static Builder builder() {
 		return new Builder();
 	}

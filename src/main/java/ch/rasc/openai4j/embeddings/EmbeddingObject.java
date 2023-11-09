@@ -8,7 +8,6 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-
 /**
  * Represents an embedding vector returned by embedding endpoint.
  */

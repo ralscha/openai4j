@@ -1,6 +1,7 @@
 package ch.rasc.openai4j.files;
 
 import java.io.File;
+import java.util.function.Function;
 
 import feign.Headers;
 import feign.Param;
@@ -24,7 +25,7 @@ public interface FilesClient {
 	 * @return A list of File objects.
 	 */
 	@RequestLine("GET /files?purpose={purpose}")
-	FilesResponse files(@Param("purpose") String purpose);
+	FilesResponse list(@Param("purpose") String purpose);
 
 	/**
 	 * Upload a file that can be used across various endpoints/features. The size of all
@@ -36,6 +37,19 @@ public interface FilesClient {
 	 */
 	default FileObject create(FileUploadRequest request) {
 		return this.create(request.file().toFile(), request.purpose().toValue());
+	}
+
+	/**
+	 * Upload a file that can be used across various endpoints/features. The size of all
+	 * the files uploaded by one organization can be up to 100 GB. The size of individual
+	 * files for can be a maximum of 512MB. The Fine-tuning API only supports .jsonl
+	 * files.
+	 *
+	 * @return The uploaded File object.
+	 */
+	default FileObject create(
+			Function<FileUploadRequest.Builder, FileUploadRequest.Builder> fn) {
+		return this.create(fn.apply(FileUploadRequest.builder()).build());
 	}
 
 	/**
@@ -64,7 +78,7 @@ public interface FilesClient {
 	 * @return The File object matching the specified ID.
 	 */
 	@RequestLine("GET /files/{fileId}")
-	FileObject file(@Param("fileId") String fileId);
+	FileObject retrieve(@Param("fileId") String fileId);
 
 	/**
 	 * Returns the contents of the specified file.
@@ -72,5 +86,5 @@ public interface FilesClient {
 	 * @return The file content.
 	 */
 	@RequestLine("GET /files/{fileId}/content")
-	Response content(@Param("fileId") String fileId);
+	Response download(@Param("fileId") String fileId);
 }

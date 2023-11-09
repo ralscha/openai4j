@@ -1,4 +1,4 @@
-package ch.rasc.openai4j.finetuning;
+package ch.rasc.openai4j.finetuningjobs;
 
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
@@ -146,4 +146,11 @@ public interface FineTuningJobCreateRequest {
 	@JsonProperty("validation_file")
 	@Nullable
 	String validationFile();
+
+	static Builder builder() {
+		return new Builder();
+	}
+
+	final class Builder extends ImmutableFineTuningJobCreateRequest.Builder {
+	}
 }
