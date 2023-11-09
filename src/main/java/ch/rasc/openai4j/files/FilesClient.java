@@ -37,7 +37,7 @@ public interface FilesClient {
 	default FilesResponse list(Purpose purpose) {
 		return this.list(purpose.value());
 	}
-	
+
 	/**
 	 * Upload a file that can be used across various endpoints/features. The size of all
 	 * the files uploaded by one organization can be up to 100 GB. The size of individual

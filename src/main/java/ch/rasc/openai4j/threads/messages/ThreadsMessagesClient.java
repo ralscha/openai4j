@@ -1,12 +1,11 @@
 package ch.rasc.openai4j.threads.messages;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
+import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
-import ch.rasc.openai4j.common.SortOrder;
 import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
@@ -35,36 +34,12 @@ public interface ThreadsMessagesClient {
 	/**
 	 * Returns a list of messages for a given thread.
 	 * @param threadId The ID of the thread the messages belong to.
-	 * @param limit A limit on the number of objects to be returned. Limit can range
-	 * between 1 and 100, and the default is 20.
-	 * @param order Sort order by the created_at timestamp of the objects. asc for
-	 * ascending order and desc for descending order.
-	 * @param after A cursor for use in pagination. after is an object ID that defines
-	 * your place in the list. For instance, if you make a list request and receive 100
-	 * objects, ending with obj_foo, your subsequent call can include after=obj_foo in
-	 * order to fetch the next page of the list.
-	 * @param before A cursor for use in pagination. before is an object ID that defines
-	 * your place in the list. For instance, if you make a list request and receive 100
-	 * objects, ending with obj_foo, your subsequent call can include before=obj_foo in
-	 * order to fetch the previous page of the list.
+	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of message objects.
 	 */
 	default ListResponse<ThreadMessageObject> list(@Param("thread_id") String threadId,
-			Integer limit, SortOrder order, String after, String before) {
-		Map<String, Object> queryParameters = new HashMap<>();
-		if (limit != null) {
-			queryParameters.put("limit", limit);
-		}
-		if (order != null) {
-			queryParameters.put("order", order.value());
-		}
-		if (after != null && !after.isBlank()) {
-			queryParameters.put("after", after);
-		}
-		if (before != null && !before.isBlank()) {
-			queryParameters.put("before", before);
-		}
-		return this.list(threadId, queryParameters);
+			ListRequest request) {
+		return this.list(threadId, request.toMap());
 	}
 
 	/**

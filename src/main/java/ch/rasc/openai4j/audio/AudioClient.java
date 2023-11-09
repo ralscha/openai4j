@@ -48,8 +48,8 @@ public interface AudioClient {
 	default AudioTranscriptionResponse transcriptionsCreate(
 			AudioTranscriptionRequest request) {
 
-		return this.transcriptionsCreate(request.file().toFile(),
-				request.model().value(), request.language(), request.prompt(),
+		return this.transcriptionsCreate(request.file().toFile(), request.model().value(),
+				request.language(), request.prompt(),
 				request.responseFormat() != null ? request.responseFormat().value()
 						: null,
 				request.temperature());
