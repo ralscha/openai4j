@@ -1,59 +1,82 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>ch.rasc</groupId>
-  <artifactId>openai4j</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  
-  <properties>
-	  <openfeign.version>13.0</openfeign.version>
-	  <maven.compiler.release>21</maven.compiler.release>
-  </properties>
-	  
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>oss-parent</artifactId>
+		<groupId>org.sonatype.oss</groupId>
+		<version>9</version>
+	</parent>
+	<groupId>ch.rasc</groupId>
+	<artifactId>openai4j</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<inceptionYear>2023</inceptionYear>
+	<name>openai4j</name>
+	<url>https://github.com/ralscha/openai4j</url>
+	<description>Unofficial and community-maintained Java implementation of the OpenAI API</description>
+	<developers>
+		<developer>
+			<name>Ralph Schaer</name>
+			<email>ralphschaer@gmail.com</email>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/ralscha/openai4j/issues</url>
+	</issueManagement>
+	<scm>
+		<connection>scm:git:git@github.com:ralscha/openai4j.git</connection>
+		<developerConnection>scm:git:git@github.com:ralscha/openai4j.git</developerConnection>
+		<url>https://github.com/ralscha/openai4j.git</url>
+	</scm>
+	<properties>
+		<openfeign.version>13.0</openfeign.version>
+		<maven.compiler.release>21</maven.compiler.release>
+	</properties>
 	<dependencies>
-		
 		<dependency>
-		  <groupId>com.fasterxml.jackson.datatype</groupId>
-		  <artifactId>jackson-datatype-jdk8</artifactId>
-		  <version>2.15.3</version>
-		</dependency>    		
-				
-	    <dependency>
-	        <groupId>io.github.openfeign</groupId>
-	        <artifactId>feign-core</artifactId>
-	        <version>${openfeign.version}</version>
-	    </dependency>
-	
-	    <dependency>
-	        <groupId>io.github.openfeign</groupId>
-	        <artifactId>feign-jackson</artifactId>
-	        <version>${openfeign.version}</version>
-	    </dependency>
-	
-	    <dependency>
-	        <groupId>io.github.openfeign</groupId>
-	        <artifactId>feign-slf4j</artifactId>
-	        <version>${openfeign.version}</version>
-	    </dependency>
-	
-	    <dependency>
-	        <groupId>io.github.openfeign</groupId>
-	        <artifactId>feign-java11</artifactId>
-	        <version>${openfeign.version}</version>
-	    </dependency>  
-	    
-		  <dependency>
-		    <groupId>io.github.openfeign.form</groupId>
-		    <artifactId>feign-form</artifactId>
-		    <version>3.8.0</version>
-		  </dependency>	    
-	    
-	   <dependency>
-            <groupId>org.immutables</groupId>
-            <artifactId>value</artifactId>
-            <version>2.10.0</version>
-            <scope>provided</scope>
-        </dependency>
-	    
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+			<version>2.15.3</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
+			<version>${openfeign.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-jackson</artifactId>
+			<version>${openfeign.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-slf4j</artifactId>
+			<version>${openfeign.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-java11</artifactId>
+			<version>${openfeign.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign.form</groupId>
+			<artifactId>feign-form</artifactId>
+			<version>3.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.immutables</groupId>
+			<artifactId>value</artifactId>
+			<version>2.10.0</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -61,11 +84,85 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>8</source>
-					<target>8</target>
+					<source>21</source>
+					<target>21</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>ch.rasc.openai4j</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.6.2</version>
+				<configuration>
+					<additionalOptions>-Xdoclint:none</additionalOptions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>4.3</version>
+				<configuration>
+					<header>${basedir}/src/main/config/header.txt</header>
+					<properties>
+						<year>${project.inceptionYear}</year>
+					</properties>
+					<excludes>
+						<exclude>**/*.xml</exclude>
+						<exclude>**/*.md</exclude>
+						<exclude>**/*.py</exclude>
+						<exclude>LICENSE</exclude>
+						<exclude>.travis.yml</exclude>
+						<exclude>**/.gitignore</exclude>
+						<exclude>.factorypath</exclude>
+						<exclude>.mvn/**/*</exclude>
+						<exclude>mvnw.cmd</exclude>
+						<exclude>mvnw</exclude>
+						<exclude>.apt_generated/**</exclude>
+						<exclude>.editorconfig</exclude>
+						<exclude>.github/**</exclude>
+					</excludes>
+					<strictCheck>true</strictCheck>
+				</configuration>
+				<executions>
+					<execution>
+						<id>check-headers</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
