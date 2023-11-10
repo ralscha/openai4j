@@ -117,9 +117,10 @@ public interface ThreadRunStep {
 	@JsonProperty("step_details")
 	StepDetail stepDetails();
 
-	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-	@JsonSubTypes({ @Type(MessageCreationStepDetails.class),
-			@Type(ToolCallsStepDetails.class) })
+	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
+	@JsonSubTypes({
+			@Type(value = MessageCreationStepDetails.class, name = "message_creation"),
+			@Type(value = ToolCallsStepDetails.class, name = "tool_calls") })
 	interface StepDetail {
 	}
 
@@ -132,6 +133,7 @@ public interface ThreadRunStep {
 		/**
 		 * Details of the message creation by the run step.
 		 */
+		@JsonProperty("message_creation")
 		MessageCreation messageCreation();
 
 		@Value.Immutable(builder = false)
@@ -155,9 +157,10 @@ public interface ThreadRunStep {
 		@JsonProperty("tool_calls")
 		ToolCall[] toolCalls();
 
-		@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-		@JsonSubTypes({ @Type(CodeToolCall.class), @Type(RetrievalToolCall.class),
-				@Type(FunctionToolCall.class) })
+		@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
+		@JsonSubTypes({ @Type(value = CodeToolCall.class, name = "code_interpreter"),
+				@Type(value = RetrievalToolCall.class, name = "retrieval"),
+				@Type(value = FunctionToolCall.class, name = "function") })
 		interface ToolCall {
 		}
 
@@ -198,9 +201,11 @@ public interface ThreadRunStep {
 				 */
 				CodeInterpreterOutput[] outputs();
 
-				@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-				@JsonSubTypes({ @Type(ImageCodeInterpreterOutput.class),
-						@Type(LogCodeInterpreterOutput.class) })
+				@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type",
+						visible = true)
+				@JsonSubTypes({
+						@Type(value = ImageCodeInterpreterOutput.class, name = "image"),
+						@Type(value = LogCodeInterpreterOutput.class, name = "logs") })
 				interface CodeInterpreterOutput {
 				}
 

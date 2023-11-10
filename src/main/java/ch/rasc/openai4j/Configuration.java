@@ -20,7 +20,10 @@ import java.util.concurrent.TimeUnit;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
+import feign.Logger;
+import feign.Logger.Level;
 import feign.Retryer;
+import feign.slf4j.Slf4jLogger;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -40,6 +43,16 @@ public interface Configuration {
 	default Retryer retryer() {
 		return new Retryer.Default(TimeUnit.SECONDS.toMillis(2),
 				TimeUnit.SECONDS.toMillis(2), 2);
+	}
+
+	@Value.Default
+	default Logger logger() {
+		return new Slf4jLogger();
+	}
+
+	@Value.Default
+	default Level logLevel() {
+		return Level.NONE;
 	}
 
 	// Azure

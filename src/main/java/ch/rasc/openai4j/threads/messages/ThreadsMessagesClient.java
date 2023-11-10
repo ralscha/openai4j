@@ -34,7 +34,7 @@ public interface ThreadsMessagesClient {
 	 * @param threadId The ID of the thread the messages belong to.
 	 * @return A list of message objects.
 	 */
-	@RequestLine("POST /threads/{thread_id}/messages")
+	@RequestLine("GET /threads/{thread_id}/messages")
 	ListResponse<ThreadMessage> list(@Param("thread_id") String threadId);
 
 	/**
@@ -42,7 +42,7 @@ public interface ThreadsMessagesClient {
 	 * @param threadId The ID of the thread the messages belong to.
 	 * @return A list of message objects.
 	 */
-	@RequestLine("POST /threads/{thread_id}/messages")
+	@RequestLine("GET /threads/{thread_id}/messages")
 	ListResponse<ThreadMessage> list(@Param("thread_id") String threadId,
 			@QueryMap Map<String, Object> queryParameters);
 

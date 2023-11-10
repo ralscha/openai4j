@@ -46,7 +46,7 @@ public interface FileObject {
 			return this.value;
 		}
 
-		boolean isTerminal() {
+		public boolean isTerminal() {
 			return this == PROCESSED || this == ERROR || this == DELETED;
 		}
 	}

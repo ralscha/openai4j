@@ -92,68 +92,83 @@ public class OpenAIClient {
 		}
 
 		client.chatCompletions = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(interceptors)
 				.target(ChatCompletionsClient.class, baseUrl);
 
 		client.embeddings = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(interceptors)
 				.target(EmbeddingsClient.class, baseUrl);
 
 		client.files = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
 				.requestInterceptors(interceptors).target(FilesClient.class, baseUrl);
 
 		client.fineTuningJobs = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
 				.requestInterceptors(interceptors)
 				.target(FineTuningJobsClient.class, baseUrl);
 
 		client.audio = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
 				.requestInterceptors(interceptors).target(AudioClient.class, baseUrl);
 
 		client.images = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
 				.requestInterceptors(interceptors).target(ImagesClient.class, baseUrl);
 
 		client.moderations = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(interceptors)
 				.target(ModerationsClient.class, baseUrl);
 
 		client.models = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(interceptors).target(ModelsClient.class, baseUrl);
 
 		var betaInterceptors = new ArrayList<>(interceptors);
 		betaInterceptors.add(new OpenAIBetaRequestInterceptor());
 		client.threads = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsClient.class, baseUrl);
 		client.threadsRuns = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsRunsClient.class, baseUrl);
 		client.threadsRunsSteps = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsRunsStepsClient.class, baseUrl);
 		client.threadsMessages = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsMessagesClient.class, baseUrl);
 		client.threadsMessagesFiles = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(ThreadsMessagesFilesClient.class, baseUrl);
 		client.assistants = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(AssistantsClient.class, baseUrl);
 		client.assistantsFiles = Feign.builder().retryer(configuration.retryer())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
 				.target(AssistantsFilesClient.class, baseUrl);

@@ -79,6 +79,11 @@ public interface ThreadRun {
 		public String value() {
 			return this.value;
 		}
+
+		public boolean isTerminal() {
+			return this == REQUIRES_ACTION || this == CANCELLED || this == FAILED
+					|| this == COMPLETED || this == EXPIRED;
+		}
 	}
 
 	/*

@@ -66,9 +66,9 @@ public interface ThreadMessage {
 
 	Content[] content();
 
-	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-	@JsonSubTypes({ @Type(MessageContentImageFile.class),
-			@Type(MessageContentText.class) })
+	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
+	@JsonSubTypes({ @Type(name = "image_file", value = MessageContentImageFile.class),
+			@Type(name = "text", value = MessageContentText.class) })
 	interface Content {
 	}
 
@@ -115,8 +115,9 @@ public interface ThreadMessage {
 
 			Annotation[] annotations();
 
-			@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-			@JsonSubTypes({ @Type(FileCitation.class), @Type(FilePath.class) })
+			@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
+			@JsonSubTypes({ @Type(value = FileCitation.class, name = "file_citation"),
+					@Type(value = FilePath.class, name = "file_path") })
 			interface Annotation {
 			}
 
