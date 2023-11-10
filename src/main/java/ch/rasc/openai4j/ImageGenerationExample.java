@@ -26,15 +26,12 @@ public class ImageGenerationExample {
 						.style(ImageGenerationRequest.Style.NATURAL).size(Size.S_1024));
 		var url = response.data().get(0).url();
 
-		try (var httpClient = HttpClient.newHttpClient()) {
-			var request = HttpRequest.newBuilder().uri(URI.create(url)).build();
-			var resp = httpClient.send(request,
-					HttpResponse.BodyHandlers.ofInputStream());
-			var fileName = "image1.png";
-			try (var body = resp.body()) {
-				Files.copy(body, Paths.get(fileName),
-						StandardCopyOption.REPLACE_EXISTING);
-			}
+		var httpClient = HttpClient.newHttpClient();
+		var request = HttpRequest.newBuilder().uri(URI.create(url)).build();
+		var resp = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
+		var fileName = "image1.png";
+		try (var body = resp.body()) {
+			Files.copy(body, Paths.get(fileName), StandardCopyOption.REPLACE_EXISTING);
 		}
 
 		String input2 = "A couple of cats are sitting on a couch.";

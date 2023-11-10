@@ -38,7 +38,6 @@
 	</scm>
 	<properties>
 		<openfeign.version>13.0</openfeign.version>
-		<maven.compiler.release>21</maven.compiler.release>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -75,8 +74,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version>
 				<configuration>
-					<source>21</source>
-					<target>21</target>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>
