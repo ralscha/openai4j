@@ -34,7 +34,6 @@ public class OpenAIClient {
 		FormEncoder formAndJsonEncoder = new FormEncoder(jsonEncoder);
 
 		List<RequestInterceptor> interceptors = new ArrayList<>();
-		interceptors.add(new AuthorizationRequestInterceptor(configuration.apiKey()));
 
 		if (configuration.organization() != null
 				&& !configuration.organization().isBlank()) {
@@ -42,61 +41,101 @@ public class OpenAIClient {
 					configuration.organization()));
 		}
 
-		client.chatCompletions = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
-				.requestInterceptors(interceptors)
-				.target(ChatCompletionsClient.class, "https://api.openai.com/v1");
+		if (configuration.apiVersion() != null && !configuration.apiVersion().isBlank()) {
+			interceptors
+					.add(new ApiVersionRequestInterceptor(configuration.apiVersion()));
+		}
 
-		client.embeddings = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
-				.requestInterceptors(interceptors)
-				.target(EmbeddingsClient.class, "https://api.openai.com/v1");
+		String baseUrl;
+		if (configuration.azureEndpoint() != null
+				&& !configuration.azureEndpoint().isBlank()) {
 
-		client.files = Feign.builder().decoder(jsonDecoder).encoder(formAndJsonEncoder)
-				.requestInterceptors(interceptors)
-				.target(FilesClient.class, "https://api.openai.com/v1");
+			String azureEndpoint = configuration.azureEndpoint();
+			if (azureEndpoint.endsWith("/")) {
+				azureEndpoint = azureEndpoint.substring(0, azureEndpoint.length() - 1);
+			}
 
-		client.fineTuningJobs = Feign.builder().decoder(jsonDecoder)
-				.encoder(formAndJsonEncoder).requestInterceptors(interceptors)
-				.target(FineTuningJobsClient.class, "https://api.openai.com/v1");
+			if (configuration.azureDeployment() != null
+					&& !configuration.azureDeployment().isBlank()) {
+				baseUrl = azureEndpoint + "/openai/deployments/"
+						+ configuration.azureDeployment();
+			}
+			else {
+				baseUrl = azureEndpoint + "/openai";
+			}
+			interceptors.add(new AzureApiKeyRequestInterceptor(configuration.apiKey()));
+		}
+		else {
+			baseUrl = configuration.baseUrl();
+			interceptors.add(new AuthorizationRequestInterceptor(configuration.apiKey()));
+		}
 
-		client.audio = Feign.builder().decoder(jsonDecoder).encoder(formAndJsonEncoder)
+		client.chatCompletions = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(interceptors)
-				.target(AudioClient.class, "https://api.openai.com/v1");
+				.target(ChatCompletionsClient.class, baseUrl);
 
-		client.images = Feign.builder().decoder(jsonDecoder).encoder(formAndJsonEncoder)
+		client.embeddings = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(interceptors)
-				.target(ImagesClient.class, "https://api.openai.com/v1");
+				.target(EmbeddingsClient.class, baseUrl);
 
-		client.moderations = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
-				.requestInterceptors(interceptors)
-				.target(ModerationsClient.class, "https://api.openai.com/v1");
+		client.files = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
+				.requestInterceptors(interceptors).target(FilesClient.class, baseUrl);
 
-		client.models = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+		client.fineTuningJobs = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
 				.requestInterceptors(interceptors)
-				.target(ModelsClient.class, "https://api.openai.com/v1");
+				.target(FineTuningJobsClient.class, baseUrl);
+
+		client.audio = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
+				.requestInterceptors(interceptors).target(AudioClient.class, baseUrl);
+
+		client.images = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
+				.requestInterceptors(interceptors).target(ImagesClient.class, baseUrl);
+
+		client.moderations = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(interceptors)
+				.target(ModerationsClient.class, baseUrl);
+
+		client.models = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(interceptors).target(ModelsClient.class, baseUrl);
 
 		var betaInterceptors = new ArrayList<>(interceptors);
 		betaInterceptors.add(new OpenAIBetaRequestInterceptor());
-		client.threads = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+		client.threads = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
-				.target(ThreadsClient.class, "https://api.openai.com/v1");
-		client.threadsRuns = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+				.target(ThreadsClient.class, baseUrl);
+		client.threadsRuns = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
-				.target(ThreadsRunsClient.class, "https://api.openai.com/v1");
-		client.threadsRunsSteps = Feign.builder().decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(ThreadsRunsStepsClient.class, "https://api.openai.com/v1");
-		client.threadsMessages = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+				.target(ThreadsRunsClient.class, baseUrl);
+		client.threadsRunsSteps = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
-				.target(ThreadsMessagesClient.class, "https://api.openai.com/v1");
-		client.threadsMessagesFiles = Feign.builder().decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(ThreadsMessagesFilesClient.class, "https://api.openai.com/v1");
-		client.assistants = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+				.target(ThreadsRunsStepsClient.class, baseUrl);
+		client.threadsMessages = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
-				.target(AssistantsClient.class, "https://api.openai.com/v1");
-		client.assistantsFiles = Feign.builder().decoder(jsonDecoder).encoder(jsonEncoder)
+				.target(ThreadsMessagesClient.class, baseUrl);
+		client.threadsMessagesFiles = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
 				.requestInterceptors(betaInterceptors)
-				.target(AssistantsFilesClient.class, "https://api.openai.com/v1");
+				.target(ThreadsMessagesFilesClient.class, baseUrl);
+		client.assistants = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(betaInterceptors)
+				.target(AssistantsClient.class, baseUrl);
+		client.assistantsFiles = Feign.builder().retryer(configuration.retryer())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(betaInterceptors)
+				.target(AssistantsFilesClient.class, baseUrl);
 
 		return client;
 	}

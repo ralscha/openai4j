@@ -16,6 +16,17 @@ public class ChatCompletionsExample {
 
 		var response = client.chatCompletions.create(request);
 		System.out.println(response);
+
+		var azureClient = OpenAIClient
+				.create(Configuration.builder().apiVersion("2023-07-01-preview")
+						.apiKey("...").azureDeployment("gpt-35-turbo")
+						.azureEndpoint("https://myresource.openai.azure.com/").build());
+		request = ChatCompletionsCreateRequest.builder()
+				.addMessage(SystemMessage.of("You are a helpful assistant"))
+				.addMessage(UserMessage.of("What is the capital of Spain?"))
+				.model("gpt-35-turbo").build();
+		response = azureClient.chatCompletions.create(request);
+		System.out.println(response);
 	}
 
 }
