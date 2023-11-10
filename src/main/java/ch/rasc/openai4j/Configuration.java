@@ -22,6 +22,7 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import feign.Logger;
 import feign.Logger.Level;
+import feign.Request;
 import feign.Retryer;
 import feign.slf4j.Slf4jLogger;
 
@@ -42,7 +43,12 @@ public interface Configuration {
 	@Value.Default
 	default Retryer retryer() {
 		return new Retryer.Default(TimeUnit.SECONDS.toMillis(2),
-				TimeUnit.SECONDS.toMillis(2), 2);
+				TimeUnit.SECONDS.toMillis(2), 3);
+	}
+
+	@Value.Default
+	default Request.Options feignOptions() {
+		return new Request.Options(10, TimeUnit.SECONDS, 60, TimeUnit.SECONDS, true);
 	}
 
 	@Value.Default
