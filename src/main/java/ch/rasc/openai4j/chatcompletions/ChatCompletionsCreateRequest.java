@@ -38,7 +38,7 @@ public interface ChatCompletionsCreateRequest {
 	/**
 	 * A list of messages comprising the conversation so far.
 	 */
-	List<Message> messages();
+	List<ChatCompletionMessage> messages();
 
 	/**
 	 * ID of the model to use. See the model endpoint compatibility table for details on
@@ -159,7 +159,7 @@ public interface ChatCompletionsCreateRequest {
 	 * for.
 	 */
 	@Nullable
-	List<Tool> tools();
+	List<ChatCompletionTool> tools();
 
 	/**
 	 * Controls which (if any) function is called by the model. none means the model will

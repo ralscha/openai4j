@@ -21,7 +21,7 @@ public interface AssistantsFilesClient {
 	 */
 	@RequestLine("POST /assistants/{assistant_id}/files")
 	@Headers("Content-Type: application/json")
-	AssistantFileObject create(@Param("assistant_id") String assistantId,
+	AssistantFile create(@Param("assistant_id") String assistantId,
 			AssistantFileCreateRequest request);
 
 	/**
@@ -29,7 +29,7 @@ public interface AssistantsFilesClient {
 	 * @param The ID of the assistant for which to create a File.
 	 * @return An assistant file object.
 	 */
-	default AssistantFileObject create(String assistantId,
+	default AssistantFile create(String assistantId,
 			Function<AssistantFileCreateRequest.Builder, AssistantFileCreateRequest.Builder> fn) {
 		return this.create(assistantId,
 				fn.apply(AssistantFileCreateRequest.builder()).build());
@@ -42,7 +42,7 @@ public interface AssistantsFilesClient {
 	 * @return The assistant file object matching the specified ID.
 	 */
 	@RequestLine("GET /assistants/{assistant_id}/files/{file_id}")
-	AssistantFileObject retrieve(@Param("assistant_id") String assistantId,
+	AssistantFile retrieve(@Param("assistant_id") String assistantId,
 			@Param("file_id") String fileId);
 
 	/**
@@ -61,7 +61,7 @@ public interface AssistantsFilesClient {
 	 * @return A list of assistant file objects.
 	 */
 	@RequestLine("GET /assistants/{assistant_id}/files")
-	ListResponse<AssistantFileObject> list(@Param("assistant_id") String assistantId);
+	ListResponse<AssistantFile> list(@Param("assistant_id") String assistantId);
 
 	/**
 	 * Returns a list of assistant files.
@@ -69,7 +69,7 @@ public interface AssistantsFilesClient {
 	 * @return A list of assistant file objects.
 	 */
 	@RequestLine("GET /assistants/{assistant_id}/files")
-	ListResponse<AssistantFileObject> list(@Param("assistant_id") String assistantId,
+	ListResponse<AssistantFile> list(@Param("assistant_id") String assistantId,
 			@QueryMap Map<String, Object> queryParameters);
 
 	/**
@@ -78,8 +78,7 @@ public interface AssistantsFilesClient {
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of assistant file objects.
 	 */
-	default ListResponse<AssistantFileObject> list(String assistantId,
-			ListRequest request) {
+	default ListResponse<AssistantFile> list(String assistantId, ListRequest request) {
 		return this.list(assistantId, request.toMap());
 	}
 }

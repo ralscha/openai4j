@@ -21,15 +21,14 @@ public interface ThreadsRunsClient {
 	 */
 	@RequestLine("POST /threads/{thread_id}/runs")
 	@Headers("Content-Type: application/json")
-	ThreadRunObject create(@Param("thread_id") String threadId,
-			ThreadRunCreateRequest request);
+	ThreadRun create(@Param("thread_id") String threadId, ThreadRunCreateRequest request);
 
 	/**
 	 * Create a run.
 	 * @param threadId The ID of the thread to run.
 	 * @return A run object.
 	 */
-	default ThreadRunObject create(@Param("thread_id") String threadId,
+	default ThreadRun create(@Param("thread_id") String threadId,
 			Function<ThreadRunCreateRequest.Builder, ThreadRunCreateRequest.Builder> fn) {
 		return this.create(threadId, fn.apply(ThreadRunCreateRequest.builder()).build());
 	}
@@ -41,7 +40,7 @@ public interface ThreadsRunsClient {
 	 * @return The run object matching the specified ID.
 	 */
 	@RequestLine("GET /threads/{thread_id}/runs/{run_id}")
-	ThreadRunObject retrieve(@Param("thread_id") String threadId,
+	ThreadRun retrieve(@Param("thread_id") String threadId,
 			@Param("run_id") String runId);
 
 	/**
@@ -51,8 +50,8 @@ public interface ThreadsRunsClient {
 	 */
 	@RequestLine("POST /threads/{thread_id}/runs/{run_id}")
 	@Headers("Content-Type: application/json")
-	ThreadRunObject update(@Param("thread_id") String threadId,
-			@Param("run_id") String runId, ThreadRunUpdateRequest request);
+	ThreadRun update(@Param("thread_id") String threadId, @Param("run_id") String runId,
+			ThreadRunUpdateRequest request);
 
 	/**
 	 * Cancels a run that is in_progress.
@@ -61,8 +60,7 @@ public interface ThreadsRunsClient {
 	 */
 	@RequestLine("POST /threads/{thread_id}/runs/{run_id}/cancel")
 	@Headers("Content-Type: application/json")
-	ThreadRunObject cancel(@Param("thread_id") String threadId,
-			@Param("run_id") String runId);
+	ThreadRun cancel(@Param("thread_id") String threadId, @Param("run_id") String runId);
 
 	/**
 	 * Returns a list of runs belonging to a thread.
@@ -70,7 +68,7 @@ public interface ThreadsRunsClient {
 	 * @return A list of run objects.
 	 */
 	@RequestLine("GET /threads/{thread_id}/runs")
-	ListResponse<ThreadRunObject> list(@Param("thread_id") String threadId);
+	ListResponse<ThreadRun> list(@Param("thread_id") String threadId);
 
 	/**
 	 * Returns a list of runs belonging to a thread.
@@ -78,7 +76,7 @@ public interface ThreadsRunsClient {
 	 * @return A list of run objects.
 	 */
 	@RequestLine("GET /threads/{thread_id}/runs")
-	ListResponse<ThreadRunObject> list(@Param("thread_id") String threadId,
+	ListResponse<ThreadRun> list(@Param("thread_id") String threadId,
 			@QueryMap Map<String, Object> queryParameters);
 
 	/**
@@ -87,7 +85,7 @@ public interface ThreadsRunsClient {
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of run objects.
 	 */
-	default ListResponse<ThreadRunObject> list(@Param("thread_id") String threadId,
+	default ListResponse<ThreadRun> list(@Param("thread_id") String threadId,
 			ListRequest request) {
 		return this.list(threadId, request.toMap());
 	}
@@ -102,7 +100,7 @@ public interface ThreadsRunsClient {
 	 * @return The modified run object matching the specified ID.
 	 */
 	@RequestLine("POST /threads/{thread_id}/runs/{run_id}/submit_tool_outputs")
-	ThreadRunObject submitToolOutputs(@Param("thread_id") String threadId,
+	ThreadRun submitToolOutputs(@Param("thread_id") String threadId,
 			@Param("run_id") String runId, ThreadRunSubmitToolOutputsRequest request);
 
 	/**
@@ -114,7 +112,7 @@ public interface ThreadsRunsClient {
 	 * @param runId The ID of the run that requires the tool output submission.
 	 * @return The modified run object matching the specified ID.
 	 */
-	default ThreadRunObject submitToolOutputs(@Param("thread_id") String threadId,
+	default ThreadRun submitToolOutputs(@Param("thread_id") String threadId,
 			@Param("run_id") String runId,
 			Function<ThreadRunSubmitToolOutputsRequest.Builder, ThreadRunSubmitToolOutputsRequest.Builder> fn) {
 		return this.submitToolOutputs(threadId, runId,

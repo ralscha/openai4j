@@ -20,7 +20,7 @@ public interface ThreadsMessagesFilesClient {
 	 * @return The message file object.
 	 */
 	@RequestLine("GET /threads/{thread_id}/messages/{message_id}/files/{file_id}")
-	ThreadMessageFileObject retrieve(@Param("thread_id") String threadId,
+	ThreadMessageFile retrieve(@Param("thread_id") String threadId,
 			@Param("message_id") String messageId, @Param("file_id") String fileId);
 
 	/**
@@ -30,7 +30,7 @@ public interface ThreadsMessagesFilesClient {
 	 * @return A list of message file objects.
 	 */
 	@RequestLine("GET /threads/{thread_id}/messages/{message_id}/files")
-	ListResponse<ThreadMessageFileObject> list(@Param("thread_id") String threadId,
+	ListResponse<ThreadMessageFile> list(@Param("thread_id") String threadId,
 			@Param("message_id") String messageId);
 
 	/**
@@ -40,7 +40,7 @@ public interface ThreadsMessagesFilesClient {
 	 * @return A list of message file objects.
 	 */
 	@RequestLine("GET /threads/{thread_id}/messages/{message_id}/files")
-	ListResponse<ThreadMessageFileObject> list(@Param("thread_id") String threadId,
+	ListResponse<ThreadMessageFile> list(@Param("thread_id") String threadId,
 			@Param("message_id") String messageId,
 			@QueryMap Map<String, Object> queryParameters);
 
@@ -51,7 +51,7 @@ public interface ThreadsMessagesFilesClient {
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of message file objects.
 	 */
-	default ListResponse<ThreadMessageFileObject> list(String threadId, String messageId,
+	default ListResponse<ThreadMessageFile> list(String threadId, String messageId,
 			ListRequest request) {
 		return this.list(threadId, messageId, request.toMap());
 	}

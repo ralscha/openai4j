@@ -18,7 +18,7 @@ public interface ThreadsRunsStepsClient {
 	 * @return The run step object matching the specified ID.
 	 */
 	@RequestLine("GET /threads/{thread_id}/runs/{run_id}/steps/{step_id}")
-	ThreadRunStepObject retrieve(@Param("thread_id") String threadId,
+	ThreadRunStep retrieve(@Param("thread_id") String threadId,
 			@Param("run_id") String runId, @Param("step_id") String stepId);
 
 	/**
@@ -28,7 +28,7 @@ public interface ThreadsRunsStepsClient {
 	 * @return A list of run step objects.
 	 */
 	@RequestLine("GET /threads/{thread_id}/runs/{run_id}/steps")
-	ListResponse<ThreadRunStepObject> list(@Param("thread_id") String threadId,
+	ListResponse<ThreadRunStep> list(@Param("thread_id") String threadId,
 			@Param("run_id") String runId);
 
 	/**
@@ -38,7 +38,7 @@ public interface ThreadsRunsStepsClient {
 	 * @return A list of run step objects.
 	 */
 	@RequestLine("GET /threads/{thread_id}/runs/{run_id}/steps")
-	ListResponse<ThreadRunStepObject> list(@Param("thread_id") String threadId,
+	ListResponse<ThreadRunStep> list(@Param("thread_id") String threadId,
 			@Param("run_id") String runId, @QueryMap Map<String, Object> queryParameters);
 
 	/**
@@ -48,7 +48,7 @@ public interface ThreadsRunsStepsClient {
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of run step objects.
 	 */
-	default ListResponse<ThreadRunStepObject> list(@Param("thread_id") String threadId,
+	default ListResponse<ThreadRunStep> list(@Param("thread_id") String threadId,
 			@Param("run_id") String runId, ListRequest request) {
 		return this.list(threadId, runId, request.toMap());
 	}

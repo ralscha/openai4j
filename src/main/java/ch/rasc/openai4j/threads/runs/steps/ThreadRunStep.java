@@ -19,9 +19,9 @@ import ch.rasc.openai4j.Nullable;
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableThreadRunStepObject.class)
+@JsonDeserialize(as = ImmutableThreadRunStep.class)
 @Value.Enclosing
-public interface ThreadRunStepObject {
+public interface ThreadRunStep {
 
 	/*
 	 * The identifier of the run step, which can be referenced in API endpoints.
@@ -103,15 +103,15 @@ public interface ThreadRunStepObject {
 	StepDetail stepDetails();
 
 	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-	@JsonSubTypes({ @Type(MessageCreationStepDetail.class),
-			@Type(ToolCallStepDetail.class) })
+	@JsonSubTypes({ @Type(MessageCreationStepDetails.class),
+			@Type(ToolCallsStepDetails.class) })
 	public interface StepDetail {
 	}
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadRunStepObject.MessageCreationStepDetail.class)
-	public interface MessageCreationStepDetail extends StepDetail {
+	@JsonDeserialize(as = ImmutableThreadRunStep.MessageCreationStepDetails.class)
+	public interface MessageCreationStepDetails extends StepDetail {
 		String type();
 
 		/**
@@ -121,7 +121,7 @@ public interface ThreadRunStepObject {
 
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-		@JsonDeserialize(as = ImmutableThreadRunStepObject.MessageCreation.class)
+		@JsonDeserialize(as = ImmutableThreadRunStep.MessageCreation.class)
 		public interface MessageCreation {
 			/**
 			 * The ID of the message that was created by this run step.
@@ -133,23 +133,23 @@ public interface ThreadRunStepObject {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadRunStepObject.ToolCallStepDetail.class)
-	public interface ToolCallStepDetail extends StepDetail {
+	@JsonDeserialize(as = ImmutableThreadRunStep.ToolCallsStepDetails.class)
+	public interface ToolCallsStepDetails extends StepDetail {
 		String type();
 
 		@JsonProperty("tool_calls")
 		ToolCall[] toolCalls();
 
 		@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-		@JsonSubTypes({ @Type(CodeInterpreterToolCall.class),
-				@Type(RetrievalToolCall.class), @Type(FunctionToolCall.class) })
+		@JsonSubTypes({ @Type(CodeToolCall.class), @Type(RetrievalToolCall.class),
+				@Type(FunctionToolCall.class) })
 		public interface ToolCall {
 		}
 
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-		@JsonDeserialize(as = ImmutableThreadRunStepObject.CodeInterpreterToolCall.class)
-		public interface CodeInterpreterToolCall extends ToolCall {
+		@JsonDeserialize(as = ImmutableThreadRunStep.CodeToolCall.class)
+		public interface CodeToolCall extends ToolCall {
 			/**
 			 * The ID of the tool call.
 			 */
@@ -169,7 +169,7 @@ public interface ThreadRunStepObject {
 			@Value.Immutable(builder = false)
 			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 					allParameters = true)
-			@JsonDeserialize(as = ImmutableThreadRunStepObject.CodeInterpreter.class)
+			@JsonDeserialize(as = ImmutableThreadRunStep.CodeInterpreter.class)
 			public interface CodeInterpreter {
 				/**
 				 * The input to the Code Interpreter tool call.
@@ -193,7 +193,7 @@ public interface ThreadRunStepObject {
 				@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 						allParameters = true)
 				@JsonDeserialize(
-						as = ImmutableThreadRunStepObject.ImageCodeInterpreterOutput.class)
+						as = ImmutableThreadRunStep.ImageCodeInterpreterOutput.class)
 				public interface ImageCodeInterpreterOutput
 						extends CodeInterpreterOutput {
 					String type();
@@ -203,7 +203,7 @@ public interface ThreadRunStepObject {
 					@Value.Immutable(builder = false)
 					@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 							allParameters = true)
-					@JsonDeserialize(as = ImmutableThreadRunStepObject.Image.class)
+					@JsonDeserialize(as = ImmutableThreadRunStep.Image.class)
 					public interface Image {
 						/**
 						 * The file ID of the image.
@@ -217,7 +217,7 @@ public interface ThreadRunStepObject {
 				@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 						allParameters = true)
 				@JsonDeserialize(
-						as = ImmutableThreadRunStepObject.LogCodeInterpreterOutput.class)
+						as = ImmutableThreadRunStep.LogCodeInterpreterOutput.class)
 				public interface LogCodeInterpreterOutput extends CodeInterpreterOutput {
 					String type();
 
@@ -232,7 +232,7 @@ public interface ThreadRunStepObject {
 
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-		@JsonDeserialize(as = ImmutableThreadRunStepObject.RetrievalToolCall.class)
+		@JsonDeserialize(as = ImmutableThreadRunStep.RetrievalToolCall.class)
 		public interface RetrievalToolCall extends ToolCall {
 			/**
 			 * The ID of the tool call object.
@@ -252,7 +252,7 @@ public interface ThreadRunStepObject {
 
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-		@JsonDeserialize(as = ImmutableThreadRunStepObject.FunctionToolCall.class)
+		@JsonDeserialize(as = ImmutableThreadRunStep.FunctionToolCall.class)
 		public interface FunctionToolCall extends ToolCall {
 			/**
 			 * The ID of the tool call object.
@@ -272,7 +272,7 @@ public interface ThreadRunStepObject {
 			@Value.Immutable(builder = false)
 			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 					allParameters = true)
-			@JsonDeserialize(as = ImmutableThreadRunStepObject.Function.class)
+			@JsonDeserialize(as = ImmutableThreadRunStep.Function.class)
 			public interface Function {
 				/**
 				 * The name of the function.
@@ -304,7 +304,7 @@ public interface ThreadRunStepObject {
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 			allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadRunStepObject.Error.class)
+	@JsonDeserialize(as = ImmutableThreadRunStep.Error.class)
 	interface Error {
 		/**
 		 * One of server_error or rate_limit_exceeded.

@@ -15,9 +15,9 @@ import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@JsonSerialize(as = ImmutableEmbeddingsRequest.class)
+@JsonSerialize(as = ImmutableEmbeddingCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface EmbeddingsRequest {
+public interface EmbeddingCreateRequest {
 
 	enum EncodingFormat {
 		FLOAT("float"), BASE64("base64");
@@ -67,6 +67,6 @@ public interface EmbeddingsRequest {
 		return new Builder();
 	}
 
-	final class Builder extends ImmutableEmbeddingsRequest.Builder {
+	final class Builder extends ImmutableEmbeddingCreateRequest.Builder {
 	}
 }

@@ -14,5 +14,5 @@ public interface ImageResponse {
 
 	long created();
 
-	List<ImageObject> data();
+	List<Image> data();
 }

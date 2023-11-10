@@ -10,9 +10,9 @@ import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE)
-@JsonSerialize(as = ImmutableModerationsRequest.class)
+@JsonSerialize(as = ImmutableModerationsCreateRequest.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public interface ModerationsRequest {
+public interface ModerationsCreateRequest {
 
 	enum Model {
 		TEXT_MODERATION_STABLE("text-moderation-stable"),
@@ -52,6 +52,6 @@ public interface ModerationsRequest {
 		return new Builder();
 	}
 
-	final class Builder extends ImmutableModerationsRequest.Builder {
+	final class Builder extends ImmutableModerationsCreateRequest.Builder {
 	}
 }

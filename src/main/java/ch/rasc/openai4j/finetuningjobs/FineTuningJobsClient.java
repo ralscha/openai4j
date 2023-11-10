@@ -16,14 +16,14 @@ public interface FineTuningJobsClient {
 	 * @return Fine-tuning job object.
 	 */
 	@RequestLine("POST /fine_tuning/jobs")
-	FineTuningJobObject create(FineTuningJobCreateRequest request);
+	FineTuningJob create(FineTuningJobCreateRequest request);
 
 	/**
 	 * Creates a job that fine-tunes a specified model from a given dataset.
 	 *
 	 * @return Fine-tuning job object.
 	 */
-	default FineTuningJobObject create(
+	default FineTuningJob create(
 			Function<FineTuningJobCreateRequest.Builder, FineTuningJobCreateRequest.Builder> fn) {
 		return this.create(fn.apply(FineTuningJobCreateRequest.builder()).build());
 	}
@@ -69,7 +69,7 @@ public interface FineTuningJobsClient {
 	 * @return The fine-tuning object with the given ID.
 	 */
 	@RequestLine("GET /fine_tuning/jobs/{fine_tuning_job_id}")
-	FineTuningJobObject retrieve(@Param("fine_tuning_job_id") String fineTuningJobId);
+	FineTuningJob retrieve(@Param("fine_tuning_job_id") String fineTuningJobId);
 
 	/**
 	 * Immediately cancel a fine-tune job.
@@ -77,7 +77,7 @@ public interface FineTuningJobsClient {
 	 * @return The cancelled fine-tuning object.
 	 */
 	@RequestLine("POST /fine_tuning/jobs/{fine_tuning_job_id}/cancel")
-	FineTuningJobObject cancel(@Param("fine_tuning_job_id") String fineTuningJobId);
+	FineTuningJob cancel(@Param("fine_tuning_job_id") String fineTuningJobId);
 
 	/**
 	 * Get status updates for a fine-tuning job.

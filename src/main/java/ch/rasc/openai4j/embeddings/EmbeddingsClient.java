@@ -14,16 +14,16 @@ public interface EmbeddingsClient {
 	 */
 	@RequestLine("POST /embeddings")
 	@Headers("Content-Type: application/json")
-	EmbeddingsResponse create(EmbeddingsRequest request);
+	EmbeddingCreateResponse create(EmbeddingCreateRequest request);
 
 	/**
 	 * Creates an embedding vector representing the input text.
 	 *
 	 * @return A list of embedding objects.
 	 */
-	default EmbeddingsResponse create(
-			Function<EmbeddingsRequest.Builder, EmbeddingsRequest.Builder> fn) {
-		return this.create(fn.apply(EmbeddingsRequest.builder()).build());
+	default EmbeddingCreateResponse create(
+			Function<EmbeddingCreateRequest.Builder, EmbeddingCreateRequest.Builder> fn) {
+		return this.create(fn.apply(EmbeddingCreateRequest.builder()).build());
 	}
 
 }

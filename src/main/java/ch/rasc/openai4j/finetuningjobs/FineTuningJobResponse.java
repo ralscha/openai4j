@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public interface FineTuningJobResponse {
 	String object();
 
-	List<FineTuningJobObject> data();
+	List<FineTuningJob> data();
 
 	@JsonProperty("has_more")
 	boolean hasMore();

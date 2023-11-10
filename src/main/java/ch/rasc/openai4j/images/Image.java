@@ -10,8 +10,8 @@ import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableImageObject.class)
-public interface ImageObject {
+@JsonDeserialize(as = ImmutableImage.class)
+public interface Image {
 	/**
 	 * The base64-encoded JSON of the generated image, if response_format is b64_json.
 	 */

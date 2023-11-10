@@ -5,9 +5,9 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.rasc.openai4j.threads.Thread;
 import ch.rasc.openai4j.threads.ThreadCreateRequest;
 import ch.rasc.openai4j.threads.ThreadMessage;
-import ch.rasc.openai4j.threads.ThreadObject;
 import ch.rasc.openai4j.threads.ThreadUpdateRequest;
 
 public class ThreadsExample {
@@ -20,7 +20,7 @@ public class ThreadsExample {
 				.putMetadata("name", "ralph").build();
 		ObjectMapper om = new ObjectMapper();
 		System.out.println(om.writeValueAsString(request));
-		ThreadObject response = client.threads.create(request);
+		Thread response = client.threads.create(request);
 		System.out.println(response);
 
 		var r = client.threads.retrieve(response.id());

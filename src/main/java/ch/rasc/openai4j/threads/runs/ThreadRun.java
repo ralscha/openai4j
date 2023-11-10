@@ -17,9 +17,9 @@ import ch.rasc.openai4j.assistants.Tool;
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableThreadRunObject.class)
+@JsonDeserialize(as = ImmutableThreadRun.class)
 @Value.Enclosing
-public interface ThreadRunObject {
+public interface ThreadRun {
 
 	/*
 	 * The identifier, which can be referenced in API endpoints.
@@ -77,13 +77,13 @@ public interface ThreadRunObject {
 	 */
 	@Nullable
 	@JsonProperty("required_action")
-	RequiredAction requiredAction();
+	RequiredActionFunctionToolCall requiredAction();
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 			allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadRunObject.RequiredAction.class)
-	interface RequiredAction {
+	@JsonDeserialize(as = ImmutableThreadRun.RequiredActionFunctionToolCall.class)
+	interface RequiredActionFunctionToolCall {
 		/**
 		 * For now, this is always submit_tool_outputs.
 		 */
@@ -95,7 +95,7 @@ public interface ThreadRunObject {
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 				allParameters = true)
-		@JsonDeserialize(as = ImmutableThreadRunObject.SubmitToolOutputs.class)
+		@JsonDeserialize(as = ImmutableThreadRun.SubmitToolOutputs.class)
 		interface SubmitToolOutputs {
 			@JsonProperty("tool_calls")
 			ToolCall[] toolCalls();
@@ -103,7 +103,7 @@ public interface ThreadRunObject {
 			@Value.Immutable(builder = false)
 			@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 					allParameters = true)
-			@JsonDeserialize(as = ImmutableThreadRunObject.ToolCall.class)
+			@JsonDeserialize(as = ImmutableThreadRun.ToolCall.class)
 			interface ToolCall {
 				/**
 				 * The ID of the tool call. This ID must be referenced when you submit the
@@ -122,7 +122,7 @@ public interface ThreadRunObject {
 				@Value.Immutable(builder = false)
 				@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 						allParameters = true)
-				@JsonDeserialize(as = ImmutableThreadRunObject.Function.class)
+				@JsonDeserialize(as = ImmutableThreadRun.Function.class)
 				interface Function {
 					/**
 					 * The name of the function.
@@ -148,7 +148,7 @@ public interface ThreadRunObject {
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 			allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadRunObject.Error.class)
+	@JsonDeserialize(as = ImmutableThreadRun.Error.class)
 	interface Error {
 		/**
 		 * One of server_error or rate_limit_exceeded.

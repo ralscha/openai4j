@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableModerationsResult.class)
-public interface ModerationsResult {
+@JsonDeserialize(as = ImmutableModerations.class)
+public interface Moderations {
 
 	/**
 	 * Whether the content violates

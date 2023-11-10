@@ -97,5 +97,32 @@ public interface FilesClient {
 	 * @return The file content.
 	 */
 	@RequestLine("GET /files/{file_id}/content")
-	Response download(@Param("file_id") String fileId);
+	Response retrieveContent(@Param("file_id") String fileId);
+
+	default FileObject waitForProcessing(String fileId) {
+		return this.waitForProcessing(fileId, 5.0f, 30 * 60);
+	}
+
+	default FileObject waitForProcessing(String fileId, float pollInterval,
+			int maxWaitSeconds) {
+		long start = System.currentTimeMillis();
+		FileObject file = this.retrieve(fileId);
+		while (!file.status().isTerminal()) {
+			try {
+				Thread.sleep((long) (pollInterval * 1000));
+			}
+			catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+
+			file = this.retrieve(fileId);
+			if (System.currentTimeMillis() - start > maxWaitSeconds * 1000) {
+				throw new RuntimeException("Giving up on waiting for file " + fileId
+						+ " to finish processing after " + maxWaitSeconds + " seconds.");
+			}
+		}
+
+		return file;
+	}
+
 }

@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
-import ch.rasc.openai4j.threads.runs.ThreadRunObject;
+import ch.rasc.openai4j.threads.runs.ThreadRun;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -19,14 +19,14 @@ public interface ThreadsClient {
 	 */
 	@RequestLine("POST /threads")
 	@Headers("Content-Type: application/json")
-	ThreadObject create(ThreadCreateRequest request);
+	Thread create(ThreadCreateRequest request);
 
 	/**
 	 * Create a thread.
 	 *
 	 * @return A thread object.
 	 */
-	default ThreadObject create(
+	default Thread create(
 			Function<ThreadCreateRequest.Builder, ThreadCreateRequest.Builder> fn) {
 		return this.create(fn.apply(ThreadCreateRequest.builder()).build());
 	}
@@ -38,14 +38,14 @@ public interface ThreadsClient {
 	 */
 	@RequestLine("POST /threads/runs")
 	@Headers("Content-Type: application/json")
-	ThreadRunObject createAndRun(ThreadCreateRunCreateRequest request);
+	ThreadRun createAndRun(ThreadCreateRunCreateRequest request);
 
 	/**
 	 * Create a thread and run it in one request.
 	 *
 	 * @return A run object.
 	 */
-	default ThreadRunObject createAndRun(
+	default ThreadRun createAndRun(
 			Function<ThreadCreateRunCreateRequest.Builder, ThreadCreateRunCreateRequest.Builder> fn) {
 		return this
 				.createAndRun(fn.apply(ThreadCreateRunCreateRequest.builder()).build());
@@ -57,7 +57,7 @@ public interface ThreadsClient {
 	 * @return The thread object matching the specified ID.
 	 */
 	@RequestLine("GET /threads/{thread_id}")
-	ThreadObject retrieve(@Param("thread_id") String threadId);
+	Thread retrieve(@Param("thread_id") String threadId);
 
 	/**
 	 * Modifies a thread.
@@ -66,7 +66,7 @@ public interface ThreadsClient {
 	 */
 	@RequestLine("POST /threads/{thread_id}")
 	@Headers("Content-Type: application/json")
-	ThreadObject update(@Param("thread_id") String threadId, ThreadUpdateRequest request);
+	Thread update(@Param("thread_id") String threadId, ThreadUpdateRequest request);
 
 	/**
 	 * Delete a thread

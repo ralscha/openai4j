@@ -38,7 +38,7 @@ public class FilesExample {
 			System.out.println(f);
 		}
 
-		try (var resp = client.files.download(response.id());
+		try (var resp = client.files.retrieveContent(response.id());
 				FileOutputStream fos = new FileOutputStream("image1_copy.png");
 				var body = resp.body();
 				var is = body.asInputStream()) {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserMessage extends Message {
+public class UserMessage extends ChatCompletionMessage {
 	private final Object content;
 
 	UserMessage(Object content) {

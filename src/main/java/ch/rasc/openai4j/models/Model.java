@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableModelObject.class)
-public interface ModelObject {
+@JsonDeserialize(as = ImmutableModel.class)
+public interface Model {
 
 	/**
 	 * The model identifier, which can be referenced in the API endpoints.

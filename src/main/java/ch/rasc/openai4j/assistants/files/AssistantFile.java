@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @Value.Immutable(builder = false)
 @Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 		allParameters = true)
-@JsonDeserialize(as = ImmutableAssistantFileObject.class)
-public interface AssistantFileObject {
+@JsonDeserialize(as = ImmutableAssistantFile.class)
+public interface AssistantFile {
 
 	/*
 	 * The identifier, which can be referenced in API endpoints.

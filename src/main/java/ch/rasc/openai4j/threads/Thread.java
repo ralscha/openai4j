@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableThreadObject.class)
-public interface ThreadObject {
+@JsonDeserialize(as = ImmutableThread.class)
+public interface Thread {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.

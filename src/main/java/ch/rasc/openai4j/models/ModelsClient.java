@@ -22,7 +22,7 @@ public interface ModelsClient {
 	 * @return The model object matching the specified ID.
 	 */
 	@RequestLine("GET /models/{model}")
-	ModelObject retrieve(@Param("model") String model);
+	Model retrieve(@Param("model") String model);
 
 	/**
 	 * Delete a fine-tuned model. You must have the Owner role in your organization to

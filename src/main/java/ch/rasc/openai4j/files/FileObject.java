@@ -18,7 +18,7 @@ import ch.rasc.openai4j.Nullable;
 public interface FileObject {
 
 	enum Status {
-		UPLOADED("uploaded"), PROCESSED("processed"), ERROR("error");
+		UPLOADED("uploaded"), PROCESSED("processed"), ERROR("error"), DELETED("deleted");
 
 		private final String value;
 
@@ -29,6 +29,10 @@ public interface FileObject {
 		@JsonValue
 		public String value() {
 			return this.value;
+		}
+
+		boolean isTerminal() {
+			return this == PROCESSED || this == ERROR || this == DELETED;
 		}
 	}
 

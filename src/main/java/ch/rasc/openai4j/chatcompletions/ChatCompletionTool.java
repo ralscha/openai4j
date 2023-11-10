@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ch.rasc.openai4j.common.Function;
 
-public class Tool {
+public class ChatCompletionTool {
 	private final String type;
 	private final Function function;
 
-	public Tool(String type, Function function) {
+	public ChatCompletionTool(String type, Function function) {
 		this.type = type;
 		this.function = function;
 	}
 
-	public static Tool of(String type, Function function) {
-		return new Tool(type, function);
+	public static ChatCompletionTool of(String type, Function function) {
+		return new ChatCompletionTool(type, function);
 	}
 
 	/**

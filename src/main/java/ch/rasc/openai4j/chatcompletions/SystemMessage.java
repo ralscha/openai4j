@@ -2,7 +2,7 @@ package ch.rasc.openai4j.chatcompletions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SystemMessage extends Message {
+public class SystemMessage extends ChatCompletionMessage {
 	private final String content;
 
 	SystemMessage(String content) {

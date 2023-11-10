@@ -14,5 +14,5 @@ public interface ModelsResponse {
 
 	String object();
 
-	List<ModelObject> data();
+	List<Model> data();
 }

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableThreadMessageFileObject.class)
-public interface ThreadMessageFileObject {
+@JsonDeserialize(as = ImmutableThreadMessageFile.class)
+public interface ThreadMessageFile {
 
 	/*
 	 * The identifier, which can be referenced in API endpoints.

@@ -18,9 +18,9 @@ import ch.rasc.openai4j.Nullable;
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableThreadMessageObject.class)
+@JsonDeserialize(as = ImmutableThreadMessage.class)
 @Value.Enclosing
-public interface ThreadMessageObject {
+public interface ThreadMessage {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -52,14 +52,15 @@ public interface ThreadMessageObject {
 	Content[] content();
 
 	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-	@JsonSubTypes({ @Type(ImageContent.class), @Type(TextContent.class) })
+	@JsonSubTypes({ @Type(MessageContentImageFile.class),
+			@Type(MessageContentText.class) })
 	interface Content {
 	}
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadMessageObject.ImageContent.class)
-	interface ImageContent extends Content {
+	@JsonDeserialize(as = ImmutableThreadMessage.MessageContentImageFile.class)
+	interface MessageContentImageFile extends Content {
 		String type();
 
 		/**
@@ -71,7 +72,7 @@ public interface ThreadMessageObject {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadMessageObject.File.class)
+	@JsonDeserialize(as = ImmutableThreadMessage.File.class)
 	interface File {
 		@JsonProperty("file_id")
 		String fileId();
@@ -79,8 +80,8 @@ public interface ThreadMessageObject {
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-	@JsonDeserialize(as = ImmutableThreadMessageObject.TextContent.class)
-	interface TextContent extends Content {
+	@JsonDeserialize(as = ImmutableThreadMessage.MessageContentText.class)
+	interface MessageContentText extends Content {
 		String type();
 
 		/**
@@ -90,7 +91,7 @@ public interface ThreadMessageObject {
 
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-		@JsonDeserialize(as = ImmutableThreadMessageObject.Text.class)
+		@JsonDeserialize(as = ImmutableThreadMessage.Text.class)
 		interface Text {
 			/**
 			 * The data that makes up the text.
@@ -107,7 +108,7 @@ public interface ThreadMessageObject {
 			@Value.Immutable(builder = false)
 			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 					allParameters = true)
-			@JsonDeserialize(as = ImmutableThreadMessageObject.FileCitation.class)
+			@JsonDeserialize(as = ImmutableThreadMessage.FileCitation.class)
 			interface FileCitation extends Annotation {
 				String type();
 
@@ -128,7 +129,7 @@ public interface ThreadMessageObject {
 				@Value.Immutable(builder = false)
 				@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 						allParameters = true)
-				@JsonDeserialize(as = ImmutableThreadMessageObject.Citation.class)
+				@JsonDeserialize(as = ImmutableThreadMessage.Citation.class)
 				interface Citation {
 					/**
 					 * The ID of the specific File the citation is from.
@@ -147,7 +148,7 @@ public interface ThreadMessageObject {
 			@Value.Immutable(builder = false)
 			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 					allParameters = true)
-			@JsonDeserialize(as = ImmutableThreadMessageObject.FilePath.class)
+			@JsonDeserialize(as = ImmutableThreadMessage.FilePath.class)
 			interface FilePath extends Annotation {
 				String type();
 

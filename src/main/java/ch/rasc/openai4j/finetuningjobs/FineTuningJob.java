@@ -15,9 +15,9 @@ import ch.rasc.openai4j.Nullable;
 @Value.Immutable(builder = false)
 @Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 		allParameters = true)
-@JsonDeserialize(as = ImmutableFineTuningJobObject.class)
+@JsonDeserialize(as = ImmutableFineTuningJob.class)
 @Value.Enclosing
-public interface FineTuningJobObject {
+public interface FineTuningJob {
 
 	/**
 	 * The object identifier, which can be referenced in the API endpoints.
@@ -40,7 +40,7 @@ public interface FineTuningJobObject {
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 			allParameters = true)
-	@JsonDeserialize(as = ImmutableFineTuningJobObject.Error.class)
+	@JsonDeserialize(as = ImmutableFineTuningJob.Error.class)
 	interface Error {
 		/**
 		 * A machine-readable error code.
@@ -85,7 +85,7 @@ public interface FineTuningJobObject {
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE,
 			allParameters = true)
-	@JsonDeserialize(as = ImmutableFineTuningJobObject.HyperParameters.class)
+	@JsonDeserialize(as = ImmutableFineTuningJob.HyperParameters.class)
 	interface HyperParameters {
 		/**
 		 * The number of epochs to train the model for. An epoch refers to one full cycle

@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  */
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableEmbeddingObject.class)
-public interface EmbeddingObject {
+@JsonDeserialize(as = ImmutableEmbedding.class)
+public interface Embedding {
 
 	/**
 	 * The index of the embedding in the list of embeddings.
@@ -25,20 +25,20 @@ public interface EmbeddingObject {
 	 * The embedding vector, which is a list of floats. The length of vector depends on
 	 * the model as listed in the embedding guide.
 	 */
-	Embedding embedding();
+	EmbeddingVector embedding();
 
-	class Embedding {
+	class EmbeddingVector {
 		private final String base64;
 		private final double[] doubleArray;
 
 		@JsonCreator
-		Embedding(double[] doubleArray) {
+		EmbeddingVector(double[] doubleArray) {
 			this.doubleArray = doubleArray;
 			this.base64 = null;
 		}
 
 		@JsonCreator
-		Embedding(String base64) {
+		EmbeddingVector(String base64) {
 			this.doubleArray = null;
 			this.base64 = base64;
 		}
@@ -53,7 +53,7 @@ public interface EmbeddingObject {
 
 		@Override
 		public String toString() {
-			return "Embedding [embeddingBase64=" + this.base64 + ", embedding="
+			return "EmbeddingVector [embeddingBase64=" + this.base64 + ", embedding="
 					+ Arrays.toString(this.doubleArray) + "]";
 		}
 
