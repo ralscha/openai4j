@@ -8,7 +8,7 @@ import ch.rasc.openai4j.embeddings.EmbeddingCreateRequest.EncodingFormat;
 public class EmbeddingsExample {
 	public static void main(String[] args) {
 		String apiKey = Util.getApiKey();
-		var client = OpenAIClient.create(Configuration.builder().apiKey(apiKey).build());
+		var client = OpenAIClient.create(c -> c.apiKey(apiKey));
 
 		EmbeddingCreateRequest request = EmbeddingCreateRequest.builder()
 				.addInput("HelloWorld").addInput("HelloWorld2")

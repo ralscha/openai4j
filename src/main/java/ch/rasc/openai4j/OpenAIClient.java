@@ -2,6 +2,7 @@ package ch.rasc.openai4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import ch.rasc.openai4j.assistants.AssistantsClient;
 import ch.rasc.openai4j.assistants.files.AssistantsFilesClient;
@@ -25,6 +26,11 @@ import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 
 public class OpenAIClient {
+
+	public static OpenAIClient create(
+			Function<Configuration.Builder, Configuration.Builder> fn) {
+		return create(fn.apply(Configuration.builder()).build());
+	}
 
 	public static OpenAIClient create(Configuration configuration) {
 

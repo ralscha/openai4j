@@ -13,7 +13,7 @@
 	<inceptionYear>2023</inceptionYear>
 	<name>openai4j</name>
 	<url>https://github.com/ralscha/openai4j</url>
-	<description>Unofficial and community-maintained Java implementation of the OpenAI API</description>
+	<description>Unofficial, community-maintained Java implementation of the OpenAI API</description>
 	<developers>
 		<developer>
 			<name>Ralph Schaer</name>
