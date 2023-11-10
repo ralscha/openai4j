@@ -4,7 +4,6 @@ import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
-import ch.rasc.openai4j.threads.runs.ThreadRunCreateRequest;
 import ch.rasc.openai4j.threads.runs.ThreadRunObject;
 import feign.Headers;
 import feign.Param;
@@ -34,7 +33,7 @@ public interface ThreadsClient {
 
 	/**
 	 * Create a thread and run it in one request.
-	 * 
+	 *
 	 * @return A run object.
 	 */
 	@RequestLine("POST /threads/runs")
@@ -43,7 +42,7 @@ public interface ThreadsClient {
 
 	/**
 	 * Create a thread and run it in one request.
-	 * 
+	 *
 	 * @return A run object.
 	 */
 	default ThreadRunObject createAndRun(

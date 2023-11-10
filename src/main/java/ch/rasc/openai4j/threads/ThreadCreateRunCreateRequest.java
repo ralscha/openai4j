@@ -29,7 +29,7 @@ public interface ThreadCreateRunCreateRequest {
 
 	@Nullable
 	Thread thread();
-	
+
 	@Value.Immutable
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
 	@JsonSerialize(as = ImmutableThreadCreateRunCreateRequest.Thread.class)
@@ -42,13 +42,14 @@ public interface ThreadCreateRunCreateRequest {
 		List<ThreadMessage> messages();
 
 		/**
-		 * Set of 16 key-value pairs that can be attached to an object. This can be useful for
-		 * storing additional information about the object in a structured format. Keys can be
-		 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
+		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
+		 * for storing additional information about the object in a structured format.
+		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
+		 * characters long.
 		 */
 		@Nullable
 		Map<String, Object> metadata();
-		
+
 		static Builder builder() {
 			return new Builder();
 		}
@@ -56,8 +57,7 @@ public interface ThreadCreateRunCreateRequest {
 		final class Builder extends ImmutableThreadCreateRunCreateRequest.Thread.Builder {
 		}
 	}
-	
-	
+
 	/*
 	 * The ID of the Model to be used to execute this run. If a value is provided here, it
 	 * will override the model associated with the assistant. If not, the model associated
@@ -95,5 +95,4 @@ public interface ThreadCreateRunCreateRequest {
 	final class Builder extends ImmutableThreadCreateRunCreateRequest.Builder {
 	}
 
-	
 }

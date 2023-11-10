@@ -6,6 +6,9 @@ import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -55,17 +58,17 @@ public interface ThreadRunStepObject {
 	@JsonProperty("run_id")
 	String runId();
 
-	enum Type {
+	enum ThreadRunStepType {
 		MESSAGE_CREATION("message_creation"), TOOL_CALLS("tool_calls");
 
 		private final String value;
 
-		Type(String value) {
+		ThreadRunStepType(String value) {
 			this.value = value;
 		}
 
 		@JsonValue
-		public String getValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -73,20 +76,20 @@ public interface ThreadRunStepObject {
 	/*
 	 * The type of run step
 	 */
-	Type type();
+	ThreadRunStepType type();
 
-	enum Status {
+	enum ThreadRunStepStatus {
 		IN_PROGRESS("in_progress"), CANCELLED("cancelled"), FAILED("failed"),
 		COMPLETED("completed"), EXPIRED("expired");
 
 		private final String value;
 
-		Status(String value) {
+		ThreadRunStepStatus(String value) {
 			this.value = value;
 		}
 
 		@JsonValue
-		public String getValue() {
+		public String value() {
 			return this.value;
 		}
 	}
@@ -94,10 +97,202 @@ public interface ThreadRunStepObject {
 	/*
 	 * The status of the run step,
 	 */
-	Status status();
+	ThreadRunStepStatus status();
 
 	@JsonProperty("step_details")
 	StepDetail stepDetails();
+
+	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+	@JsonSubTypes({ @Type(MessageCreationStepDetail.class),
+			@Type(ToolCallStepDetail.class) })
+	public interface StepDetail {
+	}
+
+	@Value.Immutable(builder = false)
+	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
+	@JsonDeserialize(as = ImmutableThreadRunStepObject.MessageCreationStepDetail.class)
+	public interface MessageCreationStepDetail extends StepDetail {
+		String type();
+
+		/**
+		 * Details of the message creation by the run step.
+		 */
+		MessageCreation messageCreation();
+
+		@Value.Immutable(builder = false)
+		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
+		@JsonDeserialize(as = ImmutableThreadRunStepObject.MessageCreation.class)
+		public interface MessageCreation {
+			/**
+			 * The ID of the message that was created by this run step.
+			 */
+			@JsonProperty("message_id")
+			String messageId();
+		}
+	}
+
+	@Value.Immutable(builder = false)
+	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
+	@JsonDeserialize(as = ImmutableThreadRunStepObject.ToolCallStepDetail.class)
+	public interface ToolCallStepDetail extends StepDetail {
+		String type();
+
+		@JsonProperty("tool_calls")
+		ToolCall[] toolCalls();
+
+		@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+		@JsonSubTypes({ @Type(CodeInterpreterToolCall.class),
+				@Type(RetrievalToolCall.class), @Type(FunctionToolCall.class) })
+		public interface ToolCall {
+		}
+
+		@Value.Immutable(builder = false)
+		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
+		@JsonDeserialize(as = ImmutableThreadRunStepObject.CodeInterpreterToolCall.class)
+		public interface CodeInterpreterToolCall extends ToolCall {
+			/**
+			 * The ID of the tool call.
+			 */
+			String id();
+
+			/**
+			 * The type of tool call.
+			 */
+			String type();
+
+			/**
+			 * The Code Interpreter tool call definition.
+			 */
+			@JsonProperty("code_interpreter")
+			CodeInterpreter codeInterpreter();
+
+			@Value.Immutable(builder = false)
+			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
+					allParameters = true)
+			@JsonDeserialize(as = ImmutableThreadRunStepObject.CodeInterpreter.class)
+			public interface CodeInterpreter {
+				/**
+				 * The input to the Code Interpreter tool call.
+				 */
+				String input();
+
+				/**
+				 * The outputs from the Code Interpreter tool call. Code Interpreter can
+				 * output one or more items, including text (logs) or images (image). Each
+				 * of these are represented by a different object type.
+				 */
+				CodeInterpreterOutput[] outputs();
+
+				@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+				@JsonSubTypes({ @Type(ImageCodeInterpreterOutput.class),
+						@Type(LogCodeInterpreterOutput.class) })
+				public interface CodeInterpreterOutput {
+				}
+
+				@Value.Immutable(builder = false)
+				@Value.Style(visibility = ImplementationVisibility.PACKAGE,
+						allParameters = true)
+				@JsonDeserialize(
+						as = ImmutableThreadRunStepObject.ImageCodeInterpreterOutput.class)
+				public interface ImageCodeInterpreterOutput
+						extends CodeInterpreterOutput {
+					String type();
+
+					Image image();
+
+					@Value.Immutable(builder = false)
+					@Value.Style(visibility = ImplementationVisibility.PACKAGE,
+							allParameters = true)
+					@JsonDeserialize(as = ImmutableThreadRunStepObject.Image.class)
+					public interface Image {
+						/**
+						 * The file ID of the image.
+						 */
+						@JsonProperty("file_id")
+						String fileId();
+					}
+				}
+
+				@Value.Immutable(builder = false)
+				@Value.Style(visibility = ImplementationVisibility.PACKAGE,
+						allParameters = true)
+				@JsonDeserialize(
+						as = ImmutableThreadRunStepObject.LogCodeInterpreterOutput.class)
+				public interface LogCodeInterpreterOutput extends CodeInterpreterOutput {
+					String type();
+
+					/**
+					 * The text output from the Code Interpreter tool call.
+					 */
+					String logs();
+				}
+			}
+
+		}
+
+		@Value.Immutable(builder = false)
+		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
+		@JsonDeserialize(as = ImmutableThreadRunStepObject.RetrievalToolCall.class)
+		public interface RetrievalToolCall extends ToolCall {
+			/**
+			 * The ID of the tool call object.
+			 */
+			String id();
+
+			/**
+			 * The type of tool call.
+			 */
+			String type();
+
+			/**
+			 * For now, this is always going to be an empty object.
+			 */
+			Map<String, Object> retrieval();
+		}
+
+		@Value.Immutable(builder = false)
+		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
+		@JsonDeserialize(as = ImmutableThreadRunStepObject.FunctionToolCall.class)
+		public interface FunctionToolCall extends ToolCall {
+			/**
+			 * The ID of the tool call object.
+			 */
+			String id();
+
+			/**
+			 * The type of tool call.
+			 */
+			String type();
+
+			/**
+			 * The definition of the function that was called.
+			 */
+			Function function();
+
+			@Value.Immutable(builder = false)
+			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
+					allParameters = true)
+			@JsonDeserialize(as = ImmutableThreadRunStepObject.Function.class)
+			public interface Function {
+				/**
+				 * The name of the function.
+				 */
+				String name();
+
+				/**
+				 * The arguments passed to the function.
+				 */
+				String arguments();
+
+				/**
+				 * The output of the function. This will be null if the outputs have not
+				 * been submitted yet.
+				 */
+				@Nullable
+				String output();
+			}
+		}
+	}
 
 	/**
 	 * The last error associated with this run step. Will be null if there are no errors

@@ -80,22 +80,22 @@ public interface FilesClient {
 	 *
 	 * @return Deletion status.
 	 */
-	@RequestLine("DELETE /files/{fileId}")
-	DeletionStatus delete(@Param("fileId") String fileId);
+	@RequestLine("DELETE /files/{file_id}")
+	DeletionStatus delete(@Param("file_id") String fileId);
 
 	/**
 	 * Returns information about a specific file.
 	 *
 	 * @return The File object matching the specified ID.
 	 */
-	@RequestLine("GET /files/{fileId}")
-	FileObject retrieve(@Param("fileId") String fileId);
+	@RequestLine("GET /files/{file_id}")
+	FileObject retrieve(@Param("file_id") String fileId);
 
 	/**
 	 * Returns the contents of the specified file.
 	 *
 	 * @return The file content.
 	 */
-	@RequestLine("GET /files/{fileId}/content")
-	Response download(@Param("fileId") String fileId);
+	@RequestLine("GET /files/{file_id}/content")
+	Response download(@Param("file_id") String fileId);
 }
