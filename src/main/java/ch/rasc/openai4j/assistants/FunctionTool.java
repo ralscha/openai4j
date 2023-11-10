@@ -20,17 +20,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ch.rasc.openai4j.common.Function;
 
-public class FunctionTool implements Tool {
+public class FunctionTool extends Tool {
 
 	private final Function function;
 
 	private FunctionTool(Function function) {
+		super("function");
 		this.function = function;
-	}
-
-	@Override
-	public String type() {
-		return "function";
 	}
 
 	@JsonProperty

@@ -15,15 +15,14 @@
  */
 package ch.rasc.openai4j.assistants;
 
-public class CodeInterpreterTool implements Tool {
+public class CodeTool extends Tool {
 
-	@Override
-	public String type() {
-		return "code_interpreter";
+	CodeTool() {
+		super("code_interpreter");
 	}
 
-	public static CodeInterpreterTool of() {
-		return new CodeInterpreterTool();
+	public static CodeTool of() {
+		return new CodeTool();
 	}
 
 }

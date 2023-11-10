@@ -15,12 +15,25 @@
  */
 package ch.rasc.openai4j.assistants;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
-@JsonTypeInfo(use = Id.NAME, property = "type")
-@JsonTypeIdResolver(ToolTypeResolver.class)
-public interface Tool {
-	String type();
+@JsonTypeInfo(use = Id.NAME, property = "type", visible = true)
+@JsonSubTypes({ @Type(name = "code_interpreter", value = CodeTool.class),
+		@Type(name = "function", value = FunctionTool.class),
+		@Type(name = "retrieval", value = RetrievalTool.class) })
+public abstract class Tool {
+	private final String type;
+
+	Tool(String type) {
+		this.type = type;
+	}
+
+	@JsonProperty
+	public String type() {
+		return this.type;
+	}
 }

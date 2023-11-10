@@ -15,11 +15,10 @@
  */
 package ch.rasc.openai4j.assistants;
 
-public class RetrievalTool implements Tool {
+public class RetrievalTool extends Tool {
 
-	@Override
-	public String type() {
-		return "retrieval";
+	RetrievalTool() {
+		super("retrieval");
 	}
 
 	public static RetrievalTool of() {
