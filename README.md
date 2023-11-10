@@ -39,6 +39,9 @@ including the endpoints that are only available in beta. Legacy and deprecated e
     System.out.println(response.choices()[0].message().content());
 ```
 
+Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) repository for more examples.
+
+
 ## Changelog
 
 Not yet released
