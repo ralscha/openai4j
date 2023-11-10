@@ -131,7 +131,7 @@ public interface FilesClient {
 			}
 
 			file = this.retrieve(fileId);
-			if (System.currentTimeMillis() - start > maxWaitSeconds * 1000) {
+			if (System.currentTimeMillis() - start > maxWaitSeconds * 1000L) {
 				throw new RuntimeException("Giving up on waiting for file " + fileId
 						+ " to finish processing after " + maxWaitSeconds + " seconds.");
 			}

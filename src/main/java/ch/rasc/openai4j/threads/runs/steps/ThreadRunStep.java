@@ -120,13 +120,13 @@ public interface ThreadRunStep {
 	@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 	@JsonSubTypes({ @Type(MessageCreationStepDetails.class),
 			@Type(ToolCallsStepDetails.class) })
-	public interface StepDetail {
+	interface StepDetail {
 	}
 
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 	@JsonDeserialize(as = ImmutableThreadRunStep.MessageCreationStepDetails.class)
-	public interface MessageCreationStepDetails extends StepDetail {
+	interface MessageCreationStepDetails extends StepDetail {
 		String type();
 
 		/**
@@ -137,7 +137,7 @@ public interface ThreadRunStep {
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 		@JsonDeserialize(as = ImmutableThreadRunStep.MessageCreation.class)
-		public interface MessageCreation {
+		interface MessageCreation {
 			/**
 			 * The ID of the message that was created by this run step.
 			 */
@@ -149,7 +149,7 @@ public interface ThreadRunStep {
 	@Value.Immutable(builder = false)
 	@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 	@JsonDeserialize(as = ImmutableThreadRunStep.ToolCallsStepDetails.class)
-	public interface ToolCallsStepDetails extends StepDetail {
+	interface ToolCallsStepDetails extends StepDetail {
 		String type();
 
 		@JsonProperty("tool_calls")
@@ -158,13 +158,13 @@ public interface ThreadRunStep {
 		@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 		@JsonSubTypes({ @Type(CodeToolCall.class), @Type(RetrievalToolCall.class),
 				@Type(FunctionToolCall.class) })
-		public interface ToolCall {
+		interface ToolCall {
 		}
 
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 		@JsonDeserialize(as = ImmutableThreadRunStep.CodeToolCall.class)
-		public interface CodeToolCall extends ToolCall {
+		interface CodeToolCall extends ToolCall {
 			/**
 			 * The ID of the tool call.
 			 */
@@ -185,7 +185,7 @@ public interface ThreadRunStep {
 			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 					allParameters = true)
 			@JsonDeserialize(as = ImmutableThreadRunStep.CodeInterpreter.class)
-			public interface CodeInterpreter {
+			interface CodeInterpreter {
 				/**
 				 * The input to the Code Interpreter tool call.
 				 */
@@ -201,7 +201,7 @@ public interface ThreadRunStep {
 				@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 				@JsonSubTypes({ @Type(ImageCodeInterpreterOutput.class),
 						@Type(LogCodeInterpreterOutput.class) })
-				public interface CodeInterpreterOutput {
+				interface CodeInterpreterOutput {
 				}
 
 				@Value.Immutable(builder = false)
@@ -209,8 +209,7 @@ public interface ThreadRunStep {
 						allParameters = true)
 				@JsonDeserialize(
 						as = ImmutableThreadRunStep.ImageCodeInterpreterOutput.class)
-				public interface ImageCodeInterpreterOutput
-						extends CodeInterpreterOutput {
+				interface ImageCodeInterpreterOutput extends CodeInterpreterOutput {
 					String type();
 
 					Image image();
@@ -219,7 +218,7 @@ public interface ThreadRunStep {
 					@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 							allParameters = true)
 					@JsonDeserialize(as = ImmutableThreadRunStep.Image.class)
-					public interface Image {
+					interface Image {
 						/**
 						 * The file ID of the image.
 						 */
@@ -233,7 +232,7 @@ public interface ThreadRunStep {
 						allParameters = true)
 				@JsonDeserialize(
 						as = ImmutableThreadRunStep.LogCodeInterpreterOutput.class)
-				public interface LogCodeInterpreterOutput extends CodeInterpreterOutput {
+				interface LogCodeInterpreterOutput extends CodeInterpreterOutput {
 					String type();
 
 					/**
@@ -248,7 +247,7 @@ public interface ThreadRunStep {
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 		@JsonDeserialize(as = ImmutableThreadRunStep.RetrievalToolCall.class)
-		public interface RetrievalToolCall extends ToolCall {
+		interface RetrievalToolCall extends ToolCall {
 			/**
 			 * The ID of the tool call object.
 			 */
@@ -268,7 +267,7 @@ public interface ThreadRunStep {
 		@Value.Immutable(builder = false)
 		@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
 		@JsonDeserialize(as = ImmutableThreadRunStep.FunctionToolCall.class)
-		public interface FunctionToolCall extends ToolCall {
+		interface FunctionToolCall extends ToolCall {
 			/**
 			 * The ID of the tool call object.
 			 */
@@ -288,7 +287,7 @@ public interface ThreadRunStep {
 			@Value.Style(visibility = ImplementationVisibility.PACKAGE,
 					allParameters = true)
 			@JsonDeserialize(as = ImmutableThreadRunStep.Function.class)
-			public interface Function {
+			interface Function {
 				/**
 				 * The name of the function.
 				 */

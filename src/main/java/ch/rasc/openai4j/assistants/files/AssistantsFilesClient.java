@@ -31,7 +31,7 @@ import feign.RequestLine;
 public interface AssistantsFilesClient {
 	/**
 	 * Create an assistant file by attaching a File to an assistant.
-	 * @param The ID of the assistant for which to create a File.
+	 * @param assistantId The ID of the assistant for which to create a File.
 	 * @return An assistant file object.
 	 */
 	@RequestLine("POST /assistants/{assistant_id}/files")
@@ -41,7 +41,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Create an assistant file by attaching a File to an assistant.
-	 * @param The ID of the assistant for which to create a File.
+	 * @param assistantId The ID of the assistant for which to create a File.
 	 * @return An assistant file object.
 	 */
 	default AssistantFile create(String assistantId,

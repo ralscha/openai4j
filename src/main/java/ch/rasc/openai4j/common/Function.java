@@ -64,7 +64,7 @@ public class Function {
 
 	/**
 	 * The parameters the functions accepts, described as a JSON Schema object.
-	 *
+	 * <p>
 	 * To describe a function that accepts no parameters, provide the value {"type":
 	 * "object", "properties": {}}.
 	 */

@@ -99,7 +99,7 @@ public interface AudioTranscriptionRequest {
 	 * output more random, while lower values like 0.2 will make it more focused and
 	 * deterministic. If set to 0, the model will use log probability to automatically
 	 * increase the temperature until certain thresholds are hit.
-	 *
+	 * <p>
 	 * Defaults to 0.
 	 */
 	@Nullable

@@ -41,35 +41,22 @@ public class ToolTypeResolver extends TypeIdResolverBase {
 
 	@Override
 	public String idFromValueAndType(Object obj, Class<?> subType) {
-		String typeId = null;
-		switch (subType.getSimpleName()) {
-		case "CodeInterpreterTool":
-			typeId = "code_interpreter";
-			break;
-		case "RetrievalTool":
-			typeId = "retrieval";
-			break;
-		case "FunctionTool":
-			typeId = "function";
-			break;
-		}
-		return typeId;
+		return switch (subType.getSimpleName()) {
+		case "CodeInterpreterTool" -> "code_interpreter";
+		case "RetrievalTool" -> "retrieval";
+		case "FunctionTool" -> "function";
+		default -> null;
+		};
 	}
 
 	@Override
 	public JavaType typeFromId(DatabindContext context, String id) {
-		Class<?> subType = null;
-		switch (id) {
-		case "code_interpreter":
-			subType = CodeInterpreterTool.class;
-			break;
-		case "retrieval":
-			subType = RetrievalTool.class;
-			break;
-		case "function":
-			subType = FunctionTool.class;
-			break;
-		}
+		Class<?> subType = switch (id) {
+		case "code_interpreter" -> CodeInterpreterTool.class;
+		case "retrieval" -> RetrievalTool.class;
+		case "function" -> FunctionTool.class;
+		default -> null;
+		};
 		return context.constructSpecializedType(this.superType, subType);
 	}
 

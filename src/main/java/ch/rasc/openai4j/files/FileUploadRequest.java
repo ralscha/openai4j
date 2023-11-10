@@ -30,7 +30,7 @@ public interface FileUploadRequest {
 
 	/**
 	 * The intended purpose of the uploaded file.
-	 *
+	 * <p>
 	 * Use "fine-tune" for Fine-tuning and "assistants" for Assistants and Messages. This
 	 * allows us to validate the format of the uploaded file is correct for fine-tuning.
 	 */
