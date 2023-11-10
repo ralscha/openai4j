@@ -111,4 +111,15 @@ public interface AssistantsClient {
 	default ListResponse<Assistant> list(ListRequest request) {
 		return this.list(request.toMap());
 	}
+
+	/**
+	 * Returns a list of assistants.
+	 *
+	 * @param request A list request object with configuration for paging and ordering
+	 * @return A list of assistant objects.
+	 */
+	default ListResponse<Assistant> list(
+			Function<ListRequest.Builder, ListRequest.Builder> fn) {
+		return this.list(fn.apply(ListRequest.builder()).build());
+	}
 }

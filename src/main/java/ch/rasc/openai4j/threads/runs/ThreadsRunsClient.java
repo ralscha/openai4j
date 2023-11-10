@@ -106,6 +106,17 @@ public interface ThreadsRunsClient {
 	}
 
 	/**
+	 * Returns a list of runs belonging to a thread.
+	 * @param threadId The ID of the thread the run belongs to.
+	 * @param request A list request object with configuration for paging and ordering
+	 * @return A list of run objects.
+	 */
+	default ListResponse<ThreadRun> list(@Param("thread_id") String threadId,
+			Function<ListRequest.Builder, ListRequest.Builder> fn) {
+		return this.list(threadId, fn.apply(ListRequest.builder()).build());
+	}
+
+	/**
 	 * When a run has the status: "requires_action" and required_action.type is
 	 * submit_tool_outputs, this endpoint can be used to submit the outputs from the tool
 	 * calls once they're all completed. All outputs must be submitted in a single

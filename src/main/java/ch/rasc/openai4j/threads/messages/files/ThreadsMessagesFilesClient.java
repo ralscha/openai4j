@@ -16,6 +16,7 @@
 package ch.rasc.openai4j.threads.messages.files;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListRequest;
@@ -70,4 +71,17 @@ public interface ThreadsMessagesFilesClient {
 			ListRequest request) {
 		return this.list(threadId, messageId, request.toMap());
 	}
+
+	/**
+	 * Returns a list of message files.
+	 * @param threadId The ID of the thread to which the message and File belong.
+	 * @param messageId The ID of the message the file belongs to.
+	 * @param request A list request object with configuration for paging and ordering
+	 * @return A list of message file objects.
+	 */
+	default ListResponse<ThreadMessageFile> list(String threadId, String messageId,
+			Function<ListRequest.Builder, ListRequest.Builder> fn) {
+		return this.list(threadId, messageId, fn.apply(ListRequest.builder()).build());
+	}
+
 }

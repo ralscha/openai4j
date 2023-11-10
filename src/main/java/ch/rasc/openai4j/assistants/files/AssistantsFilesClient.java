@@ -96,4 +96,15 @@ public interface AssistantsFilesClient {
 	default ListResponse<AssistantFile> list(String assistantId, ListRequest request) {
 		return this.list(assistantId, request.toMap());
 	}
+
+	/**
+	 * Returns a list of assistant files.
+	 * @param assistantId The ID of the assistant who the file belongs to.
+	 * @param request A list request object with configuration for paging and ordering
+	 * @return A list of assistant file objects.
+	 */
+	default ListResponse<AssistantFile> list(String assistantId,
+			Function<ListRequest.Builder, ListRequest.Builder> fn) {
+		return this.list(assistantId, fn.apply(ListRequest.builder()).build());
+	}
 }

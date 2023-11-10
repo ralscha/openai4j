@@ -58,6 +58,17 @@ public interface ThreadsMessagesClient {
 	}
 
 	/**
+	 * Returns a list of messages for a given thread.
+	 * @param threadId The ID of the thread the messages belong to.
+	 * @param request A list request object with configuration for paging and ordering
+	 * @return A list of message objects.
+	 */
+	default ListResponse<ThreadMessage> list(@Param("thread_id") String threadId,
+			Function<ListRequest.Builder, ListRequest.Builder> fn) {
+		return this.list(threadId, fn.apply(ListRequest.builder()).build());
+	}
+
+	/**
 	 * Create a message.
 	 *
 	 * @return A message object.
