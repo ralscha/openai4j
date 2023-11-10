@@ -21,12 +21,12 @@ public interface ModerationsResult {
 	/**
 	 * A list of the categories, and whether they are flagged or not.
 	 */
-	Categories categories();
+	ModerationsCategories categories();
 
 	/**
 	 * A list of the categories along with their scores as predicted by the model.
 	 */
 	@JsonProperty("category_scores")
-	CategoryScores categoryScores();
+	ModerationsCategoryScores categoryScores();
 
 }

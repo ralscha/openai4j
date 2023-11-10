@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableCategories.class)
-public interface Categories {
+@JsonDeserialize(as = ImmutableModerationsCategories.class)
+public interface ModerationsCategories {
 
 	/**
 	 * Content that expresses, incites, or promotes hate based on race, gender, ethnicity,

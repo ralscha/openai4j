@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Value.Immutable(builder = false)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableCategoryScores.class)
-public interface CategoryScores {
+@JsonDeserialize(as = ImmutableModerationsCategoryScores.class)
+public interface ModerationsCategoryScores {
 
 	Double hate();
 

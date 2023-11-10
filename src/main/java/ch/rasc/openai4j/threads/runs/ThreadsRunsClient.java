@@ -92,4 +92,33 @@ public interface ThreadsRunsClient {
 		return this.list(threadId, request.toMap());
 	}
 
+	/**
+	 * When a run has the status: "requires_action" and required_action.type is
+	 * submit_tool_outputs, this endpoint can be used to submit the outputs from the tool
+	 * calls once they're all completed. All outputs must be submitted in a single
+	 * request.
+	 * @param threadId The ID of the thread to which this run belongs.
+	 * @param runId The ID of the run that requires the tool output submission.
+	 * @return The modified run object matching the specified ID.
+	 */
+	@RequestLine("POST /threads/{thread_id}/runs/{run_id}/submit_tool_outputs")
+	ThreadRunObject submitToolOutputs(@Param("thread_id") String threadId,
+			@Param("run_id") String runId, ThreadRunSubmitToolOutputsRequest request);
+
+	/**
+	 * When a run has the status: "requires_action" and required_action.type is
+	 * submit_tool_outputs, this endpoint can be used to submit the outputs from the tool
+	 * calls once they're all completed. All outputs must be submitted in a single
+	 * request.
+	 * @param threadId The ID of the thread to which this run belongs.
+	 * @param runId The ID of the run that requires the tool output submission.
+	 * @return The modified run object matching the specified ID.
+	 */
+	default ThreadRunObject submitToolOutputs(@Param("thread_id") String threadId,
+			@Param("run_id") String runId,
+			Function<ThreadRunSubmitToolOutputsRequest.Builder, ThreadRunSubmitToolOutputsRequest.Builder> fn) {
+		return this.submitToolOutputs(threadId, runId,
+				fn.apply(ThreadRunSubmitToolOutputsRequest.builder()).build());
+	}
+
 }
