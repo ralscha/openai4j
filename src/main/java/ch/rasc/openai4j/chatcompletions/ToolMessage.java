@@ -15,16 +15,18 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ToolMessage extends ChatCompletionMessage {
 
-	private final String content;
 	private final String toolCallId;
+	private final String content;
 
-	ToolMessage(String content, String toolCallId) {
-		this.content = content;
+	ToolMessage(String toolCallId, String content) {
 		this.toolCallId = toolCallId;
+		this.content = content;
 	}
 
 	/**
@@ -33,13 +35,14 @@ public class ToolMessage extends ChatCompletionMessage {
 	 * @param toolCallId Tool call that this message is responding to.
 	 * @return A new tool message.
 	 */
-	public static ToolMessage of(String content, String toolCallId) {
-		return new ToolMessage(content, toolCallId);
+	public static ToolMessage of(String toolCallId, String content) {
+		return new ToolMessage(toolCallId, content);
 	}
 
 	/**
 	 * The contents of the tool message.
 	 */
+	@JsonInclude(Include.ALWAYS)
 	@JsonProperty
 	public String content() {
 		return this.content;

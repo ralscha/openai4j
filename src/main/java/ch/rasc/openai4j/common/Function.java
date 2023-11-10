@@ -23,25 +23,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Function {
-	private final String description;
 	private final String name;
+	private final String description;
 	private final Object parameters;
 
-	private Function(String description, String name, Object parameters) {
-		this.description = description;
+	private Function(String name, String description, Object parameters) {
 		this.name = name;
+		this.description = description;
 		this.parameters = parameters;
 	}
 
 	@JsonCreator
-	public static Function of(@JsonProperty("description") String description,
-			@JsonProperty("name") String name,
+	public static Function of(@JsonProperty("name") String name,
+			@JsonProperty("description") String description,
 			@JsonProperty("parameters") Object parameters) {
-		return new Function(description, name, parameters);
+		return new Function(name, description, parameters);
 	}
 
 	public static Function of(String name, Object parameters) {
-		return new Function(null, name, parameters);
+		return new Function(name, null, parameters);
 	}
 
 	/**

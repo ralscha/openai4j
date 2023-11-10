@@ -32,6 +32,10 @@ public class ChatCompletionTool {
 		return new ChatCompletionTool(type, function);
 	}
 
+	public static ChatCompletionTool of(Function function) {
+		return new ChatCompletionTool("function", function);
+	}
+
 	/**
 	 * Tpe type of the tool. Currently, only function is supported.
 	 */
