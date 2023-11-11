@@ -72,7 +72,7 @@ public class OpenAIClient {
 		FormEncoder formAndJsonEncoder = new FormEncoder(jsonEncoder);
 
 		List<RequestInterceptor> interceptors = new ArrayList<>();
-		
+
 		if (configuration.additionalRequestInterceptor() != null) {
 			interceptors.add(configuration.additionalRequestInterceptor());
 		}

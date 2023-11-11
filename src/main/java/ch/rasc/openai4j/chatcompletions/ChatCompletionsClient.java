@@ -80,23 +80,20 @@ public interface ChatCompletionsClient {
 			for (var toolCall : message.toolCalls()) {
 				JavaFunction<?, ?> javaFunction = javaFunctionRegistry
 						.get(toolCall.function().name());
-				if (javaFunction != null) {
-					var argument = objectMapper.readValue(toolCall.function().arguments(),
-							javaFunction.parameterClass());
-					Object result = javaFunction.call(argument);
-
-					if (result != null) {
-						String resultJson = objectMapper.writeValueAsString(result);
-						thread.add(ToolMessage.of(toolCall.id(), resultJson));
-					}
-					else {
-						thread.add(ToolMessage.of(toolCall.id(), null));
-					}
-
-				}
-				else {
+				if (javaFunction == null) {
 					throw new IllegalStateException(
 							"Unknown function " + toolCall.function().name());
+				}
+				var argument = objectMapper.readValue(toolCall.function().arguments(),
+						javaFunction.parameterClass());
+				Object result = javaFunction.call(argument);
+
+				if (result != null) {
+					String resultJson = objectMapper.writeValueAsString(result);
+					thread.add(ToolMessage.of(toolCall.id(), resultJson));
+				}
+				else {
+					thread.add(ToolMessage.of(toolCall.id(), null));
 				}
 			}
 

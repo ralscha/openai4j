@@ -68,18 +68,15 @@ public interface Configuration {
 	default Logger logger() {
 		return new Slf4jLogger();
 	}
-	
+
 	@Value.Default
 	default ErrorDecoder errorDecoder() {
 		return new OpenAIErrorDecoder();
 	}
 
 	@Nullable
-	@Value.Default
-	default RequestInterceptor additionalRequestInterceptor() {
-		return null;
-	}
-	
+	RequestInterceptor additionalRequestInterceptor();
+
 	// Azure
 
 	@Value.Default
