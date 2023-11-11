@@ -4,8 +4,9 @@ Unofficial, community-maintained Java implementation of the OpenAI API:
 
 https://platform.openai.com/docs/api-reference
 
-openai4j is a Java library that implements all currently (as of 10.11.2023) [documented endpoints](https://platform.openai.com/docs/api-reference)
-including the endpoints that are only available in beta. Legacy and deprecated endpoints are not implemented.
+openai4j is a Java library that implements all  [documented endpoints](https://platform.openai.com/docs/api-reference) as of 11.11.2023, 
+including the endpoints that are only available in beta.  
+Legacy and deprecated endpoints are not implemented.
 
 ## Installation
 
