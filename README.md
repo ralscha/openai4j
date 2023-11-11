@@ -145,6 +145,9 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
+### 1.0.1 - November ??, 2023
+  * Bugfix ChatCompletions UserMessage for GPT Vision
+
 ### 1.0.0 - November 11, 2023
   * Initial release
 
