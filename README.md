@@ -13,14 +13,8 @@ including the endpoints that are only available in beta. Legacy and deprecated e
 <dependency>
     <groupId>ch.rasc</groupId>
     <artifactId>openai4j</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
-
-<!-- add this to use the snapshot version -->
-<repository>
-    <id>sonatype-snapshots</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-</repository>
 ```
 
 
@@ -44,7 +38,9 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
-Not yet released
+### 1.0.0 - November 11, 2023
+  * Initial release
+
 
 
 ## License
