@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.common.Error;
-import ch.rasc.openai4j.finetuningjobs.FineTuningJob.HyperParameters;
-import ch.rasc.openai4j.finetuningjobs.FineTuningJob.Status;
 
 /**
  * The fine_tuning.job object represents a fine-tuning job that has been created through

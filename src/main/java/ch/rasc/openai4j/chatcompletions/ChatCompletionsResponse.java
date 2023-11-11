@@ -19,9 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Choice;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Choice.FinishReason;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Usage;
 import ch.rasc.openai4j.common.FunctionArguments;
 
 /**

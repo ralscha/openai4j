@@ -25,14 +25,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.common.Error;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.MessageCreationStepDetails.MessageCreation;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.StepDetail;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ThreadRunStepStatus;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ThreadRunStepType;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.CodeToolCall.CodeInterpreter;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.CodeToolCall.CodeInterpreter.CodeInterpreterOutput;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.FunctionToolCall.Function;
-import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.ToolCall;
 
 /**
  * Represents a step in execution of a run.

@@ -116,6 +116,7 @@ public interface ThreadsRunsClient {
 	 * Returns a list of runs belonging to a thread.
 	 *
 	 * @param threadId The ID of the thread the run belongs to.
+	 * @param fn A list request object with configuration for paging and ordering
 	 * @return A list of run objects.
 	 */
 	default ListResponse<ThreadRun> list(@Param("thread_id") String threadId,
@@ -160,8 +161,9 @@ public interface ThreadsRunsClient {
 	 */
 	default void waitForProcessing(ThreadRun run, long pollInterval,
 			TimeUnit pollIntervalTimeUnit, long maxWait, TimeUnit maxWaitTimeUnit) {
+		ThreadRun currentRun = run;
 		long start = System.currentTimeMillis();
-		while (!run.status().isTerminal()) {
+		while (!currentRun.status().isTerminal()) {
 			try {
 				pollIntervalTimeUnit.sleep(pollInterval);
 			}
@@ -176,7 +178,7 @@ public interface ThreadsRunsClient {
 						+ maxWaitTimeUnit);
 			}
 
-			run = this.retrieve(run.threadId(), run.id());
+			currentRun = this.retrieve(run.threadId(), run.id());
 		}
 	}
 

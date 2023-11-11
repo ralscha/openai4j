@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.files.FileObject.Status;
 
 public record FileObject(String id, Integer bytes,
 		@JsonProperty("created_at") Integer createdAt, String filename, String object,
