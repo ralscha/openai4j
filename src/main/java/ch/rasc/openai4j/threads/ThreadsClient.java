@@ -47,6 +47,15 @@ public interface ThreadsClient {
 	}
 
 	/**
+	 * Create an empty thread.
+	 *
+	 * @return A thread object.
+	 */
+	default Thread create() {
+		return this.create(ThreadCreateRequest.builder().build());
+	}
+
+	/**
 	 * Create a thread and run it in one request.
 	 *
 	 * @return A run object.

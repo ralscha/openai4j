@@ -16,6 +16,7 @@
 package ch.rasc.openai4j.files;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 import ch.rasc.openai4j.common.DeletionStatus;
@@ -62,8 +63,30 @@ public interface FilesClient {
 	 *
 	 * @return The uploaded File object.
 	 */
-	default FileObject create(FileCreateRequest request) {
-		return this.create(request.file().toFile(), request.purpose().value());
+	default FileObject create(Path file, Purpose purpose) {
+		return this.create(file.toFile(), purpose.value());
+	}
+
+	/**
+	 * Upload a file for assistants. The size of all the files uploaded by one
+	 * organization can be up to 100 GB. The size of individual files for can be a maximum
+	 * of 512MB.
+	 *
+	 * @return The uploaded File object.
+	 */
+	default FileObject createForAssistants(Path file) {
+		return this.create(file, Purpose.ASSISTANTS);
+	}
+
+	/**
+	 * Upload a file for fine-tune. The size of all the files uploaded by one organization
+	 * can be up to 100 GB. The size of individual files for can be a maximum of 512MB.
+	 * The Fine-tuning API only supports .jsonl files.
+	 *
+	 * @return The uploaded File object.
+	 */
+	default FileObject createForFineTune(Path file) {
+		return this.create(file, Purpose.FINE_TUNE);
 	}
 
 	/**

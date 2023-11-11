@@ -72,6 +72,10 @@ public class OpenAIClient {
 		FormEncoder formAndJsonEncoder = new FormEncoder(jsonEncoder);
 
 		List<RequestInterceptor> interceptors = new ArrayList<>();
+		
+		if (configuration.additionalRequestInterceptor() != null) {
+			interceptors.add(configuration.additionalRequestInterceptor());
+		}
 
 		if (configuration.organization() != null
 				&& !configuration.organization().isBlank()) {
@@ -161,6 +165,7 @@ public class OpenAIClient {
 			JacksonDecoder jsonDecoder, FormEncoder formAndJsonEncoder,
 			List<RequestInterceptor> interceptors) {
 		return Feign.builder().client(configuration.client())
+				.errorDecoder(configuration.errorDecoder())
 				.retryer(configuration.retryer()).options(configuration.feignOptions())
 				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
@@ -171,6 +176,7 @@ public class OpenAIClient {
 			JacksonDecoder jsonDecoder, JacksonEncoder jsonEncoder,
 			List<RequestInterceptor> interceptors) {
 		return Feign.builder().client(configuration.client())
+				.errorDecoder(configuration.errorDecoder())
 				.retryer(configuration.retryer()).options(configuration.feignOptions())
 				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)
@@ -181,6 +187,7 @@ public class OpenAIClient {
 			JacksonDecoder jsonDecoder, JacksonEncoder jsonEncoder,
 			ArrayList<RequestInterceptor> betaInterceptors) {
 		return Feign.builder().client(configuration.client())
+				.errorDecoder(configuration.errorDecoder())
 				.retryer(configuration.retryer()).options(configuration.feignOptions())
 				.logger(configuration.logger()).logLevel(configuration.logLevel())
 				.decoder(jsonDecoder).encoder(jsonEncoder)

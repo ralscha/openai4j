@@ -24,7 +24,9 @@ import feign.Client;
 import feign.Logger;
 import feign.Logger.Level;
 import feign.Request;
+import feign.RequestInterceptor;
 import feign.Retryer;
+import feign.codec.ErrorDecoder;
 import feign.http2client.Http2Client;
 import feign.slf4j.Slf4jLogger;
 
@@ -66,7 +68,18 @@ public interface Configuration {
 	default Logger logger() {
 		return new Slf4jLogger();
 	}
+	
+	@Value.Default
+	default ErrorDecoder errorDecoder() {
+		return new OpenAIErrorDecoder();
+	}
 
+	@Nullable
+	@Value.Default
+	default RequestInterceptor additionalRequestInterceptor() {
+		return null;
+	}
+	
 	// Azure
 
 	@Value.Default
