@@ -20,6 +20,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ch.rasc.openai4j.chatcompletions.UserMessage.ImageContent.ImageUrl;
+
 public class UserMessage extends ChatCompletionMessage {
 	private final Object content;
 
@@ -34,8 +36,34 @@ public class UserMessage extends ChatCompletionMessage {
 		return new UserMessage(content);
 	}
 
-	public static UserMessage of(List<String> content) {
+	/**
+	 * Create a new user message with the given content.
+	 */
+	public static UserMessage of(List<Content> content) {
 		return new UserMessage(List.copyOf(content));
+	}
+
+	public interface Content {
+	}
+
+	public record ImageContent(String type, @JsonProperty("image_url") ImageUrl imageUrl)
+			implements Content {
+		record ImageUrl(String url, String detail) {
+		}
+
+		public static ImageContent of(String url) {
+			return of(url, null);
+		}
+
+		public static ImageContent of(String url, String detail) {
+			return new ImageContent("image_url", new ImageUrl(url, detail));
+		}
+	}
+
+	public record TextContent(String type, String text) implements Content {
+		public static TextContent of(String text) {
+			return new TextContent("text", text);
+		}
 	}
 
 	/**
