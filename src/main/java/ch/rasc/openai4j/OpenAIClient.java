@@ -35,6 +35,7 @@ import ch.rasc.openai4j.threads.messages.files.ThreadsMessagesFilesClient;
 import ch.rasc.openai4j.threads.runs.ThreadsRunsClient;
 import ch.rasc.openai4j.threads.runs.steps.ThreadsRunsStepsClient;
 import feign.Feign;
+import feign.Feign.Builder;
 import feign.RequestInterceptor;
 import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
@@ -107,92 +108,82 @@ public class OpenAIClient {
 			interceptors.add(new AuthorizationRequestInterceptor(configuration.apiKey()));
 		}
 
-		client.chatCompletions = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(interceptors)
-				.target(ChatCompletionsClient.class, baseUrl);
+		client.chatCompletions = jsonClientBuilder(configuration, jsonDecoder,
+				jsonEncoder, interceptors).target(ChatCompletionsClient.class, baseUrl);
 
-		client.embeddings = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(interceptors)
-				.target(EmbeddingsClient.class, baseUrl);
+		client.embeddings = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				interceptors).target(EmbeddingsClient.class, baseUrl);
 
-		client.files = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(formAndJsonEncoder).requestInterceptors(interceptors)
-				.target(FilesClient.class, baseUrl);
+		client.files = formAndJsonClientBuilder(configuration, jsonDecoder,
+				formAndJsonEncoder, interceptors).target(FilesClient.class, baseUrl);
 
-		client.fineTuningJobs = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(formAndJsonEncoder).requestInterceptors(interceptors)
-				.target(FineTuningJobsClient.class, baseUrl);
+		client.fineTuningJobs = formAndJsonClientBuilder(configuration, jsonDecoder,
+				formAndJsonEncoder, interceptors).target(FineTuningJobsClient.class,
+						baseUrl);
 
-		client.audio = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(formAndJsonEncoder).requestInterceptors(interceptors)
-				.target(AudioClient.class, baseUrl);
+		client.audio = formAndJsonClientBuilder(configuration, jsonDecoder,
+				formAndJsonEncoder, interceptors).target(AudioClient.class, baseUrl);
 
-		client.images = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(formAndJsonEncoder).requestInterceptors(interceptors)
-				.target(ImagesClient.class, baseUrl);
+		client.images = formAndJsonClientBuilder(configuration, jsonDecoder,
+				formAndJsonEncoder, interceptors).target(ImagesClient.class, baseUrl);
 
-		client.moderations = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(interceptors)
-				.target(ModerationsClient.class, baseUrl);
+		client.moderations = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				interceptors).target(ModerationsClient.class, baseUrl);
 
-		client.models = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(interceptors)
-				.target(ModelsClient.class, baseUrl);
+		client.models = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				interceptors).target(ModelsClient.class, baseUrl);
 
 		var betaInterceptors = new ArrayList<>(interceptors);
 		betaInterceptors.add(new OpenAIBetaRequestInterceptor());
-		client.threads = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(ThreadsClient.class, baseUrl);
-		client.threadsRuns = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(ThreadsRunsClient.class, baseUrl);
-		client.threadsRunsSteps = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(ThreadsRunsStepsClient.class, baseUrl);
-		client.threadsMessages = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(ThreadsMessagesClient.class, baseUrl);
-		client.threadsMessagesFiles = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(ThreadsMessagesFilesClient.class, baseUrl);
-		client.assistants = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(AssistantsClient.class, baseUrl);
-		client.assistantsFiles = Feign.builder().retryer(configuration.retryer())
-				.options(configuration.feignOptions()).logger(configuration.logger())
-				.logLevel(configuration.logLevel()).decoder(jsonDecoder)
-				.encoder(jsonEncoder).requestInterceptors(betaInterceptors)
-				.target(AssistantsFilesClient.class, baseUrl);
+		client.threads = betaClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				betaInterceptors).target(ThreadsClient.class, baseUrl);
+		client.threadsRuns = betaClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				betaInterceptors).target(ThreadsRunsClient.class, baseUrl);
+		client.threadsRunsSteps = betaClientBuilder(configuration, jsonDecoder,
+				jsonEncoder, betaInterceptors).target(ThreadsRunsStepsClient.class,
+						baseUrl);
+		client.threadsMessages = betaClientBuilder(configuration, jsonDecoder,
+				jsonEncoder, betaInterceptors).target(ThreadsMessagesClient.class,
+						baseUrl);
+		client.threadsMessagesFiles = betaClientBuilder(configuration, jsonDecoder,
+				jsonEncoder, betaInterceptors).target(ThreadsMessagesFilesClient.class,
+						baseUrl);
+		client.assistants = betaClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				betaInterceptors).target(AssistantsClient.class, baseUrl);
+		client.assistantsFiles = betaClientBuilder(configuration, jsonDecoder,
+				jsonEncoder, betaInterceptors).target(AssistantsFilesClient.class,
+						baseUrl);
 
 		return client;
+	}
+
+	private static Builder formAndJsonClientBuilder(Configuration configuration,
+			JacksonDecoder jsonDecoder, FormEncoder formAndJsonEncoder,
+			List<RequestInterceptor> interceptors) {
+		return Feign.builder().client(configuration.client())
+				.retryer(configuration.retryer()).options(configuration.feignOptions())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
+				.decoder(jsonDecoder).encoder(formAndJsonEncoder)
+				.requestInterceptors(interceptors);
+	}
+
+	private static Builder jsonClientBuilder(Configuration configuration,
+			JacksonDecoder jsonDecoder, JacksonEncoder jsonEncoder,
+			List<RequestInterceptor> interceptors) {
+		return Feign.builder().client(configuration.client())
+				.retryer(configuration.retryer()).options(configuration.feignOptions())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(interceptors);
+	}
+
+	private static Builder betaClientBuilder(Configuration configuration,
+			JacksonDecoder jsonDecoder, JacksonEncoder jsonEncoder,
+			ArrayList<RequestInterceptor> betaInterceptors) {
+		return Feign.builder().client(configuration.client())
+				.retryer(configuration.retryer()).options(configuration.feignOptions())
+				.logger(configuration.logger()).logLevel(configuration.logLevel())
+				.decoder(jsonDecoder).encoder(jsonEncoder)
+				.requestInterceptors(betaInterceptors);
 	}
 }

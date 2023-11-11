@@ -20,10 +20,12 @@ import java.util.concurrent.TimeUnit;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
+import feign.Client;
 import feign.Logger;
 import feign.Logger.Level;
 import feign.Request;
 import feign.Retryer;
+import feign.http2client.Http2Client;
 import feign.slf4j.Slf4jLogger;
 
 @Value.Immutable
@@ -44,6 +46,11 @@ public interface Configuration {
 		return "https://api.openai.com/v1";
 	}
 
+	@Value.Default
+	default Client client() {
+		return new Http2Client();
+	}
+	
 	@Value.Default
 	default Retryer retryer() {
 		return new Retryer.Default(TimeUnit.SECONDS.toMillis(2),
