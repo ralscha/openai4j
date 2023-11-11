@@ -15,33 +15,41 @@
  */
 package ch.rasc.openai4j.common;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Function {
+public class FunctionParameters {
+	/**
+	 * The parameters the functions accepts, described as a JSON Schema object.
+	 * <p>
+	 * To describe a function that accepts no parameters, provide the value {"type":
+	 * "object", "properties": {}}.
+	 */
+	public static Map<String, Object> NO_PARAMETERS = Map.of("type", "object",
+			"properties", Map.of());
 	private final String name;
 	private final String description;
 	private final Object parameters;
 
-	private Function(String name, String description, Object parameters) {
+	private FunctionParameters(String name, String description, Object parameters) {
 		this.name = name;
 		this.description = description;
 		this.parameters = parameters;
 	}
 
 	@JsonCreator
-	public static Function of(@JsonProperty("name") String name,
+	public static FunctionParameters of(@JsonProperty("name") String name,
 			@JsonProperty("description") String description,
 			@JsonProperty("parameters") Object parameters) {
-		return new Function(name, description, parameters);
+		return new FunctionParameters(name, description, parameters);
 	}
 
-	public static Function of(String name, Object parameters) {
-		return new Function(name, null, parameters);
+	public static FunctionParameters of(String name, Object parameters) {
+		return new FunctionParameters(name, null, parameters);
 	}
 
 	/**
@@ -61,15 +69,6 @@ public class Function {
 	public String name() {
 		return this.name;
 	}
-
-	/**
-	 * The parameters the functions accepts, described as a JSON Schema object.
-	 * <p>
-	 * To describe a function that accepts no parameters, provide the value {"type":
-	 * "object", "properties": {}}.
-	 */
-	public static Map<String, Object> NO_PARAMETERS = Map.of("type", "object",
-			"properties", Map.of());
 
 	@JsonProperty
 	public Object parameters() {

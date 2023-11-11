@@ -15,10 +15,10 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
-import java.util.function.Function;
-
 import feign.Headers;
 import feign.RequestLine;
+
+import java.util.function.Function;
 
 public interface ChatCompletionsClient {
 

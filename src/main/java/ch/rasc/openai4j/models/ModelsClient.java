@@ -16,6 +16,7 @@
 package ch.rasc.openai4j.models;
 
 import ch.rasc.openai4j.common.DeletionStatus;
+import ch.rasc.openai4j.common.ListResponse;
 import feign.Param;
 import feign.RequestLine;
 
@@ -28,7 +29,7 @@ public interface ModelsClient {
 	 * @return Returns a list of model objects.
 	 */
 	@RequestLine("GET /models")
-	ModelsResponse list();
+	ListResponse<Model> list();
 
 	/**
 	 * Retrieves a model instance, providing basic information about the model such as the

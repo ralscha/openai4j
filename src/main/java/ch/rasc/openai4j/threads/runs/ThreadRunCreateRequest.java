@@ -15,24 +15,26 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
-import java.util.Map;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
+import ch.rasc.openai4j.assistants.Tool;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.assistants.Tool;
+import java.util.Map;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @JsonSerialize(as = ImmutableThreadRunCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 public interface ThreadRunCreateRequest {
+
+	static Builder builder() {
+		return new Builder();
+	}
 
 	/*
 	 * The ID of the assistant to use to execute this run.
@@ -69,10 +71,6 @@ public interface ThreadRunCreateRequest {
 	 */
 	@Nullable
 	Map<String, Object> metadata();
-
-	static Builder builder() {
-		return new Builder();
-	}
 
 	final class Builder extends ImmutableThreadRunCreateRequest.Builder {
 	}

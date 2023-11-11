@@ -15,9 +15,6 @@
  */
 package ch.rasc.openai4j.assistants.files;
 
-import java.util.Map;
-import java.util.function.Function;
-
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListRequest;
@@ -27,10 +24,14 @@ import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
 
+import java.util.Map;
+import java.util.function.Function;
+
 @Beta
 public interface AssistantsFilesClient {
 	/**
 	 * Create an assistant file by attaching a File to an assistant.
+	 *
 	 * @param assistantId The ID of the assistant for which to create a File.
 	 * @return An assistant file object.
 	 */
@@ -41,6 +42,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Create an assistant file by attaching a File to an assistant.
+	 *
 	 * @param assistantId The ID of the assistant for which to create a File.
 	 * @return An assistant file object.
 	 */
@@ -52,6 +54,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Retrieves an assistant file.
+	 *
 	 * @param assistantId The ID of the assistant who the file belongs to.
 	 * @param fileId The ID of the file we're getting.
 	 * @return The assistant file object matching the specified ID.
@@ -62,6 +65,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Delete an assistant file.
+	 *
 	 * @param assistantId The ID of the assistant who the file belongs to.
 	 * @param fileId The ID of the file to delete.
 	 * @return Deletion status
@@ -72,6 +76,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Returns a list of assistant files.
+	 *
 	 * @param assistantId The ID of the assistant who the file belongs to.
 	 * @return A list of assistant file objects.
 	 */
@@ -80,6 +85,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Returns a list of assistant files.
+	 *
 	 * @param assistantId The ID of the assistant who the file belongs to.
 	 * @return A list of assistant file objects.
 	 */
@@ -89,6 +95,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Returns a list of assistant files.
+	 *
 	 * @param assistantId The ID of the assistant who the file belongs to.
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of assistant file objects.
@@ -99,6 +106,7 @@ public interface AssistantsFilesClient {
 
 	/**
 	 * Returns a list of assistant files.
+	 *
 	 * @param assistantId The ID of the assistant who the file belongs to.
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of assistant file objects.

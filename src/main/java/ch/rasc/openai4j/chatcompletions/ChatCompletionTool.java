@@ -15,24 +15,23 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
+import ch.rasc.openai4j.common.FunctionParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import ch.rasc.openai4j.common.Function;
 
 public class ChatCompletionTool {
 	private final String type;
-	private final Function function;
+	private final FunctionParameters function;
 
-	public ChatCompletionTool(String type, Function function) {
+	public ChatCompletionTool(String type, FunctionParameters function) {
 		this.type = type;
 		this.function = function;
 	}
 
-	public static ChatCompletionTool of(String type, Function function) {
+	public static ChatCompletionTool of(String type, FunctionParameters function) {
 		return new ChatCompletionTool(type, function);
 	}
 
-	public static ChatCompletionTool of(Function function) {
+	public static ChatCompletionTool of(FunctionParameters function) {
 		return new ChatCompletionTool("function", function);
 	}
 
@@ -45,7 +44,7 @@ public class ChatCompletionTool {
 	}
 
 	@JsonProperty
-	public Function function() {
+	public FunctionParameters function() {
 		return this.function;
 	}
 }

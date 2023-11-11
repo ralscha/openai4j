@@ -15,14 +15,14 @@
  */
 package ch.rasc.openai4j.files;
 
-import java.io.File;
-import java.util.function.Function;
-
 import ch.rasc.openai4j.common.DeletionStatus;
+import ch.rasc.openai4j.common.ListResponse;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.Response;
+
+import java.io.File;
 
 public interface FilesClient {
 
@@ -32,7 +32,7 @@ public interface FilesClient {
 	 * @return A list of File objects.
 	 */
 	@RequestLine("GET /files")
-	FilesResponse list();
+	ListResponse<FileObject> list();
 
 	/**
 	 * Returns a list of files that belong to the user's organization with the given
@@ -41,7 +41,7 @@ public interface FilesClient {
 	 * @return A list of File objects.
 	 */
 	@RequestLine("GET /files?purpose={purpose}")
-	FilesResponse list(@Param("purpose") String purpose);
+	ListResponse<FileObject> list(@Param("purpose") String purpose);
 
 	/**
 	 * Returns a list of files that belong to the user's organization with the given
@@ -49,7 +49,7 @@ public interface FilesClient {
 	 *
 	 * @return A list of File objects.
 	 */
-	default FilesResponse list(Purpose purpose) {
+	default ListResponse<FileObject> list(Purpose purpose) {
 		return this.list(purpose.value());
 	}
 
@@ -61,21 +61,8 @@ public interface FilesClient {
 	 *
 	 * @return The uploaded File object.
 	 */
-	default FileObject create(FileUploadRequest request) {
+	default FileObject create(FileCreateRequest request) {
 		return this.create(request.file().toFile(), request.purpose().value());
-	}
-
-	/**
-	 * Upload a file that can be used across various endpoints/features. The size of all
-	 * the files uploaded by one organization can be up to 100 GB. The size of individual
-	 * files for can be a maximum of 512MB. The Fine-tuning API only supports .jsonl
-	 * files.
-	 *
-	 * @return The uploaded File object.
-	 */
-	default FileObject create(
-			Function<FileUploadRequest.Builder, FileUploadRequest.Builder> fn) {
-		return this.create(fn.apply(FileUploadRequest.builder()).build());
 	}
 
 	/**

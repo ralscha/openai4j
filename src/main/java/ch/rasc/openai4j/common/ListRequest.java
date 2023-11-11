@@ -15,23 +15,25 @@
  */
 package ch.rasc.openai4j.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @JsonSerialize(as = ImmutableListRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 public interface ListRequest {
+
+	static Builder builder() {
+		return new Builder();
+	}
 
 	/*
 	 * A limit on the number of objects to be returned. Limit can range between 1 and 100,
@@ -65,13 +67,6 @@ public interface ListRequest {
 	@Nullable
 	String before();
 
-	static Builder builder() {
-		return new Builder();
-	}
-
-	final class Builder extends ImmutableListRequest.Builder {
-	}
-
 	default Map<String, Object> toMap() {
 		Map<String, Object> queryParameters = new HashMap<>();
 		if (limit() != null) {
@@ -87,5 +82,8 @@ public interface ListRequest {
 			queryParameters.put("before", before());
 		}
 		return queryParameters;
+	}
+
+	final class Builder extends ImmutableListRequest.Builder {
 	}
 }

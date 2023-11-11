@@ -15,9 +15,6 @@
  */
 package ch.rasc.openai4j.threads.messages;
 
-import java.util.Map;
-import java.util.function.Function;
-
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
@@ -26,11 +23,15 @@ import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
 
+import java.util.Map;
+import java.util.function.Function;
+
 @Beta
 public interface ThreadsMessagesClient {
 
 	/**
 	 * Returns a list of messages for a given thread.
+	 *
 	 * @param threadId The ID of the thread the messages belong to.
 	 * @return A list of message objects.
 	 */
@@ -39,6 +40,7 @@ public interface ThreadsMessagesClient {
 
 	/**
 	 * Returns a list of messages for a given thread.
+	 *
 	 * @param threadId The ID of the thread the messages belong to.
 	 * @return A list of message objects.
 	 */
@@ -48,6 +50,7 @@ public interface ThreadsMessagesClient {
 
 	/**
 	 * Returns a list of messages for a given thread.
+	 *
 	 * @param threadId The ID of the thread the messages belong to.
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of message objects.
@@ -59,6 +62,7 @@ public interface ThreadsMessagesClient {
 
 	/**
 	 * Returns a list of messages for a given thread.
+	 *
 	 * @param threadId The ID of the thread the messages belong to.
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of message objects.

@@ -15,13 +15,14 @@
  */
 package ch.rasc.openai4j.finetuningjobs;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
+import ch.rasc.openai4j.common.ListResponse;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public interface FineTuningJobsClient {
 
@@ -49,7 +50,7 @@ public interface FineTuningJobsClient {
 	 * @return A list of paginated fine-tuning job objects.
 	 */
 	@RequestLine("GET /fine_tuning/jobs")
-	FineTuningJobResponse list();
+	ListResponse<FineTuningJob> list();
 
 	/**
 	 * List your organization's fine-tuning jobs
@@ -57,17 +58,17 @@ public interface FineTuningJobsClient {
 	 * @return A list of paginated fine-tuning job objects.
 	 */
 	@RequestLine("GET /fine_tuning/jobs")
-	FineTuningJobResponse list(@QueryMap Map<String, Object> queryParameters);
+	ListResponse<FineTuningJob> list(@QueryMap Map<String, Object> queryParameters);
 
 	/**
-	 *
 	 * List your organization's fine-tuning jobs
+	 *
 	 * @param after Identifier for the last job from the previous pagination request.
 	 * Optional.
 	 * @param limit Number of fine-tuning jobs to retrieve. Optional. Defaults to 20.
 	 * @return A list of paginated fine-tuning job objects.
 	 */
-	default FineTuningJobResponse list(String after, Integer limit) {
+	default ListResponse<FineTuningJob> list(String after, Integer limit) {
 		Map<String, Object> queryParameters = new HashMap<>();
 		if (after != null && !after.isBlank()) {
 			queryParameters.put("after", after);
@@ -100,7 +101,7 @@ public interface FineTuningJobsClient {
 	 * @return A list of fine-tuning event objects.
 	 */
 	@RequestLine("GET /fine_tuning/jobs/{fine_tuning_job_id}/events")
-	FineTuningJobEventsResponse listEvents(
+	ListResponse<FineTuningJobEvent> listEvents(
 			@Param("fine_tuning_job_id") String fineTuningJobId);
 
 	/**
@@ -109,19 +110,20 @@ public interface FineTuningJobsClient {
 	 * @return A list of fine-tuning event objects.
 	 */
 	@RequestLine("GET /fine_tuning/jobs/{fine_tuning_job_id}/events")
-	FineTuningJobEventsResponse listEvents(
+	ListResponse<FineTuningJobEvent> listEvents(
 			@Param("fine_tuning_job_id") String fineTuningJobId,
 			@QueryMap Map<String, Object> queryParameters);
 
 	/**
 	 * Get status updates for a fine-tuning job.
+	 *
 	 * @param after Identifier for the last event from the previous pagination request.
 	 * Optional.
 	 * @param limit Number of events to retrieve. Optional. Defaults to 20.
 	 * @return A list of fine-tuning event objects.
 	 */
-	default FineTuningJobEventsResponse listEvents(String fineTuningJobId, String after,
-			Integer limit) {
+	default ListResponse<FineTuningJobEvent> listEvents(String fineTuningJobId,
+			String after, Integer limit) {
 		Map<String, Object> queryParameters = new HashMap<>();
 		if (after != null && !after.isBlank()) {
 			queryParameters.put("after", after);

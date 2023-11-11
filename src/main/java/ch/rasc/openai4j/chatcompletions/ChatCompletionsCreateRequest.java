@@ -15,19 +15,17 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
-import java.util.List;
-import java.util.Map;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.Nullable;
+import java.util.List;
+import java.util.Map;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
@@ -35,19 +33,8 @@ import ch.rasc.openai4j.Nullable;
 @JsonInclude(Include.NON_EMPTY)
 public interface ChatCompletionsCreateRequest {
 
-	enum ResponseFormat {
-		TEXT(Map.of("type", "text")), JSON_OBJECT(Map.of("type", "json_object"));
-
-		private final Map<String, String> value;
-
-		ResponseFormat(Map<String, String> value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public Map<String, String> toValue() {
-			return this.value;
-		}
+	static Builder builder() {
+		return new Builder();
 	}
 
 	/**
@@ -120,7 +107,6 @@ public interface ChatCompletionsCreateRequest {
 	 * the message content may be partially cut off if finish_reason="length", which
 	 * indicates the generation exceeded max_tokens or the conversation exceeded the max
 	 * context length.
-	 *
 	 */
 	@Nullable
 	@JsonProperty("response_format")
@@ -190,6 +176,28 @@ public interface ChatCompletionsCreateRequest {
 	@JsonProperty("tool_choice")
 	ToolChoice toolChoice();
 
+	/**
+	 * A unique identifier representing your end-user, which can help OpenAI to monitor
+	 * and detect abuse.
+	 */
+	@Nullable
+	String user();
+
+	enum ResponseFormat {
+		TEXT(Map.of("type", "text")), JSON_OBJECT(Map.of("type", "json_object"));
+
+		private final Map<String, String> value;
+
+		ResponseFormat(Map<String, String> value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public Map<String, String> toValue() {
+			return this.value;
+		}
+	}
+
 	class ToolChoice {
 		private final Object value;
 
@@ -225,17 +233,6 @@ public interface ChatCompletionsCreateRequest {
 		public Object value() {
 			return this.value;
 		}
-	}
-
-	/**
-	 * A unique identifier representing your end-user, which can help OpenAI to monitor
-	 * and detect abuse.
-	 */
-	@Nullable
-	String user();
-
-	static Builder builder() {
-		return new Builder();
 	}
 
 	final class Builder extends ImmutableChatCompletionsCreateRequest.Builder {

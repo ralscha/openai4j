@@ -15,48 +15,20 @@
  */
 package ch.rasc.openai4j.audio;
 
-import java.nio.file.Path;
-
+import ch.rasc.openai4j.Nullable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import ch.rasc.openai4j.Nullable;
+import java.nio.file.Path;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 public interface AudioTranslationRequest {
 
-	enum ResponseFormat {
-		JSON("json"), TEXT("text"), SRT("srt"), VERBOSE_JSON("verbose_json"), VTT("vtt");
-
-		private final String value;
-
-		ResponseFormat(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
-	}
-
-	enum Model {
-		WHISPER_1("whisper-1");
-
-		private final String value;
-
-		Model(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
+	static Builder builder() {
+		return new Builder();
 	}
 
 	/**
@@ -98,8 +70,34 @@ public interface AudioTranslationRequest {
 	@Nullable
 	Double temperature();
 
-	static Builder builder() {
-		return new Builder();
+	enum ResponseFormat {
+		JSON("json"), TEXT("text"), SRT("srt"), VERBOSE_JSON("verbose_json"), VTT("vtt");
+
+		private final String value;
+
+		ResponseFormat(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public String value() {
+			return this.value;
+		}
+	}
+
+	enum Model {
+		WHISPER_1("whisper-1");
+
+		private final String value;
+
+		Model(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public String value() {
+			return this.value;
+		}
 	}
 
 	final class Builder extends ImmutableAudioTranslationRequest.Builder {

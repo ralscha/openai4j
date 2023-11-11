@@ -15,14 +15,13 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
-import java.util.Arrays;
-
+import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Message;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.ToolCall;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Message;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.ToolCall;
+import java.util.Arrays;
 
 public class AssistantMessage extends ChatCompletionMessage {
 	private final String content;
@@ -44,6 +43,7 @@ public class AssistantMessage extends ChatCompletionMessage {
 
 	/**
 	 * Create a new assistant message
+	 *
 	 * @param content The contents of the system message.
 	 * @param name An optional name for the participant. Provides the model information to
 	 * differentiate between participants of the same role.
@@ -55,6 +55,7 @@ public class AssistantMessage extends ChatCompletionMessage {
 
 	/**
 	 * Create a new assistant message from a response message
+	 *
 	 * @param message The message from a chat completion response
 	 */
 	public static AssistantMessage of(Message message) {

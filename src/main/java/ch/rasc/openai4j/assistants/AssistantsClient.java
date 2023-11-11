@@ -15,9 +15,6 @@
  */
 package ch.rasc.openai4j.assistants;
 
-import java.util.Map;
-import java.util.function.Function;
-
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListRequest;
@@ -26,6 +23,9 @@ import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
+
+import java.util.Map;
+import java.util.function.Function;
 
 @Beta
 public interface AssistantsClient {

@@ -15,9 +15,6 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
-import java.util.Map;
-import java.util.function.Function;
-
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
@@ -26,11 +23,15 @@ import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
 
+import java.util.Map;
+import java.util.function.Function;
+
 @Beta
 public interface ThreadsRunsClient {
 
 	/**
 	 * Create a run.
+	 *
 	 * @param threadId The ID of the thread to run.
 	 * @return A run object.
 	 */
@@ -40,6 +41,7 @@ public interface ThreadsRunsClient {
 
 	/**
 	 * Create a run.
+	 *
 	 * @param threadId The ID of the thread to run.
 	 * @return A run object.
 	 */
@@ -50,6 +52,7 @@ public interface ThreadsRunsClient {
 
 	/**
 	 * Retrieves a run.
+	 *
 	 * @param threadId The ID of the thread that was run.
 	 * @param runId The ID of the run to retrieve.
 	 * @return The run object matching the specified ID.
@@ -79,6 +82,7 @@ public interface ThreadsRunsClient {
 
 	/**
 	 * Returns a list of runs belonging to a thread.
+	 *
 	 * @param threadId The ID of the thread the run belongs to.
 	 * @return A list of run objects.
 	 */
@@ -87,6 +91,7 @@ public interface ThreadsRunsClient {
 
 	/**
 	 * Returns a list of runs belonging to a thread.
+	 *
 	 * @param threadId The ID of the thread the run belongs to.
 	 * @return A list of run objects.
 	 */
@@ -96,6 +101,7 @@ public interface ThreadsRunsClient {
 
 	/**
 	 * Returns a list of runs belonging to a thread.
+	 *
 	 * @param threadId The ID of the thread the run belongs to.
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of run objects.
@@ -107,6 +113,7 @@ public interface ThreadsRunsClient {
 
 	/**
 	 * Returns a list of runs belonging to a thread.
+	 *
 	 * @param threadId The ID of the thread the run belongs to.
 	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of run objects.
@@ -121,6 +128,7 @@ public interface ThreadsRunsClient {
 	 * submit_tool_outputs, this endpoint can be used to submit the outputs from the tool
 	 * calls once they're all completed. All outputs must be submitted in a single
 	 * request.
+	 *
 	 * @param threadId The ID of the thread to which this run belongs.
 	 * @param runId The ID of the run that requires the tool output submission.
 	 * @return The modified run object matching the specified ID.
@@ -134,6 +142,7 @@ public interface ThreadsRunsClient {
 	 * submit_tool_outputs, this endpoint can be used to submit the outputs from the tool
 	 * calls once they're all completed. All outputs must be submitted in a single
 	 * request.
+	 *
 	 * @param threadId The ID of the thread to which this run belongs.
 	 * @param runId The ID of the run that requires the tool output submission.
 	 * @return The modified run object matching the specified ID.

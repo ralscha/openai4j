@@ -15,18 +15,16 @@
  */
 package ch.rasc.openai4j.embeddings;
 
-import java.util.List;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.Nullable;
+import java.util.List;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -34,19 +32,8 @@ import ch.rasc.openai4j.Nullable;
 @JsonInclude(Include.NON_EMPTY)
 public interface EmbeddingCreateRequest {
 
-	enum EncodingFormat {
-		FLOAT("float"), BASE64("base64");
-
-		private final String value;
-
-		EncodingFormat(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
+	static Builder builder() {
+		return new Builder();
 	}
 
 	/**
@@ -78,8 +65,19 @@ public interface EmbeddingCreateRequest {
 	@Nullable
 	String user();
 
-	static Builder builder() {
-		return new Builder();
+	enum EncodingFormat {
+		FLOAT("float"), BASE64("base64");
+
+		private final String value;
+
+		EncodingFormat(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public String value() {
+			return this.value;
+		}
 	}
 
 	final class Builder extends ImmutableEmbeddingCreateRequest.Builder {

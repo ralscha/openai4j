@@ -31,6 +31,7 @@ public class ToolMessage extends ChatCompletionMessage {
 
 	/**
 	 * Create a new tool message.
+	 *
 	 * @param content The contents of the tool message.
 	 * @param toolCallId Tool call that this message is responding to.
 	 * @return A new tool message.

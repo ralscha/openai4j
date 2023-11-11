@@ -15,37 +15,10 @@
  */
 package ch.rasc.openai4j.images;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import ch.rasc.openai4j.Nullable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Value.Immutable(builder = false)
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableImage.class)
-public interface Image {
-	/**
-	 * The base64-encoded JSON of the generated image, if response_format is b64_json.
-	 */
-	@JsonProperty("b64_json")
-	@Nullable
-	String b64Json();
-
-	/**
-	 * The URL of the generated image, if response_format is url (default).
-	 */
-	@Nullable
-	String url();
-
-	/**
-	 * The prompt that was used to generate the image, if there was any revision to the
-	 * prompt.
-	 */
-	@JsonProperty("revised_prompt")
-	@Nullable
-	String revisedPrompt();
-
+public record Image(@JsonProperty("b64_json") @Nullable String b64Json,
+		@Nullable String url,
+		@JsonProperty("revised_prompt") @Nullable String revisedPrompt) {
 }

@@ -15,10 +15,6 @@
  */
 package ch.rasc.openai4j;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-
 import ch.rasc.openai4j.assistants.AssistantsClient;
 import ch.rasc.openai4j.assistants.files.AssistantsFilesClient;
 import ch.rasc.openai4j.audio.AudioClient;
@@ -40,7 +36,27 @@ import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 public class OpenAIClient {
+
+	public AudioClient audio;
+	public ChatCompletionsClient chatCompletions;
+	public EmbeddingsClient embeddings;
+	public FilesClient files;
+	public FineTuningJobsClient fineTuningJobs;
+	public ImagesClient images;
+	public ModelsClient models;
+	public ModerationsClient moderations;
+	public ThreadsClient threads;
+	public ThreadsRunsClient threadsRuns;
+	public ThreadsRunsStepsClient threadsRunsSteps;
+	public ThreadsMessagesClient threadsMessages;
+	public ThreadsMessagesFilesClient threadsMessagesFiles;
+	public AssistantsClient assistants;
+	public AssistantsFilesClient assistantsFiles;
 
 	public static OpenAIClient create(
 			Function<Configuration.Builder, Configuration.Builder> fn) {
@@ -179,34 +195,4 @@ public class OpenAIClient {
 
 		return client;
 	}
-
-	public AudioClient audio;
-
-	public ChatCompletionsClient chatCompletions;
-
-	public EmbeddingsClient embeddings;
-
-	public FilesClient files;
-
-	public FineTuningJobsClient fineTuningJobs;
-
-	public ImagesClient images;
-
-	public ModelsClient models;
-
-	public ModerationsClient moderations;
-
-	public ThreadsClient threads;
-
-	public ThreadsRunsClient threadsRuns;
-
-	public ThreadsRunsStepsClient threadsRunsSteps;
-
-	public ThreadsMessagesClient threadsMessages;
-
-	public ThreadsMessagesFilesClient threadsMessagesFiles;
-
-	public AssistantsClient assistants;
-
-	public AssistantsFilesClient assistantsFiles;
 }

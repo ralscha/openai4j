@@ -15,12 +15,12 @@
  */
 package ch.rasc.openai4j.images;
 
-import java.io.File;
-import java.util.function.Function;
-
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
+
+import java.io.File;
+import java.util.function.Function;
 
 public interface ImagesClient {
 

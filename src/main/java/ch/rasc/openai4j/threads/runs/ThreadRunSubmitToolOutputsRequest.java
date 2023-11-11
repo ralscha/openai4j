@@ -15,17 +15,15 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
-import java.util.List;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.Nullable;
+import java.util.List;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -33,6 +31,10 @@ import ch.rasc.openai4j.Nullable;
 @JsonInclude(Include.NON_EMPTY)
 @Value.Enclosing
 public interface ThreadRunSubmitToolOutputsRequest {
+
+	static Builder builder() {
+		return new Builder();
+	}
 
 	@JsonProperty("tool_outputs")
 	List<ToolOutput> toolOutputs();
@@ -42,6 +44,10 @@ public interface ThreadRunSubmitToolOutputsRequest {
 	@JsonSerialize(as = ImmutableThreadRunSubmitToolOutputsRequest.ToolOutput.class)
 	@JsonInclude(Include.NON_EMPTY)
 	interface ToolOutput {
+
+		static Builder builder() {
+			return new Builder();
+		}
 
 		/*
 		 * The ID of the tool call in the required_action object within the run object the
@@ -57,17 +63,9 @@ public interface ThreadRunSubmitToolOutputsRequest {
 		@Nullable
 		String output();
 
-		static Builder builder() {
-			return new Builder();
-		}
-
 		final class Builder
 				extends ImmutableThreadRunSubmitToolOutputsRequest.ToolOutput.Builder {
 		}
-	}
-
-	static Builder builder() {
-		return new Builder();
 	}
 
 	final class Builder extends ImmutableThreadRunSubmitToolOutputsRequest.Builder {

@@ -15,11 +15,11 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class UserMessage extends ChatCompletionMessage {
 	private final Object content;

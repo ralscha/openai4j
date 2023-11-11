@@ -17,29 +17,6 @@ package ch.rasc.openai4j.moderations;
 
 import java.util.List;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableModerationsCreateResponse.class)
-public interface ModerationsCreateResponse {
-
-	/**
-	 * The unique identifier for the moderation request.
-	 */
-	String id();
-
-	/**
-	 * The model used to generate the moderation results.
-	 */
-	String model();
-
-	/**
-	 * A list of moderation objects.
-	 */
-	List<Moderations> results();
-
+public record ModerationsCreateResponse(String id, String model,
+		List<Moderations> results) {
 }

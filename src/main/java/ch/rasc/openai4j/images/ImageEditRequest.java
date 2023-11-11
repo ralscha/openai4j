@@ -15,62 +15,19 @@
  */
 package ch.rasc.openai4j.images;
 
-import java.nio.file.Path;
-
+import ch.rasc.openai4j.Nullable;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import ch.rasc.openai4j.Nullable;
+import java.nio.file.Path;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 public interface ImageEditRequest {
 
-	enum Model {
-		DALL_E_2("dall-e-2");
-
-		private final String value;
-
-		Model(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		String toValue() {
-			return this.value;
-		}
-	}
-
-	enum ResponseFormat {
-		URL("url"), B64_JSON("b64_json");
-
-		private final String value;
-
-		ResponseFormat(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		String toValue() {
-			return this.value;
-		}
-	}
-
-	enum Size {
-		S_256("256x256"), S_512("512x512"), S_1024("1024x1024");
-
-		private final String value;
-
-		Size(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		String toValue() {
-			return this.value;
-		}
+	static Builder builder() {
+		return new Builder();
 	}
 
 	/**
@@ -126,8 +83,49 @@ public interface ImageEditRequest {
 	@Nullable
 	String user();
 
-	static Builder builder() {
-		return new Builder();
+	enum Model {
+		DALL_E_2("dall-e-2");
+
+		private final String value;
+
+		Model(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		String toValue() {
+			return this.value;
+		}
+	}
+
+	enum ResponseFormat {
+		URL("url"), B64_JSON("b64_json");
+
+		private final String value;
+
+		ResponseFormat(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		String toValue() {
+			return this.value;
+		}
+	}
+
+	enum Size {
+		S_256("256x256"), S_512("512x512"), S_1024("1024x1024");
+
+		private final String value;
+
+		Size(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		String toValue() {
+			return this.value;
+		}
 	}
 
 	final class Builder extends ImmutableImageEditRequest.Builder {

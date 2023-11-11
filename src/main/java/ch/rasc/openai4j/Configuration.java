@@ -15,20 +15,23 @@
  */
 package ch.rasc.openai4j;
 
-import java.util.concurrent.TimeUnit;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
 import feign.Logger;
 import feign.Logger.Level;
 import feign.Request;
 import feign.Retryer;
 import feign.slf4j.Slf4jLogger;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
+
+import java.util.concurrent.TimeUnit;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 public interface Configuration {
+
+	static Builder builder() {
+		return new Builder();
+	}
 
 	String apiKey();
 
@@ -56,12 +59,13 @@ public interface Configuration {
 		return new Slf4jLogger();
 	}
 
+	// Azure
+
 	@Value.Default
 	default Level logLevel() {
 		return Level.NONE;
 	}
 
-	// Azure
 	/**
 	 * The name of your Azure OpenAI Resource.
 	 */
@@ -76,10 +80,6 @@ public interface Configuration {
 	 */
 	@Nullable
 	String azureDeployment();
-
-	static Builder builder() {
-		return new Builder();
-	}
 
 	final class Builder extends ImmutableConfiguration.Builder {
 	}

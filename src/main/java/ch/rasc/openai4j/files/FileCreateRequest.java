@@ -15,23 +15,16 @@
  */
 package ch.rasc.openai4j.files;
 
-import java.util.List;
+import java.nio.file.Path;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
+public record FileCreateRequest(Path file, Purpose purpose) {
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+	public static FileCreateRequest forFineTune(Path file) {
+		return new FileCreateRequest(file, Purpose.FINE_TUNE);
+	}
 
-@Value.Immutable(builder = false)
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableFilesResponse.class)
-public interface FilesResponse {
+	public static FileCreateRequest forAssistants(Path file) {
+		return new FileCreateRequest(file, Purpose.ASSISTANTS);
+	}
 
-	String object();
-
-	List<FileObject> data();
-
-	@JsonProperty("has_more")
-	boolean hasMore();
 }

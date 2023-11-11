@@ -15,34 +15,16 @@
  */
 package ch.rasc.openai4j.embeddings;
 
-import java.util.Arrays;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import java.util.Arrays;
 
 /**
  * Represents an embedding vector returned by embedding endpoint.
  */
-@Value.Immutable(builder = false)
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, allParameters = true)
-@JsonDeserialize(as = ImmutableEmbedding.class)
-public interface Embedding {
+public record Embedding(int index, EmbeddingVector embedding, String object) {
 
-	/**
-	 * The index of the embedding in the list of embeddings.
-	 */
-	int index();
-
-	/**
-	 * The embedding vector, which is a list of floats. The length of vector depends on
-	 * the model as listed in the embedding guide.
-	 */
-	EmbeddingVector embedding();
-
-	class EmbeddingVector {
+	public static class EmbeddingVector {
 		private final String base64;
 		private final double[] doubleArray;
 
@@ -74,8 +56,4 @@ public interface Embedding {
 
 	}
 
-	/**
-	 * The object type, which is always "embedding".
-	 */
-	String object();
 }

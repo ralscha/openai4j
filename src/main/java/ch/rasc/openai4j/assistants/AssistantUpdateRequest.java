@@ -15,24 +15,26 @@
  */
 package ch.rasc.openai4j.assistants;
 
-import java.util.List;
-import java.util.Map;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.Nullable;
+import java.util.List;
+import java.util.Map;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @JsonSerialize(as = ImmutableAssistantUpdateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 public interface AssistantUpdateRequest {
+
+	static Builder builder() {
+		return new Builder();
+	}
 
 	/*
 	 * ID of the model to use. You can use the List models API to see all of your
@@ -83,10 +85,6 @@ public interface AssistantUpdateRequest {
 	 */
 	@Nullable
 	Map<String, Object> metadata();
-
-	static Builder builder() {
-		return new Builder();
-	}
 
 	final class Builder extends ImmutableAssistantUpdateRequest.Builder {
 	}

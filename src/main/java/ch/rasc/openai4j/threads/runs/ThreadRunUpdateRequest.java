@@ -15,9 +15,9 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
 
 public class ThreadRunUpdateRequest {
 	private final Map<String, Object> metadata;

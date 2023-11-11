@@ -15,22 +15,53 @@
  */
 package ch.rasc.openai4j.audio;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import ch.rasc.openai4j.Nullable;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @JsonSerialize(as = ImmutableAudioSpeechRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 public interface AudioSpeechRequest {
+
+	static Builder builder() {
+		return new Builder();
+	}
+
+	/**
+	 * One of the available <a href="https://platform.openai.com/docs/models/tts">TTS
+	 * models</a>
+	 */
+	Model model();
+
+	/**
+	 * The text to generate audio for. The maximum length is 4096 characters.
+	 */
+	String input();
+
+	/**
+	 * The voice to use when generating the audio.
+	 */
+	Voice voice();
+
+	/**
+	 * The format to audio in. Defaults to mp3
+	 */
+	@JsonProperty("response_format")
+	@Nullable
+	ResponseFormat responseFormat();
+
+	/**
+	 * The speed of the generated audio. Defaults to 1.0
+	 */
+	@Nullable
+	Double speed();
 
 	enum ResponseFormat {
 		MP3("mp3"), OPUS("opus"), AAC("aac"), FLAC("flac");
@@ -76,39 +107,6 @@ public interface AudioSpeechRequest {
 		public String value() {
 			return this.value;
 		}
-	}
-
-	/**
-	 * One of the available <a href="https://platform.openai.com/docs/models/tts">TTS
-	 * models</a>
-	 */
-	Model model();
-
-	/**
-	 * The text to generate audio for. The maximum length is 4096 characters.
-	 */
-	String input();
-
-	/**
-	 * The voice to use when generating the audio.
-	 */
-	Voice voice();
-
-	/**
-	 * The format to audio in. Defaults to mp3
-	 */
-	@JsonProperty("response_format")
-	@Nullable
-	ResponseFormat responseFormat();
-
-	/**
-	 * The speed of the generated audio. Defaults to 1.0
-	 */
-	@Nullable
-	Double speed();
-
-	static Builder builder() {
-		return new Builder();
 	}
 
 	final class Builder extends ImmutableAudioSpeechRequest.Builder {

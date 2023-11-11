@@ -15,9 +15,6 @@
  */
 package ch.rasc.openai4j.threads.messages.files;
 
-import java.util.Map;
-import java.util.function.Function;
-
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
@@ -25,11 +22,15 @@ import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
 
+import java.util.Map;
+import java.util.function.Function;
+
 @Beta
 public interface ThreadsMessagesFilesClient {
 
 	/**
 	 * Retrieves a message file.
+	 *
 	 * @param threadId The ID of the thread to which the message and File belong.
 	 * @param messageId The ID of the message the file belongs to.
 	 * @param fileId The ID of the file being retrieved.
@@ -41,6 +42,7 @@ public interface ThreadsMessagesFilesClient {
 
 	/**
 	 * Returns a list of message files.
+	 *
 	 * @param threadId The ID of the thread to which the message and File belong.
 	 * @param messageId The ID of the message the file belongs to.
 	 * @return A list of message file objects.
@@ -51,6 +53,7 @@ public interface ThreadsMessagesFilesClient {
 
 	/**
 	 * Returns a list of message files.
+	 *
 	 * @param threadId The ID of the thread to which the message and File belong.
 	 * @param messageId The ID of the message the file belongs to.
 	 * @return A list of message file objects.
@@ -62,6 +65,7 @@ public interface ThreadsMessagesFilesClient {
 
 	/**
 	 * Returns a list of message files.
+	 *
 	 * @param threadId The ID of the thread to which the message and File belong.
 	 * @param messageId The ID of the message the file belongs to.
 	 * @param request A list request object with configuration for paging and ordering
@@ -74,6 +78,7 @@ public interface ThreadsMessagesFilesClient {
 
 	/**
 	 * Returns a list of message files.
+	 *
 	 * @param threadId The ID of the thread to which the message and File belong.
 	 * @param messageId The ID of the message the file belongs to.
 	 * @param request A list request object with configuration for paging and ordering

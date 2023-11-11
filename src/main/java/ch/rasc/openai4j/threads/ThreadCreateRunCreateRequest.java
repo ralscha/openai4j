@@ -15,19 +15,17 @@
  */
 package ch.rasc.openai4j.threads;
 
-import java.util.List;
-import java.util.Map;
-
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import ch.rasc.openai4j.Nullable;
+import ch.rasc.openai4j.assistants.Tool;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.assistants.Tool;
+import java.util.List;
+import java.util.Map;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -35,6 +33,10 @@ import ch.rasc.openai4j.assistants.Tool;
 @JsonInclude(Include.NON_EMPTY)
 @Value.Enclosing
 public interface ThreadCreateRunCreateRequest {
+
+	static Builder builder() {
+		return new Builder();
+	}
 
 	/*
 	 * The ID of the assistant to use to execute this run.
@@ -44,34 +46,6 @@ public interface ThreadCreateRunCreateRequest {
 
 	@Nullable
 	Thread thread();
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableThreadCreateRunCreateRequest.Thread.class)
-	@JsonInclude(Include.NON_EMPTY)
-	interface Thread {
-		/**
-		 * A list of messages to start the thread with.
-		 */
-		@Nullable
-		List<ThreadMessage> messages();
-
-		/**
-		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
-		 * for storing additional information about the object in a structured format.
-		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
-		 * characters long.
-		 */
-		@Nullable
-		Map<String, Object> metadata();
-
-		static Builder builder() {
-			return new Builder();
-		}
-
-		final class Builder extends ImmutableThreadCreateRunCreateRequest.Thread.Builder {
-		}
-	}
 
 	/*
 	 * The ID of the Model to be used to execute this run. If a value is provided here, it
@@ -103,8 +77,32 @@ public interface ThreadCreateRunCreateRequest {
 	@Nullable
 	Map<String, Object> metadata();
 
-	static Builder builder() {
-		return new Builder();
+	@Value.Immutable
+	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+	@JsonSerialize(as = ImmutableThreadCreateRunCreateRequest.Thread.class)
+	@JsonInclude(Include.NON_EMPTY)
+	interface Thread {
+		static Builder builder() {
+			return new Builder();
+		}
+
+		/**
+		 * A list of messages to start the thread with.
+		 */
+		@Nullable
+		List<ThreadMessage> messages();
+
+		/**
+		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
+		 * for storing additional information about the object in a structured format.
+		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
+		 * characters long.
+		 */
+		@Nullable
+		Map<String, Object> metadata();
+
+		final class Builder extends ImmutableThreadCreateRunCreateRequest.Thread.Builder {
+		}
 	}
 
 	final class Builder extends ImmutableThreadCreateRunCreateRequest.Builder {

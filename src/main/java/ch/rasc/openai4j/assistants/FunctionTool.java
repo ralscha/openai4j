@@ -15,27 +15,26 @@
  */
 package ch.rasc.openai4j.assistants;
 
+import ch.rasc.openai4j.common.FunctionParameters;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.common.Function;
-
 public class FunctionTool extends Tool {
 
-	private final Function function;
+	private final FunctionParameters function;
 
-	private FunctionTool(Function function) {
+	private FunctionTool(FunctionParameters function) {
 		super("function");
 		this.function = function;
 	}
 
-	@JsonProperty
-	Function function() {
-		return this.function;
+	@JsonCreator
+	public static FunctionTool of(@JsonProperty("function") FunctionParameters function) {
+		return new FunctionTool(function);
 	}
 
-	@JsonCreator
-	public static FunctionTool of(@JsonProperty("function") Function function) {
-		return new FunctionTool(function);
+	@JsonProperty
+	FunctionParameters function() {
+		return this.function;
 	}
 }

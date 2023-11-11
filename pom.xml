@@ -87,7 +87,7 @@
 			<groupId>com.github.victools</groupId>
 			<artifactId>jsonschema-module-jackson</artifactId>
 			<version>4.32.0</version>
-		</dependency>		
+		</dependency>	
 		<dependency>
 			<groupId>org.immutables</groupId>
 			<artifactId>value</artifactId>
