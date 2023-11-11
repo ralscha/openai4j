@@ -50,7 +50,7 @@ public interface Configuration {
 	default Client client() {
 		return new Http2Client();
 	}
-	
+
 	@Value.Default
 	default Retryer retryer() {
 		return new Retryer.Default(TimeUnit.SECONDS.toMillis(2),
