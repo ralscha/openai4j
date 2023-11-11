@@ -42,7 +42,7 @@ public class ToolMessage extends ChatCompletionMessage {
 	/**
 	 * The contents of the tool message.
 	 */
-	@JsonInclude()
+	@JsonInclude
 	@JsonProperty
 	public String content() {
 		return this.content;

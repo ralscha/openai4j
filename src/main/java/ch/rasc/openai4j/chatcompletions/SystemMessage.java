@@ -35,7 +35,7 @@ public class SystemMessage extends ChatCompletionMessage {
 	/**
 	 * The contents of the system message.
 	 */
-	@JsonInclude()
+	@JsonInclude
 	@JsonProperty
 	public String content() {
 		return this.content;

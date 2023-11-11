@@ -41,7 +41,7 @@ public class UserMessage extends ChatCompletionMessage {
 	/**
 	 * The contents of the user message.
 	 */
-	@JsonInclude()
+	@JsonInclude
 	@JsonProperty
 	public Object content() {
 		return this.content;

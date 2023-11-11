@@ -63,7 +63,7 @@ public class AssistantMessage extends ChatCompletionMessage {
 	}
 
 	@JsonProperty
-	@JsonInclude()
+	@JsonInclude
 	public String content() {
 		return this.content;
 	}
