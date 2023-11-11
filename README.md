@@ -48,9 +48,8 @@ Legacy and deprecated endpoints are not implemented.
 
     var thread = client.threads.create();
 
-    var message = client.threadsMessages.create(thread.id(),
-				    c -> c.role("user").content(
-						"I need to solve the equation `3x + 11 = 14`. Can you help me?"));
+    var message = client.threadsMessages.create(thread.id(), c -> c.content(
+				"I need to solve the equation `3x + 11 = 14`. Can you help me?"));
 
     var run = client.threadsRuns.create(thread.id(),
             c -> c.assistantId(assistant.id()).instructions(
