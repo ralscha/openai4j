@@ -15,14 +15,15 @@
  */
 package ch.rasc.openai4j.files;
 
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListResponse;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.Response;
-
-import java.io.File;
 
 public interface FilesClient {
 
@@ -102,26 +103,29 @@ public interface FilesClient {
 	Response retrieveContent(@Param("file_id") String fileId);
 
 	default FileObject waitForProcessing(String fileId) {
-		return this.waitForProcessing(fileId, 5.0f, 30 * 60);
+		return this.waitForProcessing(fileId, 5, TimeUnit.SECONDS, 30, TimeUnit.SECONDS);
 	}
 
-	default FileObject waitForProcessing(String fileId, float pollInterval,
-			int maxWaitSeconds) {
+	default FileObject waitForProcessing(String fileId, long pollInterval,
+			TimeUnit pollIntervalTimeUnit, long maxWait, TimeUnit maxWaitTimeUnit) {
 		long start = System.currentTimeMillis();
 		FileObject file = this.retrieve(fileId);
 		while (!file.status().isTerminal()) {
 			try {
-				Thread.sleep((long) (pollInterval * 1000));
+				pollIntervalTimeUnit.sleep(pollInterval);
 			}
 			catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
+				throw new RuntimeException(e);
+			}
+
+			if (System.currentTimeMillis() - start > maxWaitTimeUnit.toMillis(maxWait)) {
+				throw new RuntimeException("Giving up on waiting for file " + fileId
+						+ " to finish processing after " + maxWait + " "
+						+ maxWaitTimeUnit);
 			}
 
 			file = this.retrieve(fileId);
-			if (System.currentTimeMillis() - start > maxWaitSeconds * 1000L) {
-				throw new RuntimeException("Giving up on waiting for file " + fileId
-						+ " to finish processing after " + maxWaitSeconds + " seconds.");
-			}
 		}
 
 		return file;

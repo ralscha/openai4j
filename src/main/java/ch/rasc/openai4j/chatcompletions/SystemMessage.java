@@ -16,7 +16,6 @@
 package ch.rasc.openai4j.chatcompletions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SystemMessage extends ChatCompletionMessage {
@@ -36,7 +35,7 @@ public class SystemMessage extends ChatCompletionMessage {
 	/**
 	 * The contents of the system message.
 	 */
-	@JsonInclude(Include.ALWAYS)
+	@JsonInclude()
 	@JsonProperty
 	public String content() {
 		return this.content;

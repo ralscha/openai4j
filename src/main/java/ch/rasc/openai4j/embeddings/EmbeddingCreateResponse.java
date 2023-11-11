@@ -15,9 +15,11 @@
  */
 package ch.rasc.openai4j.embeddings;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
+import ch.rasc.openai4j.embeddings.EmbeddingCreateResponse.Usage;
 
 public record EmbeddingCreateResponse(String object, List<Embedding> data, String model,
 		Usage usage) {

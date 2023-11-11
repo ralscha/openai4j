@@ -15,11 +15,11 @@
  */
 package ch.rasc.openai4j.common;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class FunctionParameters {

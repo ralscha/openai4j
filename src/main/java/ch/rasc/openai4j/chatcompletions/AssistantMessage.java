@@ -15,13 +15,13 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Message;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.ToolCall;
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Arrays;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Message;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.ToolCall;
 
 public class AssistantMessage extends ChatCompletionMessage {
 	private final String content;
@@ -63,7 +63,7 @@ public class AssistantMessage extends ChatCompletionMessage {
 	}
 
 	@JsonProperty
-	@JsonInclude(Include.ALWAYS)
+	@JsonInclude()
 	public String content() {
 		return this.content;
 	}

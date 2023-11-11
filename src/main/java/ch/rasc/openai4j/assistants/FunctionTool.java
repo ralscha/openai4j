@@ -15,9 +15,10 @@
  */
 package ch.rasc.openai4j.assistants;
 
-import ch.rasc.openai4j.common.FunctionParameters;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import ch.rasc.openai4j.common.FunctionParameters;
 
 public class FunctionTool extends Tool {
 

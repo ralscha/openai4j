@@ -15,9 +15,9 @@
  */
 package ch.rasc.openai4j.threads.messages;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ThreadMessageUpdateRequest {
 	private final Map<String, Object> metadata;

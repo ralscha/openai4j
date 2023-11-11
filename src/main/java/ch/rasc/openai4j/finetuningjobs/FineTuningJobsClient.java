@@ -15,14 +15,14 @@
  */
 package ch.rasc.openai4j.finetuningjobs;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 import ch.rasc.openai4j.common.ListResponse;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 public interface FineTuningJobsClient {
 

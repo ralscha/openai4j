@@ -15,6 +15,10 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
@@ -22,9 +26,6 @@ import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
-
-import java.util.Map;
-import java.util.function.Function;
 
 @Beta
 public interface ThreadsRunsClient {
@@ -115,7 +116,6 @@ public interface ThreadsRunsClient {
 	 * Returns a list of runs belonging to a thread.
 	 *
 	 * @param threadId The ID of the thread the run belongs to.
-	 * @param request A list request object with configuration for paging and ordering
 	 * @return A list of run objects.
 	 */
 	default ListResponse<ThreadRun> list(@Param("thread_id") String threadId,
@@ -152,6 +152,32 @@ public interface ThreadsRunsClient {
 			Function<ThreadRunSubmitToolOutputsRequest.Builder, ThreadRunSubmitToolOutputsRequest.Builder> fn) {
 		return this.submitToolOutputs(threadId, runId,
 				fn.apply(ThreadRunSubmitToolOutputsRequest.builder()).build());
+	}
+
+	/**
+	 * Wait for the thread run to finish processing. This method will poll the server
+	 * every pollInterval until the run is finished or until maxWait have passed.
+	 */
+	default void waitForProcessing(ThreadRun run, long pollInterval,
+			TimeUnit pollIntervalTimeUnit, long maxWait, TimeUnit maxWaitTimeUnit) {
+		long start = System.currentTimeMillis();
+		while (!run.status().isTerminal()) {
+			try {
+				pollIntervalTimeUnit.sleep(pollInterval);
+			}
+			catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new RuntimeException(e);
+			}
+
+			if (System.currentTimeMillis() - start > maxWaitTimeUnit.toMillis(maxWait)) {
+				throw new RuntimeException("Giving up on waiting for thread run "
+						+ run.id() + " to finish processing after " + maxWait + " "
+						+ maxWaitTimeUnit);
+			}
+
+			run = this.retrieve(run.threadId(), run.id());
+		}
 	}
 
 }

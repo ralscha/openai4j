@@ -15,9 +15,11 @@
  */
 package ch.rasc.openai4j.embeddings;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Arrays;
+import ch.rasc.openai4j.embeddings.Embedding.EmbeddingVector;
 
 /**
  * Represents an embedding vector returned by embedding endpoint.

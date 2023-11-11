@@ -16,16 +16,8 @@
 package ch.rasc.openai4j.chatcompletions;
 
 import ch.rasc.openai4j.common.FunctionParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ChatCompletionTool {
-	private final String type;
-	private final FunctionParameters function;
-
-	public ChatCompletionTool(String type, FunctionParameters function) {
-		this.type = type;
-		this.function = function;
-	}
+public record ChatCompletionTool(String type, FunctionParameters function) {
 
 	public static ChatCompletionTool of(String type, FunctionParameters function) {
 		return new ChatCompletionTool(type, function);
@@ -35,16 +27,4 @@ public class ChatCompletionTool {
 		return new ChatCompletionTool("function", function);
 	}
 
-	/**
-	 * Tpe type of the tool. Currently, only function is supported.
-	 */
-	@JsonProperty
-	public String type() {
-		return this.type;
-	}
-
-	@JsonProperty
-	public FunctionParameters function() {
-		return this.function;
-	}
 }

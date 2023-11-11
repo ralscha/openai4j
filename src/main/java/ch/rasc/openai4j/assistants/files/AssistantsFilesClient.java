@@ -15,6 +15,9 @@
  */
 package ch.rasc.openai4j.assistants.files;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListRequest;
@@ -23,9 +26,6 @@ import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
-
-import java.util.Map;
-import java.util.function.Function;
 
 @Beta
 public interface AssistantsFilesClient {
@@ -108,7 +108,7 @@ public interface AssistantsFilesClient {
 	 * Returns a list of assistant files.
 	 *
 	 * @param assistantId The ID of the assistant who the file belongs to.
-	 * @param request A list request object with configuration for paging and ordering
+	 * @param fn A list request object with configuration for paging and ordering
 	 * @return A list of assistant file objects.
 	 */
 	default ListResponse<AssistantFile> list(String assistantId,

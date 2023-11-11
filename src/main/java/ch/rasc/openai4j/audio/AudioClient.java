@@ -15,13 +15,13 @@
  */
 package ch.rasc.openai4j.audio;
 
+import java.io.File;
+import java.util.function.Function;
+
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
 import feign.Response;
-
-import java.io.File;
-import java.util.function.Function;
 
 public interface AudioClient {
 

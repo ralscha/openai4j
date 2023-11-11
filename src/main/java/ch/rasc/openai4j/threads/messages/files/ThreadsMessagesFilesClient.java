@@ -15,15 +15,15 @@
  */
 package ch.rasc.openai4j.threads.messages.files;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
-
-import java.util.Map;
-import java.util.function.Function;
 
 @Beta
 public interface ThreadsMessagesFilesClient {
@@ -81,7 +81,7 @@ public interface ThreadsMessagesFilesClient {
 	 *
 	 * @param threadId The ID of the thread to which the message and File belong.
 	 * @param messageId The ID of the message the file belongs to.
-	 * @param request A list request object with configuration for paging and ordering
+	 * @param fn A list request object with configuration for paging and ordering
 	 * @return A list of message file objects.
 	 */
 	default ListResponse<ThreadMessageFile> list(String threadId, String messageId,

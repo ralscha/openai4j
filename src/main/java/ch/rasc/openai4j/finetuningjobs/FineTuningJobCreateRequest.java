@@ -15,14 +15,15 @@
  */
 package ch.rasc.openai4j.finetuningjobs;
 
-import ch.rasc.openai4j.Nullable;
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
+
+import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
@@ -99,13 +100,7 @@ public interface FineTuningJobCreateRequest {
 		@Nullable
 		Epochs nEpochs();
 
-		class BatchSize {
-			private final Object value;
-
-			public BatchSize(Object value) {
-				this.value = value;
-			}
-
+		record BatchSize(Object value) {
 			public static BatchSize auto() {
 				return new BatchSize("auto");
 			}
@@ -113,19 +108,9 @@ public interface FineTuningJobCreateRequest {
 			public static BatchSize of(int value) {
 				return new BatchSize(value);
 			}
-
-			@JsonValue
-			public Object value() {
-				return this.value;
-			}
 		}
 
-		class LearningRateMultiplier {
-			private final Object value;
-
-			public LearningRateMultiplier(Object value) {
-				this.value = value;
-			}
+		record LearningRateMultiplier(Object value) {
 
 			public static LearningRateMultiplier auto() {
 				return new LearningRateMultiplier("auto");
@@ -134,19 +119,9 @@ public interface FineTuningJobCreateRequest {
 			public static LearningRateMultiplier of(double value) {
 				return new LearningRateMultiplier(value);
 			}
-
-			@JsonValue
-			public Object value() {
-				return this.value;
-			}
 		}
 
-		class Epochs {
-			private final Object value;
-
-			public Epochs(Object value) {
-				this.value = value;
-			}
+		record Epochs(Object value) {
 
 			public static Epochs auto() {
 				return new Epochs("auto");
@@ -154,11 +129,6 @@ public interface FineTuningJobCreateRequest {
 
 			public static Epochs of(int value) {
 				return new Epochs(value);
-			}
-
-			@JsonValue
-			public Object value() {
-				return this.value;
 			}
 		}
 

@@ -15,8 +15,9 @@
  */
 package ch.rasc.openai4j.finetuningjobs;
 
-import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import ch.rasc.openai4j.Nullable;
 
 public record FineTuningJobEvent(String id, @JsonProperty("created_at") int createdAt,
 		String level, String message, String object, @Nullable Object data, String type) {

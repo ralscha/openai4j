@@ -15,17 +15,19 @@
  */
 package ch.rasc.openai4j.threads;
 
-import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.assistants.Tool;
+import java.util.List;
+import java.util.Map;
+
+import org.immutables.value.Value;
+import org.immutables.value.Value.Style.ImplementationVisibility;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import java.util.List;
-import java.util.Map;
+import ch.rasc.openai4j.Nullable;
+import ch.rasc.openai4j.assistants.Tool;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)

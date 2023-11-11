@@ -15,9 +15,9 @@
  */
 package ch.rasc.openai4j.threads;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ThreadUpdateRequest {
 

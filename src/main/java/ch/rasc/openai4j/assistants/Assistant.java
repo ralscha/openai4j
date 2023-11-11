@@ -15,10 +15,11 @@
  */
 package ch.rasc.openai4j.assistants;
 
-import ch.rasc.openai4j.Nullable;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Map;
+import ch.rasc.openai4j.Nullable;
 
 /**
  * Represents an assistant that can call the model and use tools.

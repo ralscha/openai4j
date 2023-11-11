@@ -15,6 +15,10 @@
  */
 package ch.rasc.openai4j;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 import ch.rasc.openai4j.assistants.AssistantsClient;
 import ch.rasc.openai4j.assistants.files.AssistantsFilesClient;
 import ch.rasc.openai4j.audio.AudioClient;
@@ -35,10 +39,6 @@ import feign.RequestInterceptor;
 import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 
 public class OpenAIClient {
 

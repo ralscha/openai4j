@@ -15,13 +15,13 @@
  */
 package ch.rasc.openai4j.threads.runs.steps;
 
+import java.util.Map;
+
 import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
-
-import java.util.Map;
 
 public interface ThreadsRunsStepsClient {
 

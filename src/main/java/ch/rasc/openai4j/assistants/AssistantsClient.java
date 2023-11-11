@@ -15,6 +15,9 @@
  */
 package ch.rasc.openai4j.assistants;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListRequest;
@@ -23,9 +26,6 @@ import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
 import feign.RequestLine;
-
-import java.util.Map;
-import java.util.function.Function;
 
 @Beta
 public interface AssistantsClient {
@@ -115,7 +115,7 @@ public interface AssistantsClient {
 	/**
 	 * Returns a list of assistants.
 	 *
-	 * @param request A list request object with configuration for paging and ordering
+	 * @param fn A list request object with configuration for paging and ordering
 	 * @return A list of assistant objects.
 	 */
 	default ListResponse<Assistant> list(

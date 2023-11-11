@@ -15,13 +15,16 @@
  */
 package ch.rasc.openai4j.threads.messages;
 
-import ch.rasc.openai4j.Nullable;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.Map;
+import ch.rasc.openai4j.Nullable;
+import ch.rasc.openai4j.threads.messages.ThreadMessage.Content;
+import ch.rasc.openai4j.threads.messages.ThreadMessage.Text.Annotation;
 
 /**
  * Represents a message within a thread.

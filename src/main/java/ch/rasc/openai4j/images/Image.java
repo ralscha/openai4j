@@ -15,8 +15,9 @@
  */
 package ch.rasc.openai4j.images;
 
-import ch.rasc.openai4j.Nullable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import ch.rasc.openai4j.Nullable;
 
 public record Image(@JsonProperty("b64_json") @Nullable String b64Json,
 		@Nullable String url,

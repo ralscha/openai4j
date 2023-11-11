@@ -15,15 +15,24 @@
  */
 package ch.rasc.openai4j.threads.runs.steps;
 
-import ch.rasc.openai4j.Nullable;
-import ch.rasc.openai4j.common.Error;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Map;
+import ch.rasc.openai4j.Nullable;
+import ch.rasc.openai4j.common.Error;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.MessageCreationStepDetails.MessageCreation;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.StepDetail;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ThreadRunStepStatus;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ThreadRunStepType;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.CodeToolCall.CodeInterpreter;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.CodeToolCall.CodeInterpreter.CodeInterpreterOutput;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.FunctionToolCall.Function;
+import ch.rasc.openai4j.threads.runs.steps.ThreadRunStep.ToolCallsStepDetails.ToolCall;
 
 /**
  * Represents a step in execution of a run.

@@ -15,14 +15,19 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.assistants.Tool;
 import ch.rasc.openai4j.common.Error;
 import ch.rasc.openai4j.common.FunctionArguments;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import java.util.Map;
+import ch.rasc.openai4j.threads.runs.ThreadRun.RequiredActionFunctionToolCall;
+import ch.rasc.openai4j.threads.runs.ThreadRun.RequiredActionFunctionToolCall.SubmitToolOutputs;
+import ch.rasc.openai4j.threads.runs.ThreadRun.RequiredActionFunctionToolCall.SubmitToolOutputs.ToolCall;
+import ch.rasc.openai4j.threads.runs.ThreadRun.Status;
 
 /**
  * Represents an execution run on a thread.
