@@ -28,7 +28,7 @@ including the endpoints that are only available in beta. Legacy and deprecated e
 
 ```java
     String apiKey = ... // read OpenAI api key from environment variable
-	var client = OpenAIClient.create(c -> c.apiKey(apiKey));
+    var client = OpenAIClient.create(c -> c.apiKey(apiKey));
 
     var response = client.chatCompletions
         .create(r -> 
