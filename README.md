@@ -54,7 +54,6 @@ public class ChatCompletionsFunctionExample {
   static class TemperatureFetcher {
 
   public Float fetchTemperature(Location location) {
-    System.out.println("calling fetchTemperature");
     try (var client = HttpClient.newHttpClient()) {
         var request = HttpRequest.newBuilder()
             .uri(URI.create("https://api.open-meteo.com/v1/metno?latitude="
