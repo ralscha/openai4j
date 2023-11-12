@@ -17,6 +17,7 @@ package ch.rasc.openai4j.chatcompletions;
 
 import java.util.function.Function;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.victools.jsonschema.generator.OptionPreset;
 import com.github.victools.jsonschema.generator.SchemaGenerator;
 import com.github.victools.jsonschema.generator.SchemaGeneratorConfig;
@@ -33,57 +34,48 @@ public class JavaFunction<T, R> {
 
 	private final String description;
 
-	private final Object parameters;
+	private final ObjectNode parameterClassJsonSchema;
 
 	private final Class<T> parameterClass;
 
 	private final Function<T, R> functionCall;
 
-	private final static SchemaGenerator schemaGenerator;
-	static {
-		JacksonModule module = new JacksonModule(
-				JacksonOption.RESPECT_JSONPROPERTY_REQUIRED);
-		SchemaGeneratorConfigBuilder configBuilder = new SchemaGeneratorConfigBuilder(
-				SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON).with(module);
-		SchemaGeneratorConfig config = configBuilder.build();
-		schemaGenerator = new SchemaGenerator(config);
-	}
-
 	private JavaFunction(String name, String description, Class<T> parameterClass,
+						 ObjectNode parameterClassJsonSchema,
 			Function<T, R> functionCall) {
 		this.name = name;
 		this.description = description;
 		this.parameterClass = parameterClass;
 		this.functionCall = functionCall;
-		this.parameters = schemaGenerator.generateSchema(parameterClass);
+		this.parameterClassJsonSchema = parameterClassJsonSchema;
 	}
 
+	/**
+	 * Create a new function with the given name, description, parameter class and
+	 * function executor.
+	 *
+	 * @param name The name of the function to be called. Must be a-z, A-Z, 0-9, or
+	 *             contain underscores and dashes, with a maximum length of 64.
+	 * @param description A description of what the function does, used by the model
+	 *                    to choose when and how to call the function.
+	 * @param parameterClass The class of the parameter that will be passed to the
+	 *                       function executor.
+	 * @param functionExecutor The function that will be called when the model
+	 *                         executes the function.
+	 * @return A new function.
+	 * @param <T> Parameter type
+	 * @param <R> Return type
+	 */
 	public static <T, R> JavaFunction<T, R> of(String name, String description,
 			Class<T> parameterClass, Function<T, R> functionExecutor) {
-		return new JavaFunction<>(name, description, parameterClass, functionExecutor);
-	}
+		JacksonModule module = new JacksonModule(
+				JacksonOption.RESPECT_JSONPROPERTY_REQUIRED);
+		SchemaGeneratorConfigBuilder configBuilder = new SchemaGeneratorConfigBuilder(
+				SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON).with(module);
+		SchemaGeneratorConfig config = configBuilder.build();
+		var schemaGenerator = new SchemaGenerator(config);
 
-	/**
-	 * The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
-	 * underscores and dashes, with a maximum length of 64.
-	 */
-	public String name() {
-		return this.name;
-	}
-
-	/**
-	 * A description of what the function does, used by the model to choose when and how
-	 * to call the function.
-	 */
-	public String description() {
-		return this.description;
-	}
-
-	/*
-	 * The parameters the functions accepts, described as a JSON Schema object
-	 */
-	public Object parameters() {
-		return this.parameters;
+		return new JavaFunction<>(name, description, parameterClass, schemaGenerator.generateSchema(parameterClass), functionExecutor);
 	}
 
 	public Class<T> parameterClass() {
@@ -92,7 +84,7 @@ public class JavaFunction<T, R> {
 
 	public ChatCompletionTool toTool() {
 		return ChatCompletionTool
-				.of(FunctionParameters.of(this.name, this.description, this.parameters));
+				.of(FunctionParameters.of(this.name, this.description, this.parameterClassJsonSchema));
 	}
 
 	public R call(Object parameter) {
