@@ -77,11 +77,25 @@ public class JavaFunction<T, R> {
 		return new JavaFunction<>(name, description, parameterClass,
 				schemaGenerator.generateSchema(parameterClass), functionExecutor);
 	}
+	
+	/**
+	 * The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
+	 * underscores and dashes, with a maximum length of 64.
+	 */
+	public String name() {
+		return this.name;
+	}
 
+	/**
+	 * Parameter class of the function.
+	 */
 	public Class<T> parameterClass() {
 		return this.parameterClass;
 	}
 
+	/**
+	 * Converts the function to a {@link ChatCompletionTool}.
+	 */
 	public ChatCompletionTool toTool() {
 		return ChatCompletionTool.of(FunctionParameters.of(this.name, this.description,
 				this.parameterClassJsonSchema));
