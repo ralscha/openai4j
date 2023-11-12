@@ -65,7 +65,7 @@ public record ThreadRun(String id, String object,
 	}
 
 	public record RequiredActionFunctionToolCall(String type,
-			SubmitToolOutputs submitToolOutputs) {
+			@JsonProperty("submit_tool_outputs") SubmitToolOutputs submitToolOutputs) {
 		public record SubmitToolOutputs(
 				@JsonProperty("tool_calls") ToolCall[] toolCalls) {
 			public record ToolCall(String id, String type, FunctionArguments function) {

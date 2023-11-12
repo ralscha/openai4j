@@ -158,8 +158,10 @@ public interface ThreadsRunsClient {
 	/**
 	 * Wait for the thread run to finish processing. This method will poll the server
 	 * every pollInterval until the run is finished or until maxWait have passed.
+	 * 
+	 * @return The latest ThreadRun object
 	 */
-	default void waitForProcessing(ThreadRun run, long pollInterval,
+	default ThreadRun waitForProcessing(ThreadRun run, long pollInterval,
 			TimeUnit pollIntervalTimeUnit, long maxWait, TimeUnit maxWaitTimeUnit) {
 		ThreadRun currentRun = run;
 		long start = System.currentTimeMillis();
@@ -180,6 +182,7 @@ public interface ThreadsRunsClient {
 
 			currentRun = this.retrieve(run.threadId(), run.id());
 		}
+		return currentRun;
 	}
 
 }

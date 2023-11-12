@@ -20,8 +20,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.chatcompletions.UserMessage.ImageContent.ImageUrl;
-
 public class UserMessage extends ChatCompletionMessage {
 	private final Object content;
 

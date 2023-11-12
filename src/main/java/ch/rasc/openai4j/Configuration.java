@@ -31,7 +31,7 @@ import feign.http2client.Http2Client;
 import feign.slf4j.Slf4jLogger;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 public interface Configuration {
 
 	static Builder builder() {

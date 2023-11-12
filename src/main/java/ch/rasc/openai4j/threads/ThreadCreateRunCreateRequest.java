@@ -30,7 +30,7 @@ import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.assistants.Tool;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 @JsonSerialize(as = ImmutableThreadCreateRunCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 @Value.Enclosing
@@ -79,32 +79,38 @@ public interface ThreadCreateRunCreateRequest {
 	@Nullable
 	Map<String, Object> metadata();
 
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-	@JsonSerialize(as = ImmutableThreadCreateRunCreateRequest.Thread.class)
-	@JsonInclude(Include.NON_EMPTY)
-	interface Thread {
-		static Builder builder() {
-			return new Builder();
+	record Thread(List<ThreadMessageRequest> messages, Map<String, Object> metadata) {
+
+		/**
+		 * A message to start the thread with.
+		 */
+		public static Thread of(ThreadMessageRequest message) {
+			return new Thread(List.of(message), null);
+		}
+
+		/**
+		 * A message to start the thread with.
+		 */
+		public static Thread of(ThreadMessageRequest message,
+				Map<String, Object> metadata) {
+			return new Thread(List.of(message), metadata);
 		}
 
 		/**
 		 * A list of messages to start the thread with.
 		 */
-		@Nullable
-		List<ThreadMessage> messages();
+		public static Thread of(List<ThreadMessageRequest> messages) {
+			return new Thread(messages, null);
+		}
 
 		/**
-		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
-		 * for storing additional information about the object in a structured format.
-		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
-		 * characters long.
+		 * A list of messages to start the thread with.
 		 */
-		@Nullable
-		Map<String, Object> metadata();
-
-		final class Builder extends ImmutableThreadCreateRunCreateRequest.Thread.Builder {
+		public static Thread of(List<ThreadMessageRequest> messages,
+				Map<String, Object> metadata) {
+			return new Thread(messages, metadata);
 		}
+
 	}
 
 	final class Builder extends ImmutableThreadCreateRunCreateRequest.Builder {

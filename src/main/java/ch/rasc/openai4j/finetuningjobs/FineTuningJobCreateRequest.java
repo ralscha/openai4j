@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 @JsonSerialize(as = ImmutableFineTuningJobCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 @Value.Enclosing
@@ -71,7 +71,7 @@ public interface FineTuningJobCreateRequest {
 	String validationFile();
 
 	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+	@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 	@JsonSerialize(as = ImmutableFineTuningJobCreateRequest.Hyperparameters.class)
 	@JsonInclude(Include.NON_EMPTY)
 	interface Hyperparameters {

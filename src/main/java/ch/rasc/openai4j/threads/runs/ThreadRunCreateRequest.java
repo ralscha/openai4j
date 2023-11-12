@@ -29,7 +29,7 @@ import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.assistants.Tool;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 @JsonSerialize(as = ImmutableThreadRunCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 public interface ThreadRunCreateRequest {

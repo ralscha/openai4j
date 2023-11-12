@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 public interface ImageVariationRequest {
 
 	static Builder builder() {

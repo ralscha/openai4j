@@ -30,9 +30,9 @@ import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@JsonSerialize(as = ImmutableThreadMessage.class)
+@JsonSerialize(as = ImmutableThreadMessageRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface ThreadMessage {
+public interface ThreadMessageRequest {
 	static Builder builder() {
 		return new Builder();
 	}
@@ -68,6 +68,6 @@ public interface ThreadMessage {
 	@Nullable
 	Map<String, Object> metadata();
 
-	final class Builder extends ImmutableThreadMessage.Builder {
+	final class Builder extends ImmutableThreadMessageRequest.Builder {
 	}
 }

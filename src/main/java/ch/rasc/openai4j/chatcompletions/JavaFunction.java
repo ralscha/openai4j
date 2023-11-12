@@ -77,7 +77,7 @@ public class JavaFunction<T, R> {
 		return new JavaFunction<>(name, description, parameterClass,
 				schemaGenerator.generateSchema(parameterClass), functionExecutor);
 	}
-	
+
 	/**
 	 * The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
 	 * underscores and dashes, with a maximum length of 64.

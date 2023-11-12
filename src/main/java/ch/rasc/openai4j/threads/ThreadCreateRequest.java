@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 @JsonSerialize(as = ImmutableThreadCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 public interface ThreadCreateRequest {
@@ -40,7 +40,7 @@ public interface ThreadCreateRequest {
 	 * A list of messages to start the thread with.
 	 */
 	@Nullable
-	List<ThreadMessage> messages();
+	List<ThreadMessageRequest> messages();
 
 	/**
 	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for

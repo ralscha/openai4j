@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
+@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
 @JsonSerialize(as = ImmutableAssistantUpdateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
 public interface AssistantUpdateRequest {

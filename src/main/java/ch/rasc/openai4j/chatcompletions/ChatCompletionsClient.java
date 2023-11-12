@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Choice.FinishReason;
