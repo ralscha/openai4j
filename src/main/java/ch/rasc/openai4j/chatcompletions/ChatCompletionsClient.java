@@ -50,10 +50,25 @@ public interface ChatCompletionsClient {
 		return this.create(fn.apply(ChatCompletionsCreateRequest.builder()).build());
 	}
 
+	/**
+	 * Creates and calls a chat completion for the provided prompt and parameters.
+	 * When the response of the completion contains a tool call, the tool call is
+	 * executed and the completion is called again with the updated prompt.
+	 * <p>
+	 * The method will repeat this process until the completion is finished or the maximum
+	 * number of iterations is reached.
+	 *
+	 * @param fn A chat completion request builder function
+	 * @param javaFunctions A list of java functions that can be called from the chat completion
+	 * @param objectMapper The object mapper to deserialize and serialize the Java function arguments and results
+	 * @param maxIterations The maximum number of iterations to call the java functions. Set it to a reasonable value to avoid infinite loops.
+	 * @return A chat completion response
+	 * @throws JsonProcessingException If the java function arguments or results cannot be serialized or deserialized
+	 */
 	default ChatCompletionsResponse create(
 			Function<ChatCompletionsCreateRequest.Builder, ChatCompletionsCreateRequest.Builder> fn,
 			List<JavaFunction<?, ?>> javaFunctions, ObjectMapper objectMapper,
-			int maxLoop) throws JsonMappingException, JsonProcessingException {
+			int maxIterations) throws JsonProcessingException {
 		Map<String, JavaFunction<?, ?>> javaFunctionRegistry = new HashMap<>();
 		List<ChatCompletionTool> tools = new ArrayList<>();
 		for (JavaFunction<?, ?> javaFunction : javaFunctions) {
@@ -68,9 +83,9 @@ public interface ChatCompletionsClient {
 		var thread = new ArrayList<>(request.messages());
 		var choice = response.choices()[0];
 
-		int loop = 1;
+		int iterationCount = 1;
 		while (choice.finishReason() == FinishReason.TOOL_CALLS) {
-			if (loop > maxLoop) {
+			if (iterationCount > maxIterations) {
 				return response;
 			}
 
@@ -100,7 +115,7 @@ public interface ChatCompletionsClient {
 			request = request.withMessages(thread);
 			response = this.create(request);
 
-			loop += 1;
+			iterationCount += 1;
 		}
 
 		return response;
