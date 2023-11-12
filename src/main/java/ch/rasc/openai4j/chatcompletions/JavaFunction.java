@@ -41,8 +41,7 @@ public class JavaFunction<T, R> {
 	private final Function<T, R> functionCall;
 
 	private JavaFunction(String name, String description, Class<T> parameterClass,
-						 ObjectNode parameterClassJsonSchema,
-			Function<T, R> functionCall) {
+			ObjectNode parameterClassJsonSchema, Function<T, R> functionCall) {
 		this.name = name;
 		this.description = description;
 		this.parameterClass = parameterClass;
@@ -55,13 +54,13 @@ public class JavaFunction<T, R> {
 	 * function executor.
 	 *
 	 * @param name The name of the function to be called. Must be a-z, A-Z, 0-9, or
-	 *             contain underscores and dashes, with a maximum length of 64.
-	 * @param description A description of what the function does, used by the model
-	 *                    to choose when and how to call the function.
+	 * contain underscores and dashes, with a maximum length of 64.
+	 * @param description A description of what the function does, used by the model to
+	 * choose when and how to call the function.
 	 * @param parameterClass The class of the parameter that will be passed to the
-	 *                       function executor.
-	 * @param functionExecutor The function that will be called when the model
-	 *                         executes the function.
+	 * function executor.
+	 * @param functionExecutor The function that will be called when the model executes
+	 * the function.
 	 * @return A new function.
 	 * @param <T> Parameter type
 	 * @param <R> Return type
@@ -75,7 +74,8 @@ public class JavaFunction<T, R> {
 		SchemaGeneratorConfig config = configBuilder.build();
 		var schemaGenerator = new SchemaGenerator(config);
 
-		return new JavaFunction<>(name, description, parameterClass, schemaGenerator.generateSchema(parameterClass), functionExecutor);
+		return new JavaFunction<>(name, description, parameterClass,
+				schemaGenerator.generateSchema(parameterClass), functionExecutor);
 	}
 
 	public Class<T> parameterClass() {
@@ -83,8 +83,8 @@ public class JavaFunction<T, R> {
 	}
 
 	public ChatCompletionTool toTool() {
-		return ChatCompletionTool
-				.of(FunctionParameters.of(this.name, this.description, this.parameterClassJsonSchema));
+		return ChatCompletionTool.of(FunctionParameters.of(this.name, this.description,
+				this.parameterClassJsonSchema));
 	}
 
 	public R call(Object parameter) {

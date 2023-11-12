@@ -51,19 +51,23 @@ public interface ChatCompletionsClient {
 	}
 
 	/**
-	 * Creates and calls a chat completion for the provided prompt and parameters.
-	 * When the response of the completion contains a tool call, the tool call is
-	 * executed and the completion is called again with the updated prompt.
+	 * Creates and calls a chat completion for the provided prompt and parameters. When
+	 * the response of the completion contains a tool call, the tool call is executed and
+	 * the completion is called again with the updated prompt.
 	 * <p>
 	 * The method will repeat this process until the completion is finished or the maximum
 	 * number of iterations is reached.
 	 *
 	 * @param fn A chat completion request builder function
-	 * @param javaFunctions A list of java functions that can be called from the chat completion
-	 * @param objectMapper The object mapper to deserialize and serialize the Java function arguments and results
-	 * @param maxIterations The maximum number of iterations to call the java functions. Set it to a reasonable value to avoid infinite loops.
+	 * @param javaFunctions A list of java functions that can be called from the chat
+	 * completion
+	 * @param objectMapper The object mapper to deserialize and serialize the Java
+	 * function arguments and results
+	 * @param maxIterations The maximum number of iterations to call the java functions.
+	 * Set it to a reasonable value to avoid infinite loops.
 	 * @return A chat completion response
-	 * @throws JsonProcessingException If the java function arguments or results cannot be serialized or deserialized
+	 * @throws JsonProcessingException If the java function arguments or results cannot be
+	 * serialized or deserialized
 	 */
 	default ChatCompletionsResponse create(
 			Function<ChatCompletionsCreateRequest.Builder, ChatCompletionsCreateRequest.Builder> fn,
