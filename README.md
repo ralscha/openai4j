@@ -14,7 +14,7 @@ Legacy and deprecated endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -145,7 +145,7 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
-### 1.0.1 - November ??, 2023
+### 1.0.1 - November 12, 2023
   * Bugfix ChatCompletions UserMessage for GPT Vision
 
 ### 1.0.0 - November 11, 2023
