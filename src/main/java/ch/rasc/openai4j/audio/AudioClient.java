@@ -88,8 +88,6 @@ public interface AudioClient {
 	 *
 	 * @return The translated text.
 	 */
-	@RequestLine("POST /audio/translations")
-	@Headers("Content-Type: multipart/form-data")
 	default AudioTranslationResponse translationsCreate(
 			Function<AudioTranslationRequest.Builder, AudioTranslationRequest.Builder> fn) {
 		return this
@@ -101,8 +99,6 @@ public interface AudioClient {
 	 *
 	 * @return The translated text.
 	 */
-	@RequestLine("POST /audio/translations")
-	@Headers("Content-Type: multipart/form-data")
 	default AudioTranslationResponse translationsCreate(AudioTranslationRequest request) {
 		return this.translationsCreate(request.file().toFile(), request.model().value(),
 				request.prompt(),
