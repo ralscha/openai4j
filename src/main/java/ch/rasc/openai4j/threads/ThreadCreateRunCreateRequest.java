@@ -69,7 +69,7 @@ public interface ThreadCreateRunCreateRequest {
 	 * the behavior on a per-run basis.
 	 */
 	@Nullable
-	Tool[] tools();
+	List<Tool> tools();
 
 	/*
 	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for

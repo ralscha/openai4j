@@ -21,7 +21,6 @@ import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.Nullable;
 
@@ -43,8 +42,8 @@ public interface AudioTranslationRequest {
 	 * ID of the model to use. Only whisper-1 is currently available.
 	 */
 	@Value.Default
-	default Model model() {
-		return Model.WHISPER_1;
+	default AudioRecognitionModel model() {
+		return AudioRecognitionModel.WHISPER_1;
 	}
 
 	/**
@@ -59,7 +58,7 @@ public interface AudioTranslationRequest {
 	 */
 	@JsonProperty("response_format")
 	@Nullable
-	ResponseFormat responseFormat();
+	AudioRecognitionResponseFormat responseFormat();
 
 	/**
 	 * The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
@@ -71,36 +70,6 @@ public interface AudioTranslationRequest {
 	 */
 	@Nullable
 	Double temperature();
-
-	enum ResponseFormat {
-		JSON("json"), TEXT("text"), SRT("srt"), VERBOSE_JSON("verbose_json"), VTT("vtt");
-
-		private final String value;
-
-		ResponseFormat(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
-	}
-
-	enum Model {
-		WHISPER_1("whisper-1");
-
-		private final String value;
-
-		Model(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
-	}
 
 	final class Builder extends ImmutableAudioTranslationRequest.Builder {
 	}

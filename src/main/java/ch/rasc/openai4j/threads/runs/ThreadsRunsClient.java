@@ -158,7 +158,7 @@ public interface ThreadsRunsClient {
 	/**
 	 * Wait for the thread run to finish processing. This method will poll the server
 	 * every pollInterval until the run is finished or until maxWait have passed.
-	 * 
+	 *
 	 * @return The latest ThreadRun object
 	 */
 	default ThreadRun waitForProcessing(ThreadRun run, long pollInterval,

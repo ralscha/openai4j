@@ -15,6 +15,7 @@
  */
 package ch.rasc.openai4j.threads.runs.steps;
 
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -88,7 +89,7 @@ public record ThreadRunStep(String id, String object,
 	}
 
 	record ToolCallsStepDetails(String type,
-			@JsonProperty("tool_calls") ToolCall[] toolCalls) implements StepDetail {
+			@JsonProperty("tool_calls") List<ToolCall> toolCalls) implements StepDetail {
 
 		@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 		@JsonSubTypes({ @Type(value = CodeToolCall.class, name = "code_interpreter"),
@@ -100,7 +101,7 @@ public record ThreadRunStep(String id, String object,
 		record CodeToolCall(String id, String type,
 				@JsonProperty("code_interpreter") CodeInterpreter codeInterpreter)
 				implements ToolCall {
-			record CodeInterpreter(String input, CodeInterpreterOutput[] outputs) {
+			record CodeInterpreter(String input, List<CodeInterpreterOutput> outputs) {
 
 				@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type",
 						visible = true)

@@ -23,4 +23,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record ThreadMessageFile(String id, String object,
 		@JsonProperty("created_at") int createdAt,
 		@JsonProperty("message_id") String messageId) {
+
+	/**
+	 * The identifier, which can be referenced in API endpoints.
+	 */
+	@Override
+	public String id() {
+		return this.id;
+	}
+
+	/**
+	 * The object type, which is always thread.message.file.
+	 */
+	@Override
+	public String object() {
+		return this.object;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the message file was created.
+	 */
+	@Override
+	public int createdAt() {
+		return this.createdAt;
+	}
+
+	/**
+	 * The ID of the message that the File is attached to.
+	 */
+	@Override
+	public String messageId() {
+		return this.messageId;
+	}
 }

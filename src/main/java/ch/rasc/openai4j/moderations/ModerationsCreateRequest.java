@@ -18,7 +18,6 @@ package ch.rasc.openai4j.moderations;
 import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import ch.rasc.openai4j.Nullable;
@@ -28,22 +27,6 @@ import ch.rasc.openai4j.Nullable;
 @JsonSerialize(as = ImmutableModerationsCreateRequest.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public interface ModerationsCreateRequest {
-
-	enum Model {
-		TEXT_MODERATION_STABLE("text-moderation-stable"),
-		TEXT_MODERATION_LATEST("text-moderation-latest");
-
-		private final String value;
-
-		Model(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
-	}
 
 	/**
 	 * The input text to classify
@@ -61,7 +44,7 @@ public interface ModerationsCreateRequest {
 	 * text-moderation-latest
 	 */
 	@Nullable
-	Model model();
+	ModerationModel model();
 
 	static Builder builder() {
 		return new Builder();

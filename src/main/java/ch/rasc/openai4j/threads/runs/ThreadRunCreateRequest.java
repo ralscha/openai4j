@@ -15,6 +15,7 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
+import java.util.List;
 import java.util.Map;
 
 import org.immutables.value.Value;
@@ -64,7 +65,7 @@ public interface ThreadRunCreateRequest {
 	 * the behavior on a per-run basis.
 	 */
 	@Nullable
-	Tool[] tools();
+	List<Tool> tools();
 
 	/*
 	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for

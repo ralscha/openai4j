@@ -31,6 +31,7 @@ public class FunctionParameters {
 	 */
 	public static Map<String, Object> NO_PARAMETERS = Map.of("type", "object",
 			"properties", Map.of());
+
 	private final String name;
 	private final String description;
 	private final Object parameters;

@@ -15,6 +15,8 @@
  */
 package ch.rasc.openai4j.chatcompletions;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -24,7 +26,7 @@ import ch.rasc.openai4j.common.FunctionArguments;
 /**
  * Represents a chat completion response returned by model, based on the provided input.
  */
-public record ChatCompletionsResponse(String id, Choice[] choices, int created,
+public record ChatCompletionsResponse(String id, List<Choice> choices, int created,
 		String model,
 		@Nullable @JsonProperty("system_fingerprint") String systemFingerprint,
 		String object, Usage usage) {
@@ -50,7 +52,7 @@ public record ChatCompletionsResponse(String id, Choice[] choices, int created,
 	}
 
 	public record Message(@Nullable String content,
-			@Nullable @JsonProperty("tool_calls") ToolCall[] toolCalls, String role) {
+			@Nullable @JsonProperty("tool_calls") List<ToolCall> toolCalls, String role) {
 	}
 
 	public record ToolCall(String id, String type, FunctionArguments function) {

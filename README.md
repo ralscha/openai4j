@@ -32,7 +32,7 @@ Legacy and deprecated endpoints are not implemented.
     .addMessage(UserMessage.of("What is the capital of Spain?"))
     .model("gpt-4-1106-preview"));
 
-  System.out.println(response.choices()[0].message().content());
+  System.out.println(response.choices().get(0).message().content());
 ```
 
 ### Function calling with Java code
@@ -89,7 +89,7 @@ public class ChatCompletionsFunctionExample {
         "What are the current temperatures in Oslo, Norway and Helsinki, Finland?"))
         .model("gpt-4-1106-preview"), List.of(getWeather), om, 1);
 
-    var choice = response.choices()[0];
+    var choice = response.choices().get(0);
     System.out.println(choice.message().content());
   }
 }
@@ -120,7 +120,7 @@ public class ChatCompletionsFunctionExample {
 
   var messages = client.threadsMessages.list(thread.id(), p -> p.before(message.id()));
   for (var msg : messages.data()) {
-     var content = msg.content()[0];
+     var content = msg.content().get(0);
      if (content instanceof MessageContentText text) {
        System.out.println(text.text().value());
      }
@@ -145,8 +145,10 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
-### 1.0.3 - November ??, 2023
+### 1.0.3 - November 13, 2023
   * Add `name` property to Chat Completions SystemMessage and UserMessage
+  * More JavaDoc
+  * Replace arrays with List
   
 ### 1.0.2 - November 12, 2023
   * Bugfix: SubmitToolOutputs not properly JSON decoded

@@ -46,7 +46,7 @@ public interface ImageGenerationRequest {
 	 * The model to use for image generation. Defaults to dall-e-2
 	 */
 	@Nullable
-	Model model();
+	ImageModel model();
 
 	/**
 	 * The number of images to generate. Must be between 1 and 10. For dall-e-3, only n=1
@@ -69,7 +69,7 @@ public interface ImageGenerationRequest {
 	 */
 	@JsonProperty("response_format")
 	@Nullable
-	ResponseFormat responseFormat();
+	ImageResponseFormat responseFormat();
 
 	/**
 	 * The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024 for
@@ -77,7 +77,7 @@ public interface ImageGenerationRequest {
 	 * Defaults to 1024x1024
 	 */
 	@Nullable
-	Size size();
+	ImageSize size();
 
 	/**
 	 * The style of the generated images. Must be one of vivid or natural. Vivid causes
@@ -95,58 +95,12 @@ public interface ImageGenerationRequest {
 	@Nullable
 	String user();
 
-	enum Model {
-		DALL_E_2("dall-e-2"), DALL_E_3("dall-e-3");
-
-		private final String value;
-
-		Model(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
-	}
-
-	enum ResponseFormat {
-		URL("url"), B64_JSON("b64_json");
-
-		private final String value;
-
-		ResponseFormat(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
-	}
-
 	enum Quality {
 		STANDARD("standard"), HD("hd");
 
 		private final String value;
 
 		Quality(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		public String value() {
-			return this.value;
-		}
-	}
-
-	enum Size {
-		S_256("256x256"), S_512("512x512"), S_1024("1024x1024"), S_1792("1792x1024"),
-		S_1024_1792("1024x1792");
-
-		private final String value;
-
-		Size(String value) {
 			this.value = value;
 		}
 

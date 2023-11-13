@@ -15,37 +15,20 @@
  */
 package ch.rasc.openai4j.moderations;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Represents policy compliance report by OpenAI's content moderation model against a
- * given input.
- */
-public record ModerationsCreateResponse(String id, String model,
-		List<Moderations> results) {
+public enum ModerationModel {
+	TEXT_MODERATION_STABLE("text-moderation-stable"),
+	TEXT_MODERATION_LATEST("text-moderation-latest");
 
-	/**
-	 * The unique identifier for the moderation request.
-	 */
-	@Override
-	public String id() {
-		return this.id;
+	private final String value;
+
+	ModerationModel(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * The model used to generate the moderation results.
-	 */
-	@Override
-	public String model() {
-		return this.model;
+	@JsonValue
+	public String value() {
+		return this.value;
 	}
-
-	/**
-	 * A list of moderation objects.
-	 */
-	@Override
-	public List<Moderations> results() {
-		return this.results;
-	}
-
 }

@@ -24,4 +24,36 @@ public record AssistantFile(String id, String object,
 		@JsonProperty("created_at") int createdAt,
 		@JsonProperty("assistant_id") String assistantId) {
 
+	/**
+	 * The identifier, which can be referenced in API endpoints.
+	 */
+	@Override
+	public String id() {
+		return this.id;
+	}
+
+	/**
+	 * The object type, which is always assistant.file.
+	 */
+	@Override
+	public String object() {
+		return this.object;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the assistant file was created.
+	 */
+	@Override
+	public int createdAt() {
+		return this.createdAt;
+	}
+
+	/**
+	 * The assistant ID that the file is attached to.
+	 */
+	@Override
+	public String assistantId() {
+		return this.assistantId;
+	}
+
 }

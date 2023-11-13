@@ -40,7 +40,7 @@ public interface AudioSpeechRequest {
 	 * One of the available <a href="https://platform.openai.com/docs/models/tts">TTS
 	 * models</a>
 	 */
-	Model model();
+	SpeechModel model();
 
 	/**
 	 * The text to generate audio for. The maximum length is 4096 characters.
@@ -57,7 +57,7 @@ public interface AudioSpeechRequest {
 	 */
 	@JsonProperty("response_format")
 	@Nullable
-	ResponseFormat responseFormat();
+	AudioResponseFormat responseFormat();
 
 	/**
 	 * The speed of the generated audio. Defaults to 1.0
@@ -65,12 +65,12 @@ public interface AudioSpeechRequest {
 	@Nullable
 	Double speed();
 
-	enum ResponseFormat {
+	enum AudioResponseFormat {
 		MP3("mp3"), OPUS("opus"), AAC("aac"), FLAC("flac");
 
 		private final String value;
 
-		ResponseFormat(String value) {
+		AudioResponseFormat(String value) {
 			this.value = value;
 		}
 
@@ -96,12 +96,12 @@ public interface AudioSpeechRequest {
 		}
 	}
 
-	enum Model {
+	enum SpeechModel {
 		TTS_1("tts-1"), TTS_1_HD("tts-1-hd");
 
 		private final String value;
 
-		Model(String value) {
+		SpeechModel(String value) {
 			this.value = value;
 		}
 

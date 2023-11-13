@@ -61,8 +61,8 @@ public interface ImagesClient {
 	default ImageResponse edit(ImageEditRequest request) {
 		return this.edit(request.image().toFile(), request.prompt(),
 				request.mask() != null ? request.mask().toFile() : null,
-				request.model() != null ? request.model().toValue() : null, request.n(),
-				request.size() != null ? request.size().toValue() : null,
+				request.model() != null ? request.model().value() : null, request.n(),
+				request.size() != null ? request.size().value() : null,
 				request.responseFormat() != null ? request.responseFormat().toValue()
 						: null,
 				request.user());
@@ -97,10 +97,10 @@ public interface ImagesClient {
 	 */
 	default ImageResponse createVariation(ImageVariationRequest request) {
 		return this.createVariation(request.image().toFile(),
-				request.model() != null ? request.model().toValue() : null, request.n(),
+				request.model() != null ? request.model().value() : null, request.n(),
 				request.responseFormat() != null ? request.responseFormat().toValue()
 						: null,
-				request.size() != null ? request.size().toValue() : null, request.user());
+				request.size() != null ? request.size().value() : null, request.user());
 	}
 
 	/**

@@ -23,7 +23,7 @@ public enum Purpose {
 
 	private final String value;
 
-	private Purpose(String value) {
+	Purpose(String value) {
 		this.value = value;
 	}
 

@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.openai4j.common;
+package ch.rasc.openai4j.images;
 
-public record FunctionArguments(String name, String arguments) {
+import com.fasterxml.jackson.annotation.JsonValue;
 
-	/**
-	 * The name of the function.
-	 */
-	@Override
-	public String name() {
-		return this.name;
+public enum ImageSize {
+	S_256("256x256"), S_512("512x512"), S_1024("1024x1024"), S_1792("1792x1024"),
+	S_1024_1792("1024x1792");
+
+	private final String value;
+
+	ImageSize(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * The arguments that the model expects you to pass to the function.
-	 */
-	@Override
-	public String arguments() {
-		return this.arguments;
+	@JsonValue
+	public String value() {
+		return this.value;
 	}
-
 }

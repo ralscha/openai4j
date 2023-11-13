@@ -19,4 +19,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record Moderations(boolean flagged, ModerationsCategories categories,
 		@JsonProperty("category_scores") ModerationsCategoryScores categoryScores) {
+
+	/**
+	 * Whether the content violates OpenAI's usage policies.
+	 */
+	@Override
+	public boolean flagged() {
+		return this.flagged;
+	}
+
+	/**
+	 * A list of the categories, and whether they are flagged or not.
+	 */
+	@Override
+	public ModerationsCategories categories() {
+		return this.categories;
+	}
+
+	/**
+	 * A list of the categories along with their scores as predicted by model.
+	 */
+	@Override
+	public ModerationsCategoryScores categoryScores() {
+		return this.categoryScores;
+	}
+
 }

@@ -84,7 +84,7 @@ public interface ChatCompletionsClient {
 		ChatCompletionsResponse response = this.create(request);
 
 		var thread = new ArrayList<>(request.messages());
-		var choice = response.choices()[0];
+		var choice = response.choices().get(0);
 
 		int iterationCount = 1;
 		while (choice.finishReason() == FinishReason.TOOL_CALLS) {

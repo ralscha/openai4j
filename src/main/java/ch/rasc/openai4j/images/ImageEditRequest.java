@@ -20,8 +20,6 @@ import java.nio.file.Path;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import ch.rasc.openai4j.Nullable;
 
 @Value.Immutable
@@ -56,7 +54,7 @@ public interface ImageEditRequest {
 	 * Defaults to dall-e-2.
 	 */
 	@Nullable
-	Model model();
+	ImageModel model();
 
 	/**
 	 * The number of images to generate. Must be between 1 and 10. Defaults to 1.
@@ -69,14 +67,14 @@ public interface ImageEditRequest {
 	 * Defaults to 1024x1024.
 	 */
 	@Nullable
-	Size size();
+	ImageSize size();
 
 	/**
 	 * The format in which the generated images are returned. Must be one of url or
 	 * b64_json. Defaults to url.
 	 */
 	@Nullable
-	ResponseFormat responseFormat();
+	ImageResponseFormat responseFormat();
 
 	/**
 	 * A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -84,51 +82,6 @@ public interface ImageEditRequest {
 	 */
 	@Nullable
 	String user();
-
-	enum Model {
-		DALL_E_2("dall-e-2");
-
-		private final String value;
-
-		Model(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		String toValue() {
-			return this.value;
-		}
-	}
-
-	enum ResponseFormat {
-		URL("url"), B64_JSON("b64_json");
-
-		private final String value;
-
-		ResponseFormat(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		String toValue() {
-			return this.value;
-		}
-	}
-
-	enum Size {
-		S_256("256x256"), S_512("512x512"), S_1024("1024x1024");
-
-		private final String value;
-
-		Size(String value) {
-			this.value = value;
-		}
-
-		@JsonValue
-		String toValue() {
-			return this.value;
-		}
-	}
 
 	final class Builder extends ImmutableImageEditRequest.Builder {
 	}

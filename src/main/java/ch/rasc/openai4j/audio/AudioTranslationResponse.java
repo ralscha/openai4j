@@ -15,8 +15,12 @@
  */
 package ch.rasc.openai4j.audio;
 
-/**
- * @param text The translated text.
- */
 public record AudioTranslationResponse(String text) {
+	/**
+	 * The translated text.
+	 */
+	@Override
+	public String text() {
+		return this.text;
+	}
 }

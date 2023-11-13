@@ -17,6 +17,42 @@ package ch.rasc.openai4j.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Describes an OpenAI model offering that can be used with the API.
+ */
 public record Model(String id, int created, String object,
 		@JsonProperty("owned_by") String ownedBy) {
+
+	/**
+	 * The model identifier, which can be referenced in the API endpoints.
+	 */
+	@Override
+	public String id() {
+		return this.id;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) when the model was created.
+	 */
+	@Override
+	public int created() {
+		return this.created;
+	}
+
+	/**
+	 * The object type, which is always "model".
+	 */
+	@Override
+	public String object() {
+		return this.object;
+	}
+
+	/**
+	 * The organization that owns the model.
+	 */
+	@Override
+	public String ownedBy() {
+		return this.ownedBy;
+	}
+
 }

@@ -15,6 +15,7 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,8 +40,156 @@ public record ThreadRun(String id, String object,
 		@Nullable @JsonProperty("cancelled_at") Integer cancelledAt,
 		@Nullable @JsonProperty("failed_at") Integer failedAt,
 		@Nullable @JsonProperty("completed_at") Integer completedAt, String model,
-		String instructions, Tool[] tools, @JsonProperty("file_ids") String[] fileIds,
+		String instructions, List<Tool> tools,
+		@JsonProperty("file_ids") List<String> fileIds,
 		@JsonProperty("metadata") Map<String, Object> metadata) {
+
+	/**
+	 * The identifier, which can be referenced in API endpoints.
+	 */
+	@Override
+	public String id() {
+		return this.id;
+	}
+
+	/**
+	 * The object type, which is always thread.run.
+	 */
+	@Override
+	public String object() {
+		return this.object;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run was created.
+	 */
+	@Override
+	public int createdAt() {
+		return this.createdAt;
+	}
+
+	/**
+	 * The ID of the thread that was executed on as a part of this run.
+	 */
+	@Override
+	public String threadId() {
+		return this.threadId;
+	}
+
+	/**
+	 * The ID of the assistant used for execution of this run.
+	 */
+	@Override
+	public String assistantId() {
+		return this.assistantId;
+	}
+
+	/**
+	 * The status of the run.
+	 */
+	@Override
+	public Status status() {
+		return this.status;
+	}
+
+	/**
+	 * Details on the action required to continue the run. Will be null if no action is
+	 * required.
+	 */
+	@Override
+	public RequiredActionFunctionToolCall requiredAction() {
+		return this.requiredAction;
+	}
+
+	/**
+	 * The last error associated with this run. Will be null if there are no errors.
+	 */
+	@Override
+	public Error lastError() {
+		return this.lastError;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run will expire.
+	 */
+	@Override
+	public int expiresAt() {
+		return this.expiresAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run was started.
+	 */
+	@Override
+	public Integer startedAt() {
+		return this.startedAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run was cancelled.
+	 */
+	@Override
+	public Integer cancelledAt() {
+		return this.cancelledAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run failed.
+	 */
+	@Override
+	public Integer failedAt() {
+		return this.failedAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run was completed.
+	 */
+	@Override
+	public Integer completedAt() {
+		return this.completedAt;
+	}
+
+	/**
+	 * The model that the assistant used for this run.
+	 */
+	@Override
+	public String model() {
+		return this.model;
+	}
+
+	/**
+	 * The instructions that the assistant used for this run.
+	 */
+	@Override
+	public String instructions() {
+		return this.instructions;
+	}
+
+	/**
+	 * The list of tools that the assistant used for this run.
+	 */
+	@Override
+	public List<Tool> tools() {
+		return this.tools;
+	}
+
+	/**
+	 * The list of File IDs the assistant used for this run.
+	 */
+	@Override
+	public List<String> fileIds() {
+		return this.fileIds;
+	}
+
+	/**
+	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for
+	 * storing additional information about the object in a structured format. Keys can be
+	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
+	 */
+	@Override
+	public Map<String, Object> metadata() {
+		return this.metadata;
+	}
 
 	public enum Status {
 		QUEUED("queued"), IN_PROGRESS("in_progress"), REQUIRES_ACTION("requires_action"),
@@ -66,9 +215,60 @@ public record ThreadRun(String id, String object,
 
 	public record RequiredActionFunctionToolCall(String type,
 			@JsonProperty("submit_tool_outputs") SubmitToolOutputs submitToolOutputs) {
+
+		/**
+		 * For now, this is always submit_tool_outputs.
+		 */
+		@Override
+		public String type() {
+			return this.type;
+		}
+
+		/**
+		 * Details on the tool outputs needed for this run to continue.
+		 */
+		@Override
+		public SubmitToolOutputs submitToolOutputs() {
+			return this.submitToolOutputs;
+		}
+
 		public record SubmitToolOutputs(
-				@JsonProperty("tool_calls") ToolCall[] toolCalls) {
+				@JsonProperty("tool_calls") List<ToolCall> toolCalls) {
+
+			/**
+			 * A list of the relevant tool calls.
+			 */
+			@Override
+			public List<ToolCall> toolCalls() {
+				return this.toolCalls;
+			}
+
 			public record ToolCall(String id, String type, FunctionArguments function) {
+				/**
+				 * The ID of the tool call. This ID must be referenced when you submit the
+				 * tool outputs in using the Submit tool outputs to run endpoint.
+				 */
+				@Override
+				public String id() {
+					return this.id;
+				}
+
+				/**
+				 * The type of tool call the output is required for. For now, this is
+				 * always function.
+				 */
+				@Override
+				public String type() {
+					return this.type;
+				}
+
+				/**
+				 * The function definition.
+				 */
+				@Override
+				public FunctionArguments function() {
+					return this.function;
+				}
 			}
 		}
 	}

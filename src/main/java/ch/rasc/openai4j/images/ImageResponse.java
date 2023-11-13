@@ -17,5 +17,8 @@ package ch.rasc.openai4j.images;
 
 import java.util.List;
 
+/**
+ * Represents a list of Image objects
+ */
 public record ImageResponse(long created, List<Image> data) {
 }
