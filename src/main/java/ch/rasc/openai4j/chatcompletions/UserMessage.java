@@ -25,13 +25,16 @@ public class UserMessage extends ChatCompletionMessage {
 	private final String name;
 
 	private UserMessage(Object content, String name) {
+		if (content == null) {
+			throw new IllegalArgumentException("content must not be null");
+		}
 		this.content = content;
 		this.name = name;
 	}
 
 	/**
 	 * Create a new user message with the given content.
-	 * 
+	 *
 	 * @param content The contents of the user message.
 	 */
 	public static UserMessage of(String content) {
@@ -41,7 +44,7 @@ public class UserMessage extends ChatCompletionMessage {
 	/**
 	 * Create a new user message with an array of content parts with a defined type, each
 	 * can be of typetext or image_url when passing in images
-	 * 
+	 *
 	 * @param content A list of content parts.
 	 */
 	public static UserMessage of(List<Content> content) {
@@ -50,7 +53,7 @@ public class UserMessage extends ChatCompletionMessage {
 
 	/**
 	 * Create a new user message with the given content.
-	 * 
+	 *
 	 * @param content The contents of the user message.
 	 * @param name An optional name for the participant. Provides the model information to
 	 * differentiate between participants of the same role.
@@ -62,7 +65,7 @@ public class UserMessage extends ChatCompletionMessage {
 	/**
 	 * Create a new user message with an array of content parts with a defined type, each
 	 * can be of typetext or image_url when passing in images
-	 * 
+	 *
 	 * @param content A list of content parts.
 	 * @param name An optional name for the participant. Provides the model information to
 	 * differentiate between participants of the same role.
@@ -74,12 +77,36 @@ public class UserMessage extends ChatCompletionMessage {
 	public interface Content {
 	}
 
-	public record ImageContent(String type, @JsonProperty("image_url") ImageUrl imageUrl)
-			implements Content {
-		record ImageUrl(String url, String detail) {
+	public static class ImageContent implements Content {
+
+		private final String type;
+		private final ImageUrl imageUrl;
+
+		private ImageContent(String type, ImageUrl imageUrl) {
+			if (type == null || imageUrl == null) {
+				throw new IllegalArgumentException("type and imageUrl cannot be null");
+			}
+			this.type = type;
+			this.imageUrl = imageUrl;
+		}
+
+		public static class ImageUrl {
+
+			private final String url;
+			private final String detail;
+
+			private ImageUrl(String url, String detail) {
+				if (url == null) {
+					throw new IllegalArgumentException("url cannot be null");
+				}
+				this.url = url;
+				this.detail = detail;
+			}
+
 			/**
 			 * Either a URL of the image or the base64 encoded image data.
 			 */
+			@JsonProperty
 			public String url() {
 				return this.url;
 			}
@@ -87,6 +114,7 @@ public class UserMessage extends ChatCompletionMessage {
 			/**
 			 * Specifies the detail level of the image.
 			 */
+			@JsonProperty
 			public String detail() {
 				return this.detail;
 			}
@@ -98,9 +126,6 @@ public class UserMessage extends ChatCompletionMessage {
 		 * @param url Either a URL of the image or the base64 encoded image data.
 		 */
 		public static ImageContent of(String url) {
-			if (url == null) {
-				throw new IllegalArgumentException("url cannot be null");
-			}
 			return of(url, null);
 		}
 
@@ -111,45 +136,61 @@ public class UserMessage extends ChatCompletionMessage {
 		 * @param detail Specifies the detail level of the image.
 		 */
 		public static ImageContent of(String url, String detail) {
-			if (url == null) {
-				throw new IllegalArgumentException("url cannot be null");
-			}
 			return new ImageContent("image_url", new ImageUrl(url, detail));
 		}
 
+		@JsonProperty("image_url")
 		public ImageUrl imageUrl() {
 			return this.imageUrl;
 		}
 
 		/**
-		 * The type of the content part.
+		 * The type of the content part. In this case always <code>image_url</code>.
 		 */
+		@JsonProperty
 		public String type() {
 			return this.type;
 		}
 	}
 
-	public record TextContent(String type, String text) implements Content {
+	/**
+	 * Represents textual content implementing the {@link Content} interface.
+	 */
+	public static class TextContent implements Content {
+		private final String type;
+
+		private final String text;
+
+		private TextContent(String type, String text) {
+			if (type == null || text == null) {
+				throw new IllegalArgumentException("type and text cannot be null");
+			}
+			this.type = type;
+			this.text = text;
+		}
+
 		/**
+		 * Creates a new TextContent instance with the specified text.
+		 *
 		 * @param text The text content.
+		 * @return A new TextContent instance.
 		 */
 		public static TextContent of(String text) {
-			if (text == null) {
-				throw new IllegalArgumentException("text cannot be null");
-			}
 			return new TextContent("text", text);
 		}
 
 		/**
-		 * The text content.
+		 * Gets the text content.
 		 */
+		@JsonProperty
 		public String text() {
 			return this.text;
 		}
 
 		/**
-		 * The type of the content part.
+		 * Gets the type of the content. In this case always <code>text</code>.
 		 */
+		@JsonProperty
 		public String type() {
 			return this.type;
 		}

@@ -23,33 +23,30 @@ public class SystemMessage extends ChatCompletionMessage {
 	private final String name;
 
 	private SystemMessage(String content, String name) {
+		if (content == null) {
+			throw new IllegalArgumentException("content must not be null");
+		}
 		this.content = content;
 		this.name = name;
 	}
 
 	/**
 	 * Create a new system message with the given content.
-	 * 
+	 *
 	 * @param content The contents of the system message.
 	 */
 	public static SystemMessage of(String content) {
-		if (content == null) {
-			throw new IllegalArgumentException("content must not be null");
-		}
 		return new SystemMessage(content, null);
 	}
 
 	/**
 	 * Create a new system message with the given content and name.
-	 * 
+	 *
 	 * @param content The contents of the system message.
 	 * @param name An optional name for the participant. Provides the model information to
 	 * differentiate between participants of the same role.
 	 */
 	public static SystemMessage of(String content, String name) {
-		if (content == null) {
-			throw new IllegalArgumentException("content must not be null");
-		}
 		return new SystemMessage(content, name);
 	}
 

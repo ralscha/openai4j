@@ -23,7 +23,10 @@ public class ToolMessage extends ChatCompletionMessage {
 	private final String toolCallId;
 	private final String content;
 
-	ToolMessage(String toolCallId, String content) {
+	private ToolMessage(String toolCallId, String content) {
+		if (toolCallId == null) {
+			throw new IllegalArgumentException("toolCallId must not be null");
+		}
 		this.toolCallId = toolCallId;
 		this.content = content;
 	}
@@ -33,7 +36,6 @@ public class ToolMessage extends ChatCompletionMessage {
 	 *
 	 * @param content The contents of the tool message.
 	 * @param toolCallId Tool call that this message is responding to.
-	 * @return A new tool message.
 	 */
 	public static ToolMessage of(String toolCallId, String content) {
 		return new ToolMessage(toolCallId, content);
