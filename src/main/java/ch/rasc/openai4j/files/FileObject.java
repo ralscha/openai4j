@@ -44,4 +44,70 @@ public record FileObject(String id, Integer bytes,
 		}
 	}
 
+	/**
+	 * The file identifier.
+	 */
+	@Override
+	public String id() {
+		return this.id;
+	}
+
+	/**
+	 * The size of the file in bytes.
+	 */
+	@Override
+	public Integer bytes() {
+		return this.bytes;
+	}
+
+	/**
+	 * The Unix timestamp for when the file was created.
+	 */
+	@Override
+	public Integer createdAt() {
+		return this.createdAt;
+	}
+
+	/**
+	 * The name of the file.
+	 */
+	@Override
+	public String filename() {
+		return this.filename;
+	}
+
+	/**
+	 * The object type, which is always file.
+	 */
+	@Override
+	public String object() {
+		return this.object;
+	}
+
+	/**
+	 * The intended purpose of the file.
+	 */
+	@Override
+	public Purpose purpose() {
+		return this.purpose;
+	}
+
+	/**
+	 * Deprecated. The current status of the file.
+	 */
+	@Override
+	@Deprecated
+	public Status status() {
+		return this.status;
+	}
+
+	/**
+	 * Deprecated. The details on why a fine-tuning training file failed validation.
+	 */
+	@Override
+	@Deprecated
+	public String statusDetails() {
+		return this.statusDetails;
+	}
+
 }
