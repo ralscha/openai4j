@@ -20,16 +20,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SystemMessage extends ChatCompletionMessage {
 	private final String content;
+	private final String name;
 
-	SystemMessage(String content) {
+	private SystemMessage(String content, String name) {
 		this.content = content;
+		this.name = name;
 	}
 
 	/**
 	 * Create a new system message with the given content.
+	 * 
+	 * @param content The contents of the system message.
 	 */
 	public static SystemMessage of(String content) {
-		return new SystemMessage(content);
+		if (content == null) {
+			throw new IllegalArgumentException("content must not be null");
+		}
+		return new SystemMessage(content, null);
+	}
+
+	/**
+	 * Create a new system message with the given content and name.
+	 * 
+	 * @param content The contents of the system message.
+	 * @param name An optional name for the participant. Provides the model information to
+	 * differentiate between participants of the same role.
+	 */
+	public static SystemMessage of(String content, String name) {
+		if (content == null) {
+			throw new IllegalArgumentException("content must not be null");
+		}
+		return new SystemMessage(content, name);
 	}
 
 	/**
@@ -41,6 +62,18 @@ public class SystemMessage extends ChatCompletionMessage {
 		return this.content;
 	}
 
+	/**
+	 * An optional name for the participant. Provides the model information to
+	 * differentiate between participants of the same role.
+	 */
+	@JsonProperty
+	public String name() {
+		return this.name;
+	}
+
+	/**
+	 * The role of the messages author, in this case <code>system</code>.
+	 */
 	@Override
 	String role() {
 		return "system";

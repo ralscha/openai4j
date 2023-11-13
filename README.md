@@ -145,6 +145,9 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
+### 1.0.3 - November ??, 2023
+  * Add `name` property to Chat Completions SystemMessage and UserMessage
+  
 ### 1.0.2 - November 12, 2023
   * Bugfix: SubmitToolOutputs not properly JSON decoded
   * Bugfix: waitForProcessing in ThreadsRuns must return the last ThreadRun object
