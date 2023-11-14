@@ -186,7 +186,7 @@ public record ThreadMessage(String id, String object,
 		@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 		@JsonSubTypes({ @Type(value = FileCitation.class, name = "file_citation"),
 				@Type(value = FilePath.class, name = "file_path") })
-		interface Annotation {
+		public interface Annotation {
 		}
 
 		/**

@@ -36,12 +36,135 @@ public record ThreadRunStep(String id, String object,
 		@JsonProperty("thread_id") String threadId, @JsonProperty("run_id") String runId,
 		ThreadRunStepType type, ThreadRunStepStatus status,
 		@JsonProperty("step_details") StepDetail stepDetails,
-		@Nullable @JsonProperty("last_error") Error lastError,
-		@Nullable @JsonProperty("expired_at") Integer expiredAt,
-		@Nullable @JsonProperty("cancelled_at") Integer cancelledAt,
-		@Nullable @JsonProperty("failed_at") Integer failedAt,
-		@Nullable @JsonProperty("completed_at") Integer completedAt,
-		@Nullable Map<String, Object> metadata) {
+		@JsonProperty("last_error") Error lastError,
+		@JsonProperty("expired_at") Integer expiredAt,
+		@JsonProperty("cancelled_at") Integer cancelledAt,
+		@JsonProperty("failed_at") Integer failedAt,
+		@JsonProperty("completed_at") Integer completedAt, Map<String, Object> metadata) {
+
+	/**
+	 * The identifier of the run step, which can be referenced in API endpoints.
+	 */
+	@Override
+	public String id() {
+		return this.id;
+	}
+
+	/**
+	 * The object type, which is always thread.run.step.
+	 */
+	@Override
+	public String object() {
+		return this.object;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run step was created.
+	 */
+	@Override
+	public int createdAt() {
+		return this.createdAt;
+	}
+
+	/**
+	 * The ID of the assistant associated with the run step.
+	 */
+	@Override
+	public String assistantId() {
+		return this.assistantId;
+	}
+
+	/**
+	 * The ID of the thread that was run.
+	 */
+	@Override
+	public String threadId() {
+		return this.threadId;
+	}
+
+	/**
+	 * The ID of the run that this run step is a part of.
+	 */
+	@Override
+	public String runId() {
+		return this.runId;
+	}
+
+	/**
+	 * The type of run step, which can be either message_creation or tool_calls.
+	 */
+	@Override
+	public ThreadRunStepType type() {
+		return this.type;
+	}
+
+	/**
+	 * The status of the run step, which can be either in_progress, cancelled, failed,
+	 * completed, or expired.
+	 */
+	@Override
+	public ThreadRunStepStatus status() {
+		return this.status;
+	}
+
+	/**
+	 * The details of the run step.
+	 */
+	@Override
+	public StepDetail stepDetails() {
+		return this.stepDetails;
+	}
+
+	/**
+	 * The last error associated with this run step. Will be null if there are no errors.
+	 */
+	@Override
+	public Error lastError() {
+		return this.lastError;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run step expired. A step is considered
+	 * expired if the parent run is expired.
+	 */
+	@Override
+	public Integer expiredAt() {
+		return this.expiredAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run step was cancelled.
+	 */
+	@Override
+	public Integer cancelledAt() {
+		return this.cancelledAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run step failed.
+	 */
+	@Override
+	public Integer failedAt() {
+		return this.failedAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the run step completed.
+	 */
+	@Override
+	public Integer completedAt() {
+		return this.completedAt;
+	}
+
+	/**
+	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for
+	 * storing additional information about the object in a structured format. Keys can be
+	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
+	 */
+	@Override
+	public Map<String, Object> metadata() {
+		return this.metadata;
+	}
 
 	enum ThreadRunStepType {
 		MESSAGE_CREATION("message_creation"), TOOL_CALLS("tool_calls");
@@ -78,59 +201,255 @@ public record ThreadRunStep(String id, String object,
 	@JsonSubTypes({
 			@Type(value = MessageCreationStepDetails.class, name = "message_creation"),
 			@Type(value = ToolCallsStepDetails.class, name = "tool_calls") })
-	interface StepDetail {
+	public interface StepDetail {
 	}
 
 	record MessageCreationStepDetails(String type,
 			@JsonProperty("message_creation") MessageCreation messageCreation)
 			implements StepDetail {
+
+		/**
+		 * Always `message_creation`.
+		 */
+		@Override
+		public String type() {
+			return this.type;
+		}
+
+		/**
+		 * The ID of the message that was created by this run step.
+		 */
+		@Override
+		public MessageCreation messageCreation() {
+			return this.messageCreation;
+		}
+
 		record MessageCreation(@JsonProperty("message_id") String messageId) {
+			/**
+			 * The ID of the message that was created by this run step.
+			 */
+			@Override
+			public String messageId() {
+				return this.messageId;
+			}
 		}
 	}
 
 	record ToolCallsStepDetails(String type,
 			@JsonProperty("tool_calls") List<ToolCall> toolCalls) implements StepDetail {
 
+		/**
+		 * Always tool_calls.
+		 */
+		@Override
+		public String type() {
+			return this.type;
+		}
+
+		/**
+		 * An array of tool calls the run step was involved in. These can be associated
+		 * with one of three types of tools: code_interpreter, retrieval, or function.
+		 */
+		@Override
+		public List<ToolCall> toolCalls() {
+			return this.toolCalls;
+		}
+
 		@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 		@JsonSubTypes({ @Type(value = CodeToolCall.class, name = "code_interpreter"),
 				@Type(value = RetrievalToolCall.class, name = "retrieval"),
 				@Type(value = FunctionToolCall.class, name = "function") })
-		interface ToolCall {
+		public interface ToolCall {
 		}
 
 		record CodeToolCall(String id, String type,
 				@JsonProperty("code_interpreter") CodeInterpreter codeInterpreter)
 				implements ToolCall {
+
+			/**
+			 * The ID of the tool call.
+			 */
+			@Override
+			public String id() {
+				return this.id;
+			}
+
+			/**
+			 * The type of tool call. This is always going to be code_interpreter for this
+			 * type of tool call.
+			 */
+			@Override
+			public String type() {
+				return this.type;
+			}
+
+			/**
+			 * The Code Interpreter tool call definition.
+			 */
+			@Override
+			public CodeInterpreter codeInterpreter() {
+				return this.codeInterpreter;
+			}
+
 			record CodeInterpreter(String input, List<CodeInterpreterOutput> outputs) {
+
+				/**
+				 * The input to the Code Interpreter tool call.
+				 */
+				@Override
+				public String input() {
+					return this.input;
+				}
+
+				/**
+				 * The outputs from the Code Interpreter tool call. Code Interpreter can
+				 * output one or more items, including text (logs) or images (image). Each
+				 * of these are represented by a different object type.
+				 */
+				@Override
+				public List<CodeInterpreterOutput> outputs() {
+					return this.outputs;
+				}
 
 				@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type",
 						visible = true)
 				@JsonSubTypes({
 						@Type(value = ImageCodeInterpreterOutput.class, name = "image"),
 						@Type(value = LogCodeInterpreterOutput.class, name = "logs") })
-				interface CodeInterpreterOutput {
+				public interface CodeInterpreterOutput {
 				}
 
 				record ImageCodeInterpreterOutput(String type, Image image)
 						implements CodeInterpreterOutput {
+					/**
+					 * Always image.
+					 */
+					@Override
+					public String type() {
+						return this.type;
+					}
+
+					/**
+					 * The file ID of the image.
+					 */
+					@Override
+					public Image image() {
+						return this.image;
+					}
 				}
 
 				record Image(@JsonProperty("file_id") String fileId) {
+					/**
+					 * The file ID of the image.
+					 */
+					@Override
+					public String fileId() {
+						return this.fileId;
+					}
 				}
 
 				record LogCodeInterpreterOutput(String type, String logs)
 						implements CodeInterpreterOutput {
+					/**
+					 * Always logs.
+					 */
+					@Override
+					public String type() {
+						return this.type;
+					}
+
+					/**
+					 * The text output from the Code Interpreter tool call.
+					 */
+					@Override
+					public String logs() {
+						return this.logs;
+					}
 				}
 			}
 		}
 
 		record RetrievalToolCall(String id, String type, Map<String, Object> retrieval)
 				implements ToolCall {
+			/**
+			 * The ID of the tool call object.
+			 */
+			@Override
+			public String id() {
+				return this.id;
+			}
+
+			/**
+			 * The type of tool call. This is always going to be retrieval for this type
+			 * of tool call.
+			 */
+			@Override
+			public String type() {
+				return this.type;
+			}
+
+			/**
+			 * For now, this is always going to be an empty object.
+			 */
+			@Override
+			public Map<String, Object> retrieval() {
+				return this.retrieval;
+			}
 		}
 
 		record FunctionToolCall(String id, String type, Function function)
 				implements ToolCall {
+
+			/**
+			 * The ID of the tool call object.
+			 */
+			@Override
+			public String id() {
+				return this.id;
+			}
+
+			/**
+			 * The type of tool call. This is always going to be function for this type of
+			 * tool call.
+			 */
+			@Override
+			public String type() {
+				return this.type;
+			}
+
+			/**
+			 * The definition of the function that was called.
+			 */
+			@Override
+			public Function function() {
+				return this.function;
+			}
+
 			record Function(String name, String arguments, @Nullable String output) {
+				/**
+				 * The name of the function.
+				 */
+				@Override
+				public String name() {
+					return this.name;
+				}
+
+				/**
+				 * The arguments passed to the function.
+				 */
+				@Override
+				public String arguments() {
+					return this.arguments;
+				}
+
+				/**
+				 * The output of the function. This will be null if the outputs have not
+				 * been submitted yet.
+				 */
+				@Override
+				public String output() {
+					return this.output;
+				}
 			}
 		}
 
