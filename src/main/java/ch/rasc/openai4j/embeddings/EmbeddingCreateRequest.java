@@ -54,7 +54,7 @@ public interface EmbeddingCreateRequest {
 
 	/**
 	 * The format to return the embeddings in. Can be either float or base64. Defaults to
-	 * float.
+	 * float. In this client the floats are mapped into doubles.
 	 */
 	@Nullable
 	@JsonProperty("encoding_format")
