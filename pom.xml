@@ -146,23 +146,26 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<version>4.3</version>
 				<configuration>
-					<header>${basedir}/src/main/config/header.txt</header>
-					<excludes>
-						<exclude>**/*.xml</exclude>
-						<exclude>**/*.md</exclude>
-						<exclude>**/*.py</exclude>
-						<exclude>LICENSE</exclude>
-						<exclude>.travis.yml</exclude>
-						<exclude>**/.gitignore</exclude>
-						<exclude>.factorypath</exclude>
-						<exclude>.mvn/**/*</exclude>
-						<exclude>mvnw.cmd</exclude>
-						<exclude>mvnw</exclude>
-						<exclude>.apt_generated/**</exclude>
-						<exclude>.editorconfig</exclude>
-						<exclude>.github/**</exclude>
-					</excludes>
-					<strictCheck>true</strictCheck>
+					<licenseSets>
+      					<licenseSet>
+							<header>${basedir}/src/main/config/header.txt</header>
+							<excludes>
+								<exclude>**/*.xml</exclude>
+								<exclude>**/*.md</exclude>
+								<exclude>**/*.py</exclude>
+								<exclude>LICENSE</exclude>
+								<exclude>.travis.yml</exclude>
+								<exclude>**/.gitignore</exclude>
+								<exclude>.factorypath</exclude>
+								<exclude>.mvn/**/*</exclude>
+								<exclude>mvnw.cmd</exclude>
+								<exclude>mvnw</exclude>
+								<exclude>.apt_generated/**</exclude>
+								<exclude>.editorconfig</exclude>
+								<exclude>.github/**</exclude>
+							</excludes>
+						</licenseSet>
+					</licenseSets>
 				</configuration>
 				<executions>
 					<execution>
