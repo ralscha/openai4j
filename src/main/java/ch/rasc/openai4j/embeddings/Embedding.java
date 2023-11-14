@@ -45,25 +45,25 @@ public record Embedding(int index, EmbeddingVector embedding, String object) {
 
 	public static class EmbeddingVector {
 		private final String base64;
-		private final double[] doubleArray;
+		private final float[] floatArray;
 
 		@JsonCreator
-		EmbeddingVector(double[] doubleArray) {
-			this.doubleArray = doubleArray;
+		EmbeddingVector(float[] floatArray) {
+			this.floatArray = floatArray;
 			this.base64 = null;
 		}
 
 		@JsonCreator
 		EmbeddingVector(String base64) {
-			this.doubleArray = null;
+			this.floatArray = null;
 			this.base64 = base64;
 		}
 
 		/**
-		 * The embedding vector as a list of doubles.
+		 * The embedding vector as a list of floats.
 		 */
-		public double[] doubleArray() {
-			return this.doubleArray;
+		public float[] floatArray() {
+			return this.floatArray;
 		}
 
 		/**

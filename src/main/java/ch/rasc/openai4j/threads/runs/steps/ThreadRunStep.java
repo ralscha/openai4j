@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.common.Error;
 
 /**
@@ -425,7 +424,7 @@ public record ThreadRunStep(String id, String object,
 				return this.function;
 			}
 
-			record Function(String name, String arguments, @Nullable String output) {
+			record Function(String name, String arguments, String output) {
 				/**
 				 * The name of the function.
 				 */

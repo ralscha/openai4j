@@ -20,16 +20,13 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.Nullable;
-
 /**
  * Represents an assistant that can call the model and use tools.
  */
 public record Assistant(String id, String object,
-		@JsonProperty("created_at") int createdAt, @Nullable String name,
-		@Nullable String description, String model, @Nullable String instructions,
-		List<Tool> tools, @JsonProperty("file_ids") List<String> fileIds,
-		Map<String, Object> metadata) {
+		@JsonProperty("created_at") int createdAt, String name, String description,
+		String model, String instructions, List<Tool> tools,
+		@JsonProperty("file_ids") List<String> fileIds, Map<String, Object> metadata) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.

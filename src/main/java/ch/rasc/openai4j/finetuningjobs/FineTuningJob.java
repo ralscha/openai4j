@@ -20,7 +20,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.common.Error;
 
 /**
@@ -28,15 +27,14 @@ import ch.rasc.openai4j.common.Error;
  * the API.
  */
 public record FineTuningJob(String id, @JsonProperty("created_at") int createdAt,
-		@Nullable Error error,
-		@JsonProperty("fine_tuned_model") @Nullable String fineTunedModel,
-		@JsonProperty("finished_at") @Nullable Integer finishedAt,
-		HyperParameters hyperparameters, String model, String object,
+		Error error, @JsonProperty("fine_tuned_model") String fineTunedModel,
+		@JsonProperty("finished_at") Integer finishedAt, HyperParameters hyperparameters,
+		String model, String object,
 		@JsonProperty("organization_id") String organizationId,
 		@JsonProperty("result_files") List<String> resultFiles, Status status,
-		@JsonProperty("trained_tokens") @Nullable Integer trainedTokens,
+		@JsonProperty("trained_tokens") Integer trainedTokens,
 		@JsonProperty("training_file") String trainingFile,
-		@JsonProperty("validation_file") @Nullable String validationFile) {
+		@JsonProperty("validation_file") String validationFile) {
 
 	/**
 	 * The object identifier, which can be referenced in the API endpoints.

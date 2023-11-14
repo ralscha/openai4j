@@ -18,12 +18,10 @@ package ch.rasc.openai4j.files;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import ch.rasc.openai4j.Nullable;
-
 public record FileObject(String id, Integer bytes,
 		@JsonProperty("created_at") Integer createdAt, String filename, String object,
 		Purpose purpose, Status status,
-		@JsonProperty("status_details") @Nullable String statusDetails) {
+		@JsonProperty("status_details") String statusDetails) {
 
 	public enum Status {
 		UPLOADED("uploaded"), PROCESSED("processed"), ERROR("error"), DELETED("deleted");

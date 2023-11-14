@@ -15,9 +15,7 @@
  */
 package ch.rasc.openai4j.common;
 
-import ch.rasc.openai4j.Nullable;
-
-public record Error(String code, String message, @Nullable String param) {
+public record Error(String code, String message, String param) {
 	/**
 	 * A machine-readable error code.
 	 */

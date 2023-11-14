@@ -19,11 +19,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.Nullable;
-
 public record ListResponse<T>(String object, List<T> data,
-		@Nullable @JsonProperty("has_more") Boolean hasMore,
-		@Nullable @JsonProperty("first_id") String firstId,
-		@Nullable @JsonProperty("last_id") String lastId) {
+		@JsonProperty("has_more") Boolean hasMore,
+		@JsonProperty("first_id") String firstId,
+		@JsonProperty("last_id") String lastId) {
 
 }

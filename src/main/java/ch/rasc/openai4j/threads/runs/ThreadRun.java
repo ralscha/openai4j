@@ -21,7 +21,6 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.assistants.Tool;
 import ch.rasc.openai4j.common.Error;
 import ch.rasc.openai4j.common.FunctionArguments;
@@ -33,13 +32,13 @@ public record ThreadRun(String id, String object,
 		@JsonProperty("created_at") int createdAt,
 		@JsonProperty("thread_id") String threadId,
 		@JsonProperty("assistant_id") String assistantId, Status status,
-		@Nullable @JsonProperty("required_action") RequiredActionFunctionToolCall requiredAction,
-		@Nullable @JsonProperty("last_error") Error lastError,
+		@JsonProperty("required_action") RequiredActionFunctionToolCall requiredAction,
+		@JsonProperty("last_error") Error lastError,
 		@JsonProperty("expires_at") int expiresAt,
-		@Nullable @JsonProperty("started_at") Integer startedAt,
-		@Nullable @JsonProperty("cancelled_at") Integer cancelledAt,
-		@Nullable @JsonProperty("failed_at") Integer failedAt,
-		@Nullable @JsonProperty("completed_at") Integer completedAt, String model,
+		@JsonProperty("started_at") Integer startedAt,
+		@JsonProperty("cancelled_at") Integer cancelledAt,
+		@JsonProperty("failed_at") Integer failedAt,
+		@JsonProperty("completed_at") Integer completedAt, String model,
 		String instructions, List<Tool> tools,
 		@JsonProperty("file_ids") List<String> fileIds,
 		@JsonProperty("metadata") Map<String, Object> metadata) {

@@ -23,18 +23,15 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import ch.rasc.openai4j.Nullable;
-
 /**
  * Represents a message within a thread.
  */
 public record ThreadMessage(String id, String object,
 		@JsonProperty("created_at") int createdAt,
 		@JsonProperty("thread_id") String threadId, String role, List<Content> content,
-		@JsonProperty("assistant_id") @Nullable String assistantId,
-		@JsonProperty("run_id") @Nullable String runId,
-		@Nullable @JsonProperty("file_ids") List<String> fileIds,
-		Map<String, Object> metadata) {
+		@JsonProperty("assistant_id") String assistantId,
+		@JsonProperty("run_id") String runId,
+		@JsonProperty("file_ids") List<String> fileIds, Map<String, Object> metadata) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
