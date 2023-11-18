@@ -31,7 +31,6 @@ public class EmbeddingCreateRequest {
 	private final String user;
 
 	private EmbeddingCreateRequest(Builder builder) {
-		// check for input and model are required
 		if (builder.input == null) {
 			throw new IllegalArgumentException("input is required");
 		}
@@ -59,16 +58,6 @@ public class EmbeddingCreateRequest {
 		}
 	}
 
-	/**
-	 * Input text to embed, encoded as a string or array of tokens. To embed multiple
-	 * inputs in a single request, pass an array of strings or array of token arrays. The
-	 * input must not exceed the max input tokens for the model (8192 tokens for
-	 * text-embedding-ada-002), cannot be an empty string, and any array must be 2048
-	 * dimensions or less
-	 *
-	 * @return Either a string, an array of strings, an array of integers or an array of
-	 * an array of integers
-	 */
 	@JsonProperty
 	public Object input() {
 		return this.input;
