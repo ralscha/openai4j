@@ -15,57 +15,42 @@
  */
 package ch.rasc.openai4j.audio;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableAudioSpeechRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface AudioSpeechRequest {
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+public class AudioSpeechRequest {
 
-	static Builder builder() {
-		return new Builder();
+	private final SpeechModel model;
+	private final String input;
+	private final Voice voice;
+	@JsonProperty("response_format")
+	private final AudioResponseFormat responseFormat;
+	private final Double speed;
+
+	private AudioSpeechRequest(Builder builder) {
+		if (builder.model == null) {
+			throw new IllegalArgumentException("model is required");
+		}
+		if (builder.input == null || builder.input.isBlank()) {
+			throw new IllegalArgumentException("input is required");
+		}
+		if (builder.voice == null) {
+			throw new IllegalArgumentException("voice is required");
+		}
+		this.model = builder.model;
+		this.input = builder.input;
+		this.voice = builder.voice;
+		this.responseFormat = builder.responseFormat;
+		this.speed = builder.speed;
 	}
 
-	/**
-	 * One of the available <a href="https://platform.openai.com/docs/models/tts">TTS
-	 * models</a>
-	 */
-	SpeechModel model();
-
-	/**
-	 * The text to generate audio for. The maximum length is 4096 characters.
-	 */
-	String input();
-
-	/**
-	 * The voice to use when generating the audio.
-	 */
-	Voice voice();
-
-	/**
-	 * The format to audio in. Defaults to mp3
-	 */
-	@JsonProperty("response_format")
-	@Nullable
-	AudioResponseFormat responseFormat();
-
-	/**
-	 * The speed of the generated audio. Defaults to 1.0
-	 */
-	@Nullable
-	Double speed();
-
-	enum AudioResponseFormat {
+	public enum AudioResponseFormat {
 		MP3("mp3"), OPUS("opus"), AAC("aac"), FLAC("flac");
 
 		private final String value;
@@ -80,7 +65,7 @@ public interface AudioSpeechRequest {
 		}
 	}
 
-	enum Voice {
+	public enum Voice {
 		ALLOY("alloy"), ECHO("echo"), FABLE("fable"), ONYX("onyx"), NOVA("nova"),
 		SHIMMER("shimmer");
 
@@ -96,7 +81,7 @@ public interface AudioSpeechRequest {
 		}
 	}
 
-	enum SpeechModel {
+	public enum SpeechModel {
 		TTS_1("tts-1"), TTS_1_HD("tts-1-hd");
 
 		private final String value;
@@ -111,6 +96,65 @@ public interface AudioSpeechRequest {
 		}
 	}
 
-	final class Builder extends ImmutableAudioSpeechRequest.Builder {
+	public static Builder builder() {
+		return new Builder();
 	}
+
+	public static final class Builder {
+		private SpeechModel model;
+		private String input;
+		private Voice voice;
+		private AudioResponseFormat responseFormat;
+		private Double speed;
+
+		private Builder() {
+		}
+
+		/**
+		 * One of the available TTS models: tts-1 or tts-1-hd
+		 */
+		public Builder model(SpeechModel val) {
+			this.model = val;
+			return this;
+		}
+
+		/**
+		 * The text to generate audio for. The maximum length is 4096 characters.
+		 */
+		public Builder input(String val) {
+			this.input = val;
+			return this;
+		}
+
+		/**
+		 * The voice to use when generating the audio. Supported voices are alloy, echo,
+		 * fable, onyx, nova, and shimmer.
+		 */
+		public Builder voice(Voice val) {
+			this.voice = val;
+			return this;
+		}
+
+		/**
+		 * The format to audio in. Defaults to mp3
+		 */
+		public Builder responseFormat(AudioResponseFormat val) {
+			this.responseFormat = val;
+			return this;
+		}
+
+		/**
+		 * The speed of the generated audio. Select a value from 0.25 to 4.0. 1.0 is the
+		 * default.
+		 */
+		public Builder speed(Double val) {
+			this.speed = val;
+			return this;
+		}
+
+		public AudioSpeechRequest build() {
+			return new AudioSpeechRequest(this);
+		}
+	}
+
 }

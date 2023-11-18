@@ -17,67 +17,127 @@ package ch.rasc.openai4j.audio;
 
 import java.nio.file.Path;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
+public class AudioTranscriptionRequest {
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+	private final Path file;
+	private final AudioRecognitionModel model;
+	private final String language;
+	private final String prompt;
+	private final AudioRecognitionResponseFormat responseFormat;
+	private final Double temperature;
 
-import ch.rasc.openai4j.Nullable;
+	private AudioTranscriptionRequest(Builder builder) {
+		if (builder.file == null) {
+			throw new IllegalArgumentException("file is required");
+		}
+		if (builder.model == null) {
+			throw new IllegalArgumentException("model is required");
+		}
+		this.file = builder.file;
+		this.model = builder.model;
+		this.language = builder.language;
+		this.prompt = builder.prompt;
+		this.responseFormat = builder.responseFormat;
+		this.temperature = builder.temperature;
+	}
 
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-public interface AudioTranscriptionRequest {
-
-	static Builder builder() {
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	/**
-	 * The audio file object to transcribe, in one of these formats: flac, mp3, mp4, mpeg,
-	 * mpga, m4a, ogg, wav, or webm.
-	 */
-	Path file();
+	public static final class Builder {
+		private Path file;
+		private AudioRecognitionModel model;
+		private String language;
+		private String prompt;
+		private AudioRecognitionResponseFormat responseFormat;
+		private Double temperature;
 
-	/**
-	 * ID of the model to use. Only whisper-1 is currently available.
-	 */
-	@Value.Default
-	default AudioRecognitionModel model() {
-		return AudioRecognitionModel.WHISPER_1;
+		private Builder() {
+		}
+
+		/**
+		 * The audio file object to transcribe, in one of these formats: flac, mp3, mp4,
+		 * mpeg, mpga, m4a, ogg, wav, or webm.
+		 */
+		public Builder file(Path val) {
+			this.file = val;
+			return this;
+		}
+
+		/**
+		 * ID of the model to use. Only whisper-1 is currently available.
+		 */
+		public Builder model(AudioRecognitionModel val) {
+			this.model = val;
+			return this;
+		}
+
+		/**
+		 * The language of the input audio. Supplying the input language in ISO-639-1
+		 * format will improve accuracy and latency.
+		 */
+		public Builder language(String val) {
+			this.language = val;
+			return this;
+		}
+
+		/**
+		 * An optional text to guide the model's style or continue a previous audio
+		 * segment. The prompt should match the audio language.
+		 */
+		public Builder prompt(String val) {
+			this.prompt = val;
+			return this;
+		}
+
+		/**
+		 * The format of the transcript output. Defaults to json.
+		 */
+		public Builder responseFormat(AudioRecognitionResponseFormat val) {
+			this.responseFormat = val;
+			return this;
+		}
+
+		/**
+		 * The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
+		 * output more random, while lower values like 0.2 will make it more focused and
+		 * deterministic. If set to 0, the model will use log probability to automatically
+		 * increase the temperature until certain thresholds are hit.
+		 * <p>
+		 * Defaults to 0.
+		 */
+		public Builder temperature(Double val) {
+			this.temperature = val;
+			return this;
+		}
+
+		public AudioTranscriptionRequest build() {
+			return new AudioTranscriptionRequest(this);
+		}
 	}
 
-	/**
-	 * The language of the input audio. Supplying the input language in ISO-639-1 format
-	 * will improve accuracy and latency.
-	 */
-	@Nullable
-	String language();
+	public Path file() {
+		return this.file;
+	}
 
-	/**
-	 * An optional text to guide the model's style or continue a previous audio segment.
-	 * The prompt should match the audio language.
-	 */
-	@Nullable
-	String prompt();
+	public AudioRecognitionModel model() {
+		return this.model;
+	}
 
-	/**
-	 * The format of the transcript output. Defaults to json.
-	 */
-	@JsonProperty("response_format")
-	@Nullable
-	AudioRecognitionResponseFormat responseFormat();
+	public String language() {
+		return this.language;
+	}
 
-	/**
-	 * The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-	 * output more random, while lower values like 0.2 will make it more focused and
-	 * deterministic. If set to 0, the model will use log probability to automatically
-	 * increase the temperature until certain thresholds are hit.
-	 * <p>
-	 * Defaults to 0.
-	 */
-	@Nullable
-	Double temperature();
+	public String prompt() {
+		return this.prompt;
+	}
 
-	final class Builder extends ImmutableAudioTranscriptionRequest.Builder {
+	public AudioRecognitionResponseFormat responseFormat() {
+		return this.responseFormat;
+	}
+
+	public Double temperature() {
+		return this.temperature;
 	}
 }

@@ -17,16 +17,20 @@ package ch.rasc.openai4j.embeddings;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonInclude(Include.NON_EMPTY)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class EmbeddingCreateRequest {
 
 	private final Object input;
 	private final String model;
+	@JsonProperty("encoding_format")
 	private final EncodingFormat encodingFormat;
 	private final String user;
 
@@ -56,26 +60,6 @@ public class EmbeddingCreateRequest {
 		public String value() {
 			return this.value;
 		}
-	}
-
-	@JsonProperty
-	public Object input() {
-		return this.input;
-	}
-
-	@JsonProperty
-	public String model() {
-		return this.model;
-	}
-
-	@JsonProperty("encoding_format")
-	public EncodingFormat encodingFormat() {
-		return this.encodingFormat;
-	}
-
-	@JsonProperty
-	public String user() {
-		return this.user;
 	}
 
 	public static Builder builder() {
