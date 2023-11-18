@@ -17,57 +17,34 @@ package ch.rasc.openai4j.embeddings;
 
 import java.util.List;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableEmbeddingCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface EmbeddingCreateRequest {
+public class EmbeddingCreateRequest {
 
-	static Builder builder() {
-		return new Builder();
+	private final Object input;
+	private final String model;
+	private final EncodingFormat encodingFormat;
+	private final String user;
+
+	private EmbeddingCreateRequest(Builder builder) {
+		// check for input and model are required
+		if (builder.input == null) {
+			throw new IllegalArgumentException("input is required");
+		}
+		if (builder.model == null || builder.model.isBlank()) {
+			throw new IllegalArgumentException("model is required");
+		}
+		this.input = builder.input;
+		this.model = builder.model;
+		this.encodingFormat = builder.encodingFormat;
+		this.user = builder.user;
 	}
 
-	/**
-	 * Input text to embed, encoded as a string or array of tokens. To embed multiple
-	 * inputs in a single request, pass an array of strings or array of token arrays. The
-	 * input must not exceed the max input tokens for the model (8192 tokens for
-	 * text-embedding-ada-002) and cannot be an empty string.
-	 */
-	List<String> input();
-
-	/**
-	 * ID of the model to use. You can use the List models API to see all of your
-	 * available models.
-	 */
-	String model();
-
-	/**
-	 * The format to return the embeddings in. Can be either float or base64. Defaults to
-	 * float. In this client the floats are mapped into doubles.
-	 */
-	@Nullable
-	@JsonProperty("encoding_format")
-	EncodingFormat encodingFormat();
-
-	/**
-	 * A unique identifier representing your end-user, which can help OpenAI to monitor
-	 * and detect abuse.
-	 */
-	@Nullable
-	String user();
-
-	enum EncodingFormat {
+	public enum EncodingFormat {
 		FLOAT("float"), BASE64("base64");
 
 		private final String value;
@@ -82,6 +59,120 @@ public interface EmbeddingCreateRequest {
 		}
 	}
 
-	final class Builder extends ImmutableEmbeddingCreateRequest.Builder {
+	/**
+	 * Input text to embed, encoded as a string or array of tokens. To embed multiple
+	 * inputs in a single request, pass an array of strings or array of token arrays. The
+	 * input must not exceed the max input tokens for the model (8192 tokens for
+	 * text-embedding-ada-002), cannot be an empty string, and any array must be 2048
+	 * dimensions or less
+	 *
+	 * @return Either a string, an array of strings, an array of integers or an array of
+	 * an array of integers
+	 */
+	@JsonProperty
+	public Object input() {
+		return this.input;
+	}
+
+	@JsonProperty
+	public String model() {
+		return this.model;
+	}
+
+	@JsonProperty("encoding_format")
+	public EncodingFormat encodingFormat() {
+		return this.encodingFormat;
+	}
+
+	@JsonProperty
+	public String user() {
+		return this.user;
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public static final class Builder {
+		private Object input;
+		private String model;
+		private EncodingFormat encodingFormat;
+		private String user;
+
+		private Builder() {
+		}
+
+		/**
+		 * Input text to embed, encoded as a string. The input must not exceed the max
+		 * input tokens for the model (8192 tokens for text-embedding-ada-002), cannot be
+		 * an empty string.
+		 */
+		public Builder input(String input) {
+			this.input = input;
+			return this;
+		}
+
+		/**
+		 * Input text to embed, encoded as an array of strings. Each input input must not
+		 * exceed the max input tokens for the model (8192 tokens for
+		 * text-embedding-ada-002), array must be 2048 dimensions or less.
+		 */
+		public Builder input(List<String> input) {
+			this.input = input;
+			return this;
+		}
+
+		/**
+		 * The array of integers that will be turned into an embedding. The input must not
+		 * exceed the max input tokens for the model (8192 tokens for
+		 * text-embedding-ada-002), cannot be empty, and any array must be 2048 dimensions
+		 * or less.
+		 */
+		public Builder input(int[] input) {
+			this.input = input;
+			return this;
+		}
+
+		/**
+		 * The array of arrays containing integers that will be turned into an embedding.
+		 * The input must not exceed the max input tokens for the model (8192 tokens for
+		 * text-embedding-ada-002), cannot be empty, and any array must be 2048 dimensions
+		 * or less.
+		 */
+		public Builder input(int[][] input) {
+			this.input = input;
+			return this;
+		}
+
+		/**
+		 * ID of the model to use. You can use the List models API to see all of your
+		 * available models.
+		 */
+		public Builder model(String model) {
+			this.model = model;
+			return this;
+		}
+
+		/**
+		 * The format to return the embeddings in. Can be either float or base64. Defaults
+		 * to float. In this client the floats are mapped into doubles.
+		 */
+		public Builder encodingFormat(EncodingFormat encodingFormat) {
+			this.encodingFormat = encodingFormat;
+			return this;
+		}
+
+		/**
+		 * A unique identifier representing your end-user, which can help OpenAI to
+		 * monitor and detect abuse.
+		 */
+		public Builder user(String user) {
+			this.user = user;
+			return this;
+		}
+
+		public EmbeddingCreateRequest build() {
+			return new EmbeddingCreateRequest(this);
+		}
 	}
 }
