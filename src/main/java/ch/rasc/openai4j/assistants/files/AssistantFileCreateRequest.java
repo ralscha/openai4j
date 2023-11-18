@@ -15,29 +15,44 @@
  */
 package ch.rasc.openai4j.assistants.files;
 
-import org.immutables.value.Value;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@Value.Immutable
-@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE)
-@JsonSerialize(as = ImmutableAssistantFileCreateRequest.class)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-public interface AssistantFileCreateRequest {
+@JsonInclude(Include.NON_EMPTY)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+public class AssistantFileCreateRequest {
 
-	static Builder builder() {
+	@JsonProperty("file_id")
+	private final String fileId;
+
+	private AssistantFileCreateRequest(Builder builder) {
+		this.fileId = builder.fileId;
+	}
+
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	/**
-	 * A File ID (with purpose="assistants") that the assistant should use. Useful for
-	 * tools like retrieval and code_interpreter that can access files.
-	 */
-	@JsonProperty("file_id")
-	String fileId();
+	public static final class Builder {
+		private String fileId;
 
-	final class Builder extends ImmutableAssistantFileCreateRequest.Builder {
+		private Builder() {
+		}
+
+		/**
+		 * A File ID (with purpose="assistants") that the assistant should use. Useful for
+		 * tools like retrieval and code_interpreter that can access files.
+		 */
+		public Builder fileId(String val) {
+			this.fileId = val;
+			return this;
+		}
+
+		public AssistantFileCreateRequest build() {
+			return new AssistantFileCreateRequest(this);
+		}
 	}
 }
