@@ -46,8 +46,8 @@ public class AssistantFileCreateRequest {
 		 * A File ID (with purpose="assistants") that the assistant should use. Useful for
 		 * tools like retrieval and code_interpreter that can access files.
 		 */
-		public Builder fileId(String val) {
-			this.fileId = val;
+		public Builder fileId(String fileId) {
+			this.fileId = fileId;
 			return this;
 		}
 
