@@ -155,7 +155,7 @@ public record FineTuningJob(String id, @JsonProperty("created_at") int createdAt
 		return this.validationFile;
 	}
 
-	enum Status {
+	public enum Status {
 		VALIDATING_FILES("validating_files"), QUEUED("queued"), RUNNING("running"),
 		SUCCEEDED("succeeded"), FAILED("failed"), CANCELLED("cancelled");
 

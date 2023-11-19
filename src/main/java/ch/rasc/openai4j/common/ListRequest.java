@@ -18,74 +18,100 @@ package ch.rasc.openai4j.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableListRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface ListRequest {
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@SuppressWarnings("hiding")
+public class ListRequest {
 
-	static Builder builder() {
-		return new Builder();
+	private final Integer limit;
+	private final SortOrder order;
+	private final String after;
+	private final String before;
+
+	private ListRequest(Builder builder) {
+		this.limit = builder.limit;
+		this.order = builder.order;
+		this.after = builder.after;
+		this.before = builder.before;
 	}
 
-	/*
-	 * A limit on the number of objects to be returned. Limit can range between 1 and 100,
-	 * and the default is 20.
-	 */
-	@Nullable
-	Integer limit();
-
-	/*
-	 * Sort order by the created_at timestamp of the objects. asc for ascending order and
-	 * desc for descending order. Defaults to desc
-	 */
-	@Nullable
-	SortOrder order();
-
-	/*
-	 * A cursor for use in pagination. after is an object ID that defines your place in
-	 * the list. For instance, if you make a list request and receive 100 objects, ending
-	 * with obj_foo, your subsequent call can include after=obj_foo in order to fetch the
-	 * next page of the list.
-	 */
-	@Nullable
-	String after();
-
-	/*
-	 * A cursor for use in pagination. before is an object ID that defines your place in
-	 * the list. For instance, if you make a list request and receive 100 objects, ending
-	 * with obj_foo, your subsequent call can include before=obj_foo in order to fetch the
-	 * previous page of the list.
-	 */
-	@Nullable
-	String before();
-
-	default Map<String, Object> toMap() {
+	public Map<String, Object> toMap() {
 		Map<String, Object> queryParameters = new HashMap<>();
-		if (limit() != null) {
-			queryParameters.put("limit", limit());
+		if (this.limit != null) {
+			queryParameters.put("limit", this.limit);
 		}
-		if (order() != null) {
-			queryParameters.put("order", order().value());
+		if (this.order != null) {
+			queryParameters.put("order", this.order.value());
 		}
-		if (after() != null && !after().isBlank()) {
-			queryParameters.put("after", after());
+		if (this.after != null && !this.after.isBlank()) {
+			queryParameters.put("after", this.after);
 		}
-		if (before() != null && !before().isBlank()) {
-			queryParameters.put("before", before());
+		if (this.before != null && !this.before.isBlank()) {
+			queryParameters.put("before", this.before);
 		}
 		return queryParameters;
 	}
 
-	final class Builder extends ImmutableListRequest.Builder {
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public static final class Builder {
+		private Integer limit;
+		private SortOrder order;
+		private String after;
+		private String before;
+
+		private Builder() {
+		}
+
+		/*
+		 * A limit on the number of objects to be returned. Limit can range between 1 and 100,
+		 * and the default is 20.
+		 */
+		public Builder limit(Integer limit) {
+			this.limit = limit;
+			return this;
+		}
+
+		/*
+		 * Sort order by the created_at timestamp of the objects. asc for ascending order and
+		 * desc for descending order. Defaults to desc
+		 */
+		public Builder order(SortOrder order) {
+			this.order = order;
+			return this;
+		}
+
+		/*
+		 * A cursor for use in pagination. after is an object ID that defines your place in
+		 * the list. For instance, if you make a list request and receive 100 objects, ending
+		 * with obj_foo, your subsequent call can include after=obj_foo in order to fetch the
+		 * next page of the list.
+		 */
+		public Builder after(String after) {
+			this.after = after;
+			return this;
+		}
+
+		/*
+		 * A cursor for use in pagination. before is an object ID that defines your place in
+		 * the list. For instance, if you make a list request and receive 100 objects, ending
+		 * with obj_foo, your subsequent call can include before=obj_foo in order to fetch the
+		 * previous page of the list.
+		 */
+		public Builder before(String before) {
+			this.before = before;
+			return this;
+		}
+
+		public ListRequest build() {
+			return new ListRequest(this);
+		}
 	}
 }

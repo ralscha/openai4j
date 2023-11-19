@@ -95,7 +95,7 @@ public interface ImageGenerationRequest {
 	@Nullable
 	String user();
 
-	enum Quality {
+	public enum Quality {
 		STANDARD("standard"), HD("hd");
 
 		private final String value;
@@ -110,7 +110,7 @@ public interface ImageGenerationRequest {
 		}
 	}
 
-	enum Style {
+	public enum Style {
 		VIVID("vivid"), NATURAL("natural");
 
 		private final String value;

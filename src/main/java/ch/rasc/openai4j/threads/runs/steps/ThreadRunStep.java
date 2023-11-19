@@ -165,7 +165,7 @@ public record ThreadRunStep(String id, String object,
 		return this.metadata;
 	}
 
-	enum ThreadRunStepType {
+	public enum ThreadRunStepType {
 		MESSAGE_CREATION("message_creation"), TOOL_CALLS("tool_calls");
 
 		private final String value;
@@ -180,7 +180,7 @@ public record ThreadRunStep(String id, String object,
 		}
 	}
 
-	enum ThreadRunStepStatus {
+	public enum ThreadRunStepStatus {
 		IN_PROGRESS("in_progress"), CANCELLED("cancelled"), FAILED("failed"),
 		COMPLETED("completed"), EXPIRED("expired");
 

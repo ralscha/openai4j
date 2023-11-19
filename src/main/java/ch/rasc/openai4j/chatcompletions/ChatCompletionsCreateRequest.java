@@ -185,7 +185,7 @@ public interface ChatCompletionsCreateRequest {
 	@Nullable
 	String user();
 
-	enum ResponseFormat {
+	public enum ResponseFormat {
 		TEXT(Map.of("type", "text")), JSON_OBJECT(Map.of("type", "json_object"));
 
 		private final Map<String, String> value;
