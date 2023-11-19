@@ -171,16 +171,16 @@ public record FineTuningJob(String id, @JsonProperty("created_at") int createdAt
 		}
 	}
 
-	public record HyperParameters(@JsonProperty("n_epochs") int nEpochs,
-			@JsonProperty("batch_size") int batchSize,
-			@JsonProperty("learning_rate_multiplier") double learningRateMultiplier) {
+	public record HyperParameters(@JsonProperty("n_epochs") Object nEpochs,
+			@JsonProperty("batch_size") Object batchSize,
+			@JsonProperty("learning_rate_multiplier") Object learningRateMultiplier) {
 
 		/**
 		 * The number of epochs to train the model for. An epoch refers to one full cycle
 		 * through the training dataset.
 		 */
 		@Override
-		public int nEpochs() {
+		public Object nEpochs() {
 			return this.nEpochs;
 		}
 
@@ -188,7 +188,7 @@ public record FineTuningJob(String id, @JsonProperty("created_at") int createdAt
 		 * Number of examples in each batch.
 		 */
 		@Override
-		public int batchSize() {
+		public Object batchSize() {
 			return this.batchSize;
 		}
 
@@ -196,7 +196,7 @@ public record FineTuningJob(String id, @JsonProperty("created_at") int createdAt
 		 * Scaling factor for the learning rate.
 		 */
 		@Override
-		public double learningRateMultiplier() {
+		public Object learningRateMultiplier() {
 			return this.learningRateMultiplier;
 		}
 	}

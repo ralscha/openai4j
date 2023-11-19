@@ -15,125 +15,199 @@
  */
 package ch.rasc.openai4j.finetuningjobs;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
+import java.util.function.Function;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableFineTuningJobCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-@Value.Enclosing
-public interface FineTuningJobCreateRequest {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@SuppressWarnings({ "unused", "hiding" })
+public class FineTuningJobCreateRequest {
+	private final String model;
+	@JsonProperty("training_file")
+	private final String trainingFile;
+	private final Hyperparameters hyperparameters;
+	private final String suffix;
+	@JsonProperty("validation_file")
+	private final String validationFile;
 
-	static Builder builder() {
+	private FineTuningJobCreateRequest(Builder builder) {
+		if (builder.model == null || builder.model.isBlank()) {
+			throw new NullPointerException("model cannot be null");
+		}
+		if (builder.trainingFile == null || builder.trainingFile.isBlank()) {
+			throw new NullPointerException("trainingFile cannot be null");
+		}
+		this.model = builder.model;
+		this.trainingFile = builder.trainingFile;
+		this.hyperparameters = builder.hyperparameters;
+		this.suffix = builder.suffix;
+		this.validationFile = builder.validationFile;
+	}
+
+	@JsonInclude(Include.NON_EMPTY)
+	@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+	public static class Hyperparameters {
+		@JsonProperty("batch_size")
+		private final Object batchSize;
+		@JsonProperty("learning_rate_multiplier")
+		private final Object learningRateMultiplier;
+		@JsonProperty("n_epochs")
+		private final Object nEpochs;
+
+		private Hyperparameters(Builder builder) {
+			this.batchSize = builder.batchSize;
+			this.learningRateMultiplier = builder.learningRateMultiplier;
+			this.nEpochs = builder.nEpochs;
+		}
+
+		public static Builder builder() {
+			return new Builder();
+		}
+
+		public static final class Builder {
+			private Object batchSize;
+			private Object learningRateMultiplier;
+			private Object nEpochs;
+
+			private Builder() {
+			}
+
+			/**
+			 * Number of examples in each batch. A larger batch size means that model
+			 * parameters are updated less frequently, but with lower variance. Defaults
+			 * to auto
+			 */
+			public Builder batchSize(int batchSize) {
+				this.batchSize = batchSize;
+				return this;
+			}
+
+			/**
+			 * Sets batch size to "auto"
+			 */
+			public Builder batchSizeAuto() {
+				this.batchSize = "auto";
+				return this;
+			}
+
+			/**
+			 * Scaling factor for the learning rate. A smaller learning rate may be useful
+			 * to avoid overfitting. Defaults to auto
+			 */
+			public Builder learningRateMultiplier(double learningRateMultiplier) {
+				this.learningRateMultiplier = learningRateMultiplier;
+				return this;
+			}
+
+			/**
+			 * Sets scaling factor for the learning rate "auto"
+			 */
+			public Builder learningRateMultiplierAuto() {
+				this.learningRateMultiplier = "auto";
+				return this;
+			}
+
+			/**
+			 * The number of epochs to train the model for. An epoch refers to one full
+			 * cycle through the training dataset. Defaults to auto
+			 */
+			public Builder nEpochs(int nEpochs) {
+				this.nEpochs = nEpochs;
+				return this;
+			}
+
+			/**
+			 * Sets number of epochs to "auto"
+			 */
+			public Builder nEpochsAuto() {
+				this.nEpochs = "auto";
+				return this;
+			}
+
+			public Hyperparameters build() {
+				return new Hyperparameters(this);
+			}
+		}
+	}
+
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	/**
-	 * The name of the model to fine-tune. You can select one of the supported models.
-	 */
-	String model();
+	public static final class Builder {
+		private String model;
+		private String trainingFile;
+		private Hyperparameters hyperparameters;
+		private String suffix;
+		private String validationFile;
 
-	/**
-	 * The ID of an uploaded file that contains training data. Your dataset must be
-	 * formatted as a JSONL file. Additionally, you must upload your file with the purpose
-	 * fine-tune.
-	 */
-	@JsonProperty("training_file")
-	String trainingFile();
-
-	Hyperparameters hyperparameters();
-
-	/**
-	 * A string of up to 18 characters that will be added to your fine-tuned model name.
-	 * For example, a suffix of "custom-model-name" would produce a model name like
-	 * ft:gpt-3.5-turbo:openai:custom-model-name:7p4lURel.
-	 */
-	@Nullable
-	String suffix();
-
-	/**
-	 * The ID of an uploaded file that contains validation data. If you provide this file,
-	 * the data is used to generate validation metrics periodically during fine-tuning.
-	 * These metrics can be viewed in the fine-tuning results file. The same data should
-	 * not be present in both train and validation files. Your dataset must be formatted
-	 * as a JSONL file. You must upload your file with the purpose fine-tune.
-	 */
-	@JsonProperty("validation_file")
-	@Nullable
-	String validationFile();
-
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-	@JsonSerialize(as = ImmutableFineTuningJobCreateRequest.Hyperparameters.class)
-	@JsonInclude(Include.NON_EMPTY)
-	interface Hyperparameters {
-		/**
-		 * Number of examples in each batch. A larger batch size means that model
-		 * parameters are updated less frequently, but with lower variance. Defaults to
-		 * auto
-		 */
-		@JsonProperty("batch_size")
-		@Nullable
-		BatchSize batchSize();
-
-		/**
-		 * Scaling factor for the learning rate. A smaller learning rate may be useful to
-		 * avoid overfitting. Defaults to auto
-		 */
-		@JsonProperty("learning_rate_multiplier")
-		@Nullable
-		LearningRateMultiplier learningRateMultiplier();
-
-		/**
-		 * The number of epochs to train the model for. An epoch refers to one full cycle
-		 * through the training dataset. Defaults to auto
-		 */
-		@JsonProperty("n_epochs")
-		@Nullable
-		Epochs nEpochs();
-
-		record BatchSize(Object value) {
-			public static BatchSize auto() {
-				return new BatchSize("auto");
-			}
-
-			public static BatchSize of(int value) {
-				return new BatchSize(value);
-			}
+		private Builder() {
 		}
 
-		record LearningRateMultiplier(Object value) {
-
-			public static LearningRateMultiplier auto() {
-				return new LearningRateMultiplier("auto");
-			}
-
-			public static LearningRateMultiplier of(double value) {
-				return new LearningRateMultiplier(value);
-			}
+		/**
+		 * The name of the model to fine-tune. You can select one of the supported models.
+		 */
+		public Builder model(String model) {
+			this.model = model;
+			return this;
 		}
 
-		record Epochs(Object value) {
-
-			public static Epochs auto() {
-				return new Epochs("auto");
-			}
-
-			public static Epochs of(int value) {
-				return new Epochs(value);
-			}
+		/**
+		 * The ID of an uploaded file that contains training data. Your dataset must be
+		 * formatted as a JSONL file. Additionally, you must upload your file with the
+		 * purpose fine-tune.
+		 */
+		public Builder trainingFile(String trainingFile) {
+			this.trainingFile = trainingFile;
+			return this;
 		}
 
-	}
+		/**
+		 * The hyperparameters used for the fine-tuning job.
+		 */
+		public Builder hyperparameters(Hyperparameters hyperparameters) {
+			this.hyperparameters = hyperparameters;
+			return this;
+		}
 
-	final class Builder extends ImmutableFineTuningJobCreateRequest.Builder {
+		/**
+		 * The hyperparameters used for the fine-tuning job.
+		 */
+		public Builder hyperparameters(
+				Function<Hyperparameters.Builder, Hyperparameters.Builder> fn) {
+			this.hyperparameters = fn.apply(Hyperparameters.builder()).build();
+			return this;
+		}
+
+		/**
+		 * A string of up to 18 characters that will be added to your fine-tuned model
+		 * name. For example, a suffix of "custom-model-name" would produce a model name
+		 * like ft:gpt-3.5-turbo:openai:custom-model-name:7p4lURel.
+		 */
+		public Builder suffix(String suffix) {
+			this.suffix = suffix;
+			return this;
+		}
+
+		/**
+		 * The ID of an uploaded file that contains validation data. If you provide this
+		 * file, the data is used to generate validation metrics periodically during
+		 * fine-tuning. These metrics can be viewed in the fine-tuning results file. The
+		 * same data should not be present in both train and validation files. Your
+		 * dataset must be formatted as a JSONL file. You must upload your file with the
+		 * purpose fine-tune.
+		 */
+		public Builder validationFile(String validationFile) {
+			this.validationFile = validationFile;
+			return this;
+		}
+
+		public FineTuningJobCreateRequest build() {
+			return new FineTuningJobCreateRequest(this);
+		}
 	}
 }
