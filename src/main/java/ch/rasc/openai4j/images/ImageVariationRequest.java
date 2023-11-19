@@ -17,61 +17,123 @@ package ch.rasc.openai4j.images;
 
 import java.nio.file.Path;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
+@SuppressWarnings("hiding")
+public class ImageVariationRequest {
 
-import ch.rasc.openai4j.Nullable;
+	private final Path image;
+	private final ImageModel model;
+	private final Integer n;
+	private final ImageResponseFormat responseFormat;
+	private final ImageSize size;
+	private final String user;
 
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-public interface ImageVariationRequest {
+	private ImageVariationRequest(Builder builder) {
+		if (builder.image == null) {
+			throw new NullPointerException("image cannot be null");
+		}
+		this.image = builder.image;
+		this.model = builder.model;
+		this.n = builder.n;
+		this.responseFormat = builder.responseFormat;
+		this.size = builder.size;
+		this.user = builder.user;
+	}
 
-	static Builder builder() {
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	/**
-	 * The image to use as the basis for the variation(s). Must be a valid PNG file, less
-	 * than 4MB, and square.
-	 */
-	Path image();
+	public static final class Builder {
+		private Path image;
+		private ImageModel model;
+		private Integer n;
+		private ImageResponseFormat responseFormat;
+		private ImageSize size;
+		private String user;
 
-	/**
-	 * The model to use for image generation. Only dall-e-2 is supported at this time.
-	 * Defaults to dall-e-2.
-	 */
-	@Nullable
-	ImageModel model();
+		private Builder() {
+		}
 
-	/**
-	 * The number of images to generate. Must be between 1 and 10. For dall-e-3, only n=1
-	 * is supported. Defaults to 1
-	 */
-	@Nullable
-	Integer n();
+		/**
+		 * The image to use as the basis for the variation(s). Must be a valid PNG file,
+		 * less than 4MB, and square.
+		 */
+		public Builder image(Path image) {
+			this.image = image;
+			return this;
+		}
 
-	/**
-	 * The format in which the generated images are returned. Must be one of url or
-	 * b64_json. Defaults to url.
-	 */
-	@Nullable
-	ImageResponseFormat responseFormat();
+		/**
+		 * The model to use for image generation. Only dall-e-2 is supported at this time.
+		 * Defaults to dall-e-2.
+		 */
+		public Builder model(ImageModel model) {
+			this.model = model;
+			return this;
+		}
 
-	/**
-	 * The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
-	 * Defaults to 1024x1024.
-	 */
-	@Nullable
-	ImageSize size();
+		/**
+		 * The number of images to generate. Must be between 1 and 10. For dall-e-3, only
+		 * n=1 is supported. Defaults to 1
+		 */
+		public Builder n(Integer n) {
+			this.n = n;
+			return this;
+		}
 
-	/**
-	 * A unique identifier representing your end-user, which can help OpenAI to monitor
-	 * and detect abuse.
-	 */
-	@Nullable
-	String user();
+		/**
+		 * The format in which the generated images are returned. Must be one of url or
+		 * b64_json. Defaults to url.
+		 */
+		public Builder responseFormat(ImageResponseFormat responseFormat) {
+			this.responseFormat = responseFormat;
+			return this;
+		}
 
-	final class Builder extends ImmutableImageVariationRequest.Builder {
+		/**
+		 * The size of the generated images. Must be one of 256x256, 512x512, or
+		 * 1024x1024. Defaults to 1024x1024.
+		 */
+		public Builder size(ImageSize size) {
+			this.size = size;
+			return this;
+		}
+
+		/**
+		 * A unique identifier representing your end-user, which can help OpenAI to
+		 * monitor and detect abuse.
+		 */
+		public Builder user(String user) {
+			this.user = user;
+			return this;
+		}
+
+		public ImageVariationRequest build() {
+			return new ImageVariationRequest(this);
+		}
 	}
 
+	public Path image() {
+		return this.image;
+	}
+
+	public ImageModel model() {
+		return this.model;
+	}
+
+	public Integer n() {
+		return this.n;
+	}
+
+	public ImageResponseFormat responseFormat() {
+		return this.responseFormat;
+	}
+
+	public ImageSize size() {
+		return this.size;
+	}
+
+	public String user() {
+		return this.user;
+	}
 }

@@ -15,85 +15,42 @@
  */
 package ch.rasc.openai4j.images;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableImageGenerationRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface ImageGenerationRequest {
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@SuppressWarnings({ "unused", "hiding" })
+public class ImageGenerationRequest {
 
-	static Builder builder() {
-		return new Builder();
-	}
-
-	/**
-	 * A text description of the desired image(s). The maximum length is 1000 characters
-	 * for dall-e-2 and 4000 characters for dall-e-3.
-	 */
-	String prompt();
-
-	/**
-	 * The model to use for image generation. Defaults to dall-e-2
-	 */
-	@Nullable
-	ImageModel model();
-
-	/**
-	 * The number of images to generate. Must be between 1 and 10. For dall-e-3, only n=1
-	 * is supported. Defaults to 1
-	 */
-	@Nullable
-	Integer n();
-
-	/**
-	 * The quality of the image that will be generated. hd creates images with finer
-	 * details and greater consistency across the image. This param is only supported for
-	 * dall-e-3. Defaults to standard
-	 */
-	@Nullable
-	Quality quality();
-
-	/**
-	 * The format in which the generated images are returned. Must be one of url or
-	 * b64_json. Defaults to url
-	 */
+	private final String prompt;
+	private final ImageModel model;
+	private final Integer n;
+	private final Quality quality;
 	@JsonProperty("response_format")
-	@Nullable
-	ImageResponseFormat responseFormat();
+	private final ImageResponseFormat responseFormat;
+	private final ImageSize size;
+	private final Style style;
+	private final String user;
 
-	/**
-	 * The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024 for
-	 * dall-e-2. Must be one of 1024x1024, 1792x1024, or 1024x1792 for dall-e-3 models.
-	 * Defaults to 1024x1024
-	 */
-	@Nullable
-	ImageSize size();
+	private ImageGenerationRequest(Builder builder) {
+		if (builder.prompt == null || builder.prompt.isEmpty()) {
+			throw new NullPointerException("prompt cannot be null");
+		}
 
-	/**
-	 * The style of the generated images. Must be one of vivid or natural. Vivid causes
-	 * the model to lean towards generating hyperreal and dramatic images. Natural causes
-	 * the model to produce more natural, less hyperreal looking images. This param is
-	 * only supported for dall-e-3. Defaults to vivid
-	 */
-	@Nullable
-	Style style();
-
-	/**
-	 * A unique identifier representing your end-user, which can help OpenAI to monitor
-	 * and detect abuse.
-	 */
-	@Nullable
-	String user();
+		this.prompt = builder.prompt;
+		this.model = builder.model;
+		this.n = builder.n;
+		this.quality = builder.quality;
+		this.responseFormat = builder.responseFormat;
+		this.size = builder.size;
+		this.style = builder.style;
+		this.user = builder.user;
+	}
 
 	public enum Quality {
 		STANDARD("standard"), HD("hd");
@@ -125,7 +82,100 @@ public interface ImageGenerationRequest {
 		}
 	}
 
-	final class Builder extends ImmutableImageGenerationRequest.Builder {
+	public static Builder builder() {
+		return new Builder();
 	}
 
+	public static final class Builder {
+		private String prompt;
+		private ImageModel model;
+		private Integer n;
+		private Quality quality;
+		private ImageResponseFormat responseFormat;
+		private ImageSize size;
+		private Style style;
+		private String user;
+
+		private Builder() {
+		}
+
+		/**
+		 * A text description of the desired image(s). The maximum length is 1000
+		 * characters for dall-e-2 and 4000 characters for dall-e-3.
+		 */
+		public Builder prompt(String prompt) {
+			this.prompt = prompt;
+			return this;
+		}
+
+		/**
+		 * The model to use for image generation. Defaults to dall-e-2
+		 */
+		public Builder model(ImageModel model) {
+			this.model = model;
+			return this;
+		}
+
+		/**
+		 * The number of images to generate. Must be between 1 and 10. For dall-e-3, only
+		 * n=1 is supported. Defaults to 1
+		 */
+		public Builder n(Integer n) {
+			this.n = n;
+			return this;
+		}
+
+		/**
+		 * The quality of the image that will be generated. hd creates images with finer
+		 * details and greater consistency across the image. This param is only supported
+		 * for dall-e-3. Defaults to standard
+		 */
+		public Builder quality(Quality quality) {
+			this.quality = quality;
+			return this;
+		}
+
+		/**
+		 * The format in which the generated images are returned. Must be one of url or
+		 * b64_json. Defaults to url
+		 */
+		public Builder responseFormat(ImageResponseFormat responseFormat) {
+			this.responseFormat = responseFormat;
+			return this;
+		}
+
+		/**
+		 * The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024
+		 * for dall-e-2. Must be one of 1024x1024, 1792x1024, or 1024x1792 for dall-e-3
+		 * models. Defaults to 1024x1024
+		 */
+		public Builder size(ImageSize size) {
+			this.size = size;
+			return this;
+		}
+
+		/**
+		 * The style of the generated images. Must be one of vivid or natural. Vivid
+		 * causes the model to lean towards generating hyperreal and dramatic images.
+		 * Natural causes the model to produce more natural, less hyperreal looking
+		 * images. This param is only supported for dall-e-3. Defaults to vivid
+		 */
+		public Builder style(Style style) {
+			this.style = style;
+			return this;
+		}
+
+		/**
+		 * A unique identifier representing your end-user, which can help OpenAI to
+		 * monitor and detect abuse.
+		 */
+		public Builder user(String user) {
+			this.user = user;
+			return this;
+		}
+
+		public ImageGenerationRequest build() {
+			return new ImageGenerationRequest(this);
+		}
+	}
 }
