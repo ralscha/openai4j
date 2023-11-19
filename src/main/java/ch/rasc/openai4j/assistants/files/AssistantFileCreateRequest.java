@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@SuppressWarnings("hiding")
 public class AssistantFileCreateRequest {
 
 	@JsonProperty("file_id")

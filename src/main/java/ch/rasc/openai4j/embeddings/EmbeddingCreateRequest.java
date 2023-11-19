@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@SuppressWarnings({ "unused", "hiding" })
 public class EmbeddingCreateRequest {
 
 	private final Object input;

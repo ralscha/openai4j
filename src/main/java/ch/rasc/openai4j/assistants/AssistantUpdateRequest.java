@@ -15,80 +15,163 @@
  */
 package ch.rasc.openai4j.assistants;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableAssistantUpdateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface AssistantUpdateRequest {
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@SuppressWarnings({ "unused", "hiding" })
+public class AssistantUpdateRequest {
 
-	static Builder builder() {
+	private final String model;
+	private final String name;
+	private final String description;
+	private final String instructions;
+	private final List<Tool> tools;
+	@JsonProperty("file_ids")
+	private final List<String> fileIds;
+	private final Map<String, Object> metadata;
+
+	private AssistantUpdateRequest(Builder builder) {
+		this.model = builder.model;
+		this.name = builder.name;
+		this.description = builder.description;
+		this.instructions = builder.instructions;
+		this.tools = builder.tools;
+		this.fileIds = builder.fileIds;
+		this.metadata = builder.metadata;
+	}
+
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	/*
-	 * ID of the model to use. You can use the List models API to see all of your
-	 * available models, or see our Model overview for descriptions of them.
-	 */
-	@Nullable
-	String model();
+	public static final class Builder {
+		private String model;
+		private String name;
+		private String description;
+		private String instructions;
+		private List<Tool> tools;
+		private List<String> fileIds;
+		private Map<String, Object> metadata;
 
-	/*
-	 * The name of the assistant. The maximum length is 256 characters.
-	 */
-	@Nullable
-	String name();
+		private Builder() {
+		}
 
-	/*
-	 * The description of the assistant. The maximum length is 512 characters.
-	 */
-	@Nullable
-	String description();
+		/*
+		 * ID of the model to use. You can use the List models API to see all of your
+		 * available models, or see our Model overview for descriptions of them.
+		 */
+		public Builder model(String model) {
+			this.model = model;
+			return this;
+		}
 
-	/*
-	 * The system instructions that the assistant uses. The maximum length is 32768
-	 * characters.
-	 */
-	@Nullable
-	String instructions();
+		/*
+		 * The name of the assistant. The maximum length is 256 characters.
+		 */
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
 
-	/*
-	 * A list of tool enabled on the assistant. There can be a maximum of 128 tools per
-	 * assistant. Tools can be of types code_interpreter, retrieval, or function.
-	 */
-	@Nullable
-	List<Tool> tools();
+		/*
+		 * The description of the assistant. The maximum length is 512 characters.
+		 */
+		public Builder description(String description) {
+			this.description = description;
+			return this;
+		}
 
-	/*
-	 * A list of file IDs attached to this assistant. There can be a maximum of 20 files
-	 * attached to the assistant. Files are ordered by their creation date in ascending
-	 * order.
-	 */
-	@Nullable
-	@JsonProperty("file_ids")
-	List<String> fileIds();
+		/*
+		 * The system instructions that the assistant uses. The maximum length is 32768
+		 * characters.
+		 */
+		public Builder instructions(String instructions) {
+			this.instructions = instructions;
+			return this;
+		}
 
-	/*
-	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for
-	 * storing additional information about the object in a structured format. Keys can be
-	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
-	 */
-	@Nullable
-	Map<String, Object> metadata();
+		/*
+		 * A list of tool enabled on the assistant. There can be a maximum of 128 tools
+		 * per assistant. Tools can be of types code_interpreter, retrieval, or function.
+		 */
+		public Builder tools(List<Tool> tools) {
+			this.tools = new ArrayList<>(tools);
+			return this;
+		}
 
-	final class Builder extends ImmutableAssistantUpdateRequest.Builder {
+		/**
+		 * Add a tool to the list of tools enabled on the assistant
+		 */
+		public Builder addTools(Tool... tools) {
+			if (tools == null || tools.length == 0) {
+				return this;
+			}
+			if (this.tools == null) {
+				this.tools = new ArrayList<>();
+			}
+			this.tools.addAll(List.of(tools));
+			return this;
+		}
+
+		/*
+		 * A list of file IDs attached to this assistant. There can be a maximum of 20
+		 * files attached to the assistant. Files are ordered by their creation date in
+		 * ascending order.
+		 */
+		public Builder fileIds(List<String> fileIds) {
+			this.fileIds = new ArrayList<>(fileIds);
+			return this;
+		}
+
+		/**
+		 * Add a file IDs to the list of file IDs attached to this assistant
+		 */
+		public Builder addFileIds(String... fileIds) {
+			if (fileIds == null || fileIds.length == 0) {
+				return this;
+			}
+
+			if (this.fileIds == null) {
+				this.fileIds = new ArrayList<>();
+			}
+			this.fileIds.addAll(List.of(fileIds));
+			return this;
+		}
+
+		/*
+		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
+		 * for storing additional information about the object in a structured format.
+		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
+		 * characters long.
+		 */
+		public Builder metadata(Map<String, Object> metadata) {
+			this.metadata = new HashMap<>(metadata);
+			return this;
+		}
+
+		/**
+		 * Add a key-value pair to the metadata
+		 */
+		public Builder putMetadata(String key, Object value) {
+			if (this.metadata == null) {
+				this.metadata = new HashMap<>();
+			}
+			this.metadata.put(key, value);
+			return this;
+		}
+
+		public AssistantUpdateRequest build() {
+			return new AssistantUpdateRequest(this);
+		}
 	}
-
 }

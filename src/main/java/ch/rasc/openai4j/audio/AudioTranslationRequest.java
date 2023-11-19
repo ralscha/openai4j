@@ -17,6 +17,7 @@ package ch.rasc.openai4j.audio;
 
 import java.nio.file.Path;
 
+@SuppressWarnings("hiding")
 public class AudioTranslationRequest {
 
 	private final Path file;
@@ -57,16 +58,16 @@ public class AudioTranslationRequest {
 		 * The audio file object to translate, in one of these formats: flac, mp3, mp4,
 		 * mpeg, mpga, m4a, ogg, wav, or webm.
 		 */
-		public Builder file(Path val) {
-			this.file = val;
+		public Builder file(Path file) {
+			this.file = file;
 			return this;
 		}
 
 		/**
 		 * ID of the model to use. Only whisper-1 is currently available.
 		 */
-		public Builder model(AudioRecognitionModel val) {
-			this.model = val;
+		public Builder model(AudioRecognitionModel model) {
+			this.model = model;
 			return this;
 		}
 
@@ -74,16 +75,16 @@ public class AudioTranslationRequest {
 		 * An optional text to guide the model's style or continue a previous audio
 		 * segment. The prompt should be in English.
 		 */
-		public Builder prompt(String val) {
-			this.prompt = val;
+		public Builder prompt(String prompt) {
+			this.prompt = prompt;
 			return this;
 		}
 
 		/**
 		 * The format of the transcript output. Defaults to json.
 		 */
-		public Builder responseFormat(AudioRecognitionResponseFormat val) {
-			this.responseFormat = val;
+		public Builder responseFormat(AudioRecognitionResponseFormat responseFormat) {
+			this.responseFormat = responseFormat;
 			return this;
 		}
 
@@ -95,8 +96,8 @@ public class AudioTranslationRequest {
 		 * <p>
 		 * Defaults to 0.
 		 */
-		public Builder temperature(Double val) {
-			this.temperature = val;
+		public Builder temperature(Double temperature) {
+			this.temperature = temperature;
 			return this;
 		}
 

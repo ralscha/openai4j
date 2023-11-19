@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@SuppressWarnings({ "unused", "hiding" })
 public class AudioSpeechRequest {
 
 	private final SpeechModel model;
@@ -113,16 +114,16 @@ public class AudioSpeechRequest {
 		/**
 		 * One of the available TTS models: tts-1 or tts-1-hd
 		 */
-		public Builder model(SpeechModel val) {
-			this.model = val;
+		public Builder model(SpeechModel model) {
+			this.model = model;
 			return this;
 		}
 
 		/**
 		 * The text to generate audio for. The maximum length is 4096 characters.
 		 */
-		public Builder input(String val) {
-			this.input = val;
+		public Builder input(String input) {
+			this.input = input;
 			return this;
 		}
 
@@ -130,16 +131,16 @@ public class AudioSpeechRequest {
 		 * The voice to use when generating the audio. Supported voices are alloy, echo,
 		 * fable, onyx, nova, and shimmer.
 		 */
-		public Builder voice(Voice val) {
-			this.voice = val;
+		public Builder voice(Voice voice) {
+			this.voice = voice;
 			return this;
 		}
 
 		/**
 		 * The format to audio in. Defaults to mp3
 		 */
-		public Builder responseFormat(AudioResponseFormat val) {
-			this.responseFormat = val;
+		public Builder responseFormat(AudioResponseFormat responseFormat) {
+			this.responseFormat = responseFormat;
 			return this;
 		}
 
@@ -147,8 +148,8 @@ public class AudioSpeechRequest {
 		 * The speed of the generated audio. Select a value from 0.25 to 4.0. 1.0 is the
 		 * default.
 		 */
-		public Builder speed(Double val) {
-			this.speed = val;
+		public Builder speed(Double speed) {
+			this.speed = speed;
 			return this;
 		}
 
