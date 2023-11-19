@@ -15,41 +15,63 @@
  */
 package ch.rasc.openai4j.moderations;
 
-import org.immutables.value.Value;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import ch.rasc.openai4j.Nullable;
+@JsonInclude(Include.NON_EMPTY)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@SuppressWarnings({ "unused", "hiding" })
+public class ModerationsCreateRequest {
 
-@Value.Immutable
-@Value.Style(visibility = Value.Style.ImplementationVisibility.PACKAGE)
-@JsonSerialize(as = ImmutableModerationsCreateRequest.class)
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-public interface ModerationsCreateRequest {
+	private final String input;
+	private final ModerationModel model;
 
-	/**
-	 * The input text to classify
-	 */
-	String input();
+	private ModerationsCreateRequest(Builder builder) {
+		if (builder.input == null || builder.input.isBlank()) {
+			throw new IllegalArgumentException("input is required");
+		}
+		this.input = builder.input;
+		this.model = builder.model;
+	}
 
-	/**
-	 * Two content moderations models are available: text-moderation-stable and
-	 * text-moderation-latest.
-	 * <p>
-	 * The default is text-moderation-latest which will be automatically upgraded over
-	 * time. This ensures you are always using our most accurate model. If you use
-	 * text-moderation-stable, we will provide advanced notice before updating the model.
-	 * Accuracy of text-moderation-stable may be slightly lower than for
-	 * text-moderation-latest
-	 */
-	@Nullable
-	ModerationModel model();
-
-	static Builder builder() {
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	final class Builder extends ImmutableModerationsCreateRequest.Builder {
+	public static final class Builder {
+		private String input;
+		private ModerationModel model;
+
+		private Builder() {
+		}
+
+		/**
+		 * The input text to classify
+		 */
+		public Builder input(String input) {
+			this.input = input;
+			return this;
+		}
+
+		/**
+		 * Two content moderations models are available: text-moderation-stable and
+		 * text-moderation-latest.
+		 * <p>
+		 * The default is text-moderation-latest which will be automatically upgraded over
+		 * time. This ensures you are always using our most accurate model. If you use
+		 * text-moderation-stable, we will provide advanced notice before updating the
+		 * model. Accuracy of text-moderation-stable may be slightly lower than for
+		 * text-moderation-latest
+		 */
+		public Builder model(ModerationModel model) {
+			this.model = model;
+			return this;
+		}
+
+		public ModerationsCreateRequest build() {
+			return new ModerationsCreateRequest(this);
+		}
 	}
 }
