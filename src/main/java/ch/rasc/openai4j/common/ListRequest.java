@@ -71,8 +71,8 @@ public class ListRequest {
 		}
 
 		/*
-		 * A limit on the number of objects to be returned. Limit can range between 1 and 100,
-		 * and the default is 20.
+		 * A limit on the number of objects to be returned. Limit can range between 1 and
+		 * 100, and the default is 20.
 		 */
 		public Builder limit(Integer limit) {
 			this.limit = limit;
@@ -80,8 +80,8 @@ public class ListRequest {
 		}
 
 		/*
-		 * Sort order by the created_at timestamp of the objects. asc for ascending order and
-		 * desc for descending order. Defaults to desc
+		 * Sort order by the created_at timestamp of the objects. asc for ascending order
+		 * and desc for descending order. Defaults to desc
 		 */
 		public Builder order(SortOrder order) {
 			this.order = order;
@@ -89,10 +89,10 @@ public class ListRequest {
 		}
 
 		/*
-		 * A cursor for use in pagination. after is an object ID that defines your place in
-		 * the list. For instance, if you make a list request and receive 100 objects, ending
-		 * with obj_foo, your subsequent call can include after=obj_foo in order to fetch the
-		 * next page of the list.
+		 * A cursor for use in pagination. after is an object ID that defines your place
+		 * in the list. For instance, if you make a list request and receive 100 objects,
+		 * ending with obj_foo, your subsequent call can include after=obj_foo in order to
+		 * fetch the next page of the list.
 		 */
 		public Builder after(String after) {
 			this.after = after;
@@ -100,10 +100,10 @@ public class ListRequest {
 		}
 
 		/*
-		 * A cursor for use in pagination. before is an object ID that defines your place in
-		 * the list. For instance, if you make a list request and receive 100 objects, ending
-		 * with obj_foo, your subsequent call can include before=obj_foo in order to fetch the
-		 * previous page of the list.
+		 * A cursor for use in pagination. before is an object ID that defines your place
+		 * in the list. For instance, if you make a list request and receive 100 objects,
+		 * ending with obj_foo, your subsequent call can include before=obj_foo in order
+		 * to fetch the previous page of the list.
 		 */
 		public Builder before(String before) {
 			this.before = before;

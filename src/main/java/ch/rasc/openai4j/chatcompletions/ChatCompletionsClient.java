@@ -79,7 +79,7 @@ public interface ChatCompletionsClient {
 			tools.add(javaFunction.toTool());
 		}
 
-		var request = fn.apply(ChatCompletionsCreateRequest.builder()).addAllTools(tools)
+		var request = fn.apply(ChatCompletionsCreateRequest.builder()).tools(tools)
 				.build();
 		ChatCompletionsResponse response = this.create(request);
 
