@@ -15,66 +15,127 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
 import ch.rasc.openai4j.assistants.Tool;
 
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableThreadRunCreateRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-public interface ThreadRunCreateRequest {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@SuppressWarnings({ "unused", "hiding" })
+public class ThreadRunCreateRequest {
 
-	static Builder builder() {
+	@JsonProperty("assistant_id")
+	private final String assistantId;
+	private final String model;
+	private final String instructions;
+	private final List<Tool> tools;
+	private final Map<String, Object> metadata;
+
+	private ThreadRunCreateRequest(Builder builder) {
+		if (builder.assistantId == null) {
+			throw new IllegalArgumentException("assistantId cannot be null");
+		}
+		this.assistantId = builder.assistantId;
+		this.model = builder.model;
+		this.instructions = builder.instructions;
+		this.tools = builder.tools;
+		this.metadata = builder.metadata;
+	}
+
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	/*
-	 * The ID of the assistant to use to execute this run.
-	 */
-	@JsonProperty("assistant_id")
-	String assistantId();
+	public static final class Builder {
+		private String assistantId;
+		private String model;
+		private String instructions;
+		private List<Tool> tools;
+		private Map<String, Object> metadata;
 
-	/*
-	 * The ID of the Model to be used to execute this run. If a value is provided here, it
-	 * will override the model associated with the assistant. If not, the model associated
-	 * with the assistant will be used.
-	 */
-	@Nullable
-	String model();
+		private Builder() {
+		}
 
-	/*
-	 * Override the default system message of the assistant. This is useful for modifying
-	 * the behavior on a per-run basis.
-	 */
-	@Nullable
-	String instructions();
+		/*
+		 * The ID of the assistant to use to execute this run.
+		 */
+		public Builder assistantId(String assistantId) {
+			this.assistantId = assistantId;
+			return this;
+		}
 
-	/*
-	 * Override the tools the assistant can use for this run. This is useful for modifying
-	 * the behavior on a per-run basis.
-	 */
-	@Nullable
-	List<Tool> tools();
+		/*
+		 * The ID of the Model to be used to execute this run. If a value is provided
+		 * here, it will override the model associated with the assistant. If not, the
+		 * model associated with the assistant will be used.
+		 */
+		public Builder model(String model) {
+			this.model = model;
+			return this;
+		}
 
-	/*
-	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for
-	 * storing additional information about the object in a structured format. Keys can be
-	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
-	 */
-	@Nullable
-	Map<String, Object> metadata();
+		/*
+		 * Override the default system message of the assistant. This is useful for
+		 * modifying the behavior on a per-run basis.
+		 */
+		public Builder instructions(String instructions) {
+			this.instructions = instructions;
+			return this;
+		}
 
-	final class Builder extends ImmutableThreadRunCreateRequest.Builder {
+		/*
+		 * Override the tools the assistant can use for this run. This is useful for
+		 * modifying the behavior on a per-run basis.
+		 */
+		public Builder tools(List<Tool> tools) {
+			this.tools = new ArrayList<>(tools);
+			return this;
+		}
+
+		/*
+		 * Override the tools the assistant can use for this run. This is useful for
+		 * modifying the behavior on a per-run basis.
+		 */
+		public Builder addTools(Tool... tools) {
+			if (this.tools == null) {
+				this.tools = new ArrayList<>();
+			}
+			this.tools.addAll(List.of(tools));
+			return this;
+		}
+
+		/*
+		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
+		 * for storing additional information about the object in a structured format.
+		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
+		 * characters long.
+		 */
+		public Builder metadata(Map<String, Object> metadata) {
+			this.metadata = new HashMap<>(metadata);
+			return this;
+		}
+
+		/**
+		 * Add a key-value pair to the metadata
+		 */
+		public Builder putMetadata(String key, Object value) {
+			if (this.metadata == null) {
+				this.metadata = new HashMap<>();
+			}
+			this.metadata.put(key, value);
+			return this;
+		}
+
+		public ThreadRunCreateRequest build() {
+			return new ThreadRunCreateRequest(this);
+		}
 	}
 }

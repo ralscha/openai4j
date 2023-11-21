@@ -15,61 +15,71 @@
  */
 package ch.rasc.openai4j.threads.runs;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import ch.rasc.openai4j.Nullable;
-
-@Value.Immutable
-@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-@JsonSerialize(as = ImmutableThreadRunSubmitToolOutputsRequest.class)
 @JsonInclude(Include.NON_EMPTY)
-@Value.Enclosing
-public interface ThreadRunSubmitToolOutputsRequest {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@SuppressWarnings("hiding")
+public class ThreadRunSubmitToolOutputsRequest {
 
-	static Builder builder() {
+	@JsonProperty("tool_outputs")
+	private final List<ToolOutput> toolOutputs;
+
+	private ThreadRunSubmitToolOutputsRequest(Builder builder) {
+		this.toolOutputs = builder.toolOutputs;
+	}
+
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	@JsonProperty("tool_outputs")
-	List<ToolOutput> toolOutputs();
+	public static final class Builder {
+		private List<ToolOutput> toolOutputs;
 
-	@Value.Immutable
-	@Value.Style(visibility = ImplementationVisibility.PACKAGE, depluralize = true)
-	@JsonSerialize(as = ImmutableThreadRunSubmitToolOutputsRequest.ToolOutput.class)
-	@JsonInclude(Include.NON_EMPTY)
-	interface ToolOutput {
-
-		static Builder builder() {
-			return new Builder();
+		private Builder() {
 		}
 
-		/*
-		 * The ID of the tool call in the required_action object within the run object the
-		 * output is being submitted for.
+		/**
+		 * Set tool outputs to the request.
 		 */
-		@JsonProperty("tool_call_id")
-		@Nullable
-		String toolCallId();
-
-		/*
-		 * The output of the tool call to be submitted to continue the run.
-		 */
-		@Nullable
-		String output();
-
-		final class Builder
-				extends ImmutableThreadRunSubmitToolOutputsRequest.ToolOutput.Builder {
+		public Builder toolOutputs(List<ToolOutput> toolOutputs) {
+			this.toolOutputs = new ArrayList<>(toolOutputs);
+			return this;
 		}
-	}
 
-	final class Builder extends ImmutableThreadRunSubmitToolOutputsRequest.Builder {
+		/**
+		 * Add a tool output to the request.
+		 * @param toolCallId The ID of the tool call in the required_action object within
+		 * the run object the output is being submitted for.
+		 * @param output The output of the tool call to be submitted to continue the run.
+		 */
+		public Builder addToolOutput(String toolCallId, String output) {
+			if (this.toolOutputs == null) {
+				this.toolOutputs = new ArrayList<>();
+			}
+			this.toolOutputs.add(new ToolOutput(toolCallId, output));
+			return this;
+		}
+
+		/**
+		 * Add tool outputs to the request.
+		 */
+		public Builder addToolOutputs(ToolOutput... toolOutputs) {
+			if (this.toolOutputs == null) {
+				this.toolOutputs = new ArrayList<>();
+			}
+			this.toolOutputs.addAll(List.of(toolOutputs));
+			return this;
+		}
+
+		public ThreadRunSubmitToolOutputsRequest build() {
+			return new ThreadRunSubmitToolOutputsRequest(this);
+		}
 	}
 }
