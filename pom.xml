@@ -34,7 +34,7 @@
 		<url>https://github.com/ralscha/openai4j.git</url>
 	</scm>
 	<properties>
-		<openfeign.version>13.0</openfeign.version>
+		<openfeign.version>13.1</openfeign.version>
 	</properties>
 	
     <dependencyManagement>
@@ -78,12 +78,12 @@
 		<dependency>
 		    <groupId>com.github.victools</groupId>
 		    <artifactId>jsonschema-generator</artifactId>
-		    <version>4.32.0</version>
+		    <version>4.33.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.victools</groupId>
 			<artifactId>jsonschema-module-jackson</artifactId>
-			<version>4.32.0</version>
+			<version>4.33.0</version>
 		</dependency>
 	</dependencies>
 	<build>
