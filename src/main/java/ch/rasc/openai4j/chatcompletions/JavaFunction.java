@@ -17,14 +17,7 @@ package ch.rasc.openai4j.chatcompletions;
 
 import java.util.function.Function;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.victools.jsonschema.generator.OptionPreset;
 import com.github.victools.jsonschema.generator.SchemaGenerator;
-import com.github.victools.jsonschema.generator.SchemaGeneratorConfig;
-import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
-import com.github.victools.jsonschema.generator.SchemaVersion;
-import com.github.victools.jsonschema.module.jackson.JacksonModule;
-import com.github.victools.jsonschema.module.jackson.JacksonOption;
 
 import ch.rasc.openai4j.common.FunctionParameters;
 
@@ -34,19 +27,16 @@ public class JavaFunction<T, R> {
 
 	private final String description;
 
-	private final ObjectNode parameterClassJsonSchema;
-
 	private final Class<T> parameterClass;
 
 	private final Function<T, R> functionCall;
 
 	private JavaFunction(String name, String description, Class<T> parameterClass,
-			ObjectNode parameterClassJsonSchema, Function<T, R> functionCall) {
+			Function<T, R> functionCall) {
 		this.name = name;
 		this.description = description;
 		this.parameterClass = parameterClass;
 		this.functionCall = functionCall;
-		this.parameterClassJsonSchema = parameterClassJsonSchema;
 	}
 
 	/**
@@ -67,15 +57,7 @@ public class JavaFunction<T, R> {
 	 */
 	public static <T, R> JavaFunction<T, R> of(String name, String description,
 			Class<T> parameterClass, Function<T, R> functionExecutor) {
-		JacksonModule module = new JacksonModule(
-				JacksonOption.RESPECT_JSONPROPERTY_REQUIRED);
-		SchemaGeneratorConfigBuilder configBuilder = new SchemaGeneratorConfigBuilder(
-				SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON).with(module);
-		SchemaGeneratorConfig config = configBuilder.build();
-		var schemaGenerator = new SchemaGenerator(config);
-
-		return new JavaFunction<>(name, description, parameterClass,
-				schemaGenerator.generateSchema(parameterClass), functionExecutor);
+		return new JavaFunction<>(name, description, parameterClass, functionExecutor);
 	}
 
 	/**
@@ -96,9 +78,9 @@ public class JavaFunction<T, R> {
 	/**
 	 * Converts the function to a {@link ChatCompletionTool}.
 	 */
-	public ChatCompletionTool toTool() {
+	ChatCompletionTool toTool(SchemaGenerator schemaGenerator) {
 		return ChatCompletionTool.of(FunctionParameters.of(this.name, this.description,
-				this.parameterClassJsonSchema));
+				schemaGenerator.generateSchema(this.parameterClass)));
 	}
 
 	public R call(Object parameter) {

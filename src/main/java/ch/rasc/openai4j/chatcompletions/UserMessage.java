@@ -112,7 +112,7 @@ public class UserMessage extends ChatCompletionMessage {
 					return this.value;
 				}
 			}
-			
+
 			private ImageUrl(String url, ImageDetail detail) {
 				if (url == null) {
 					throw new IllegalArgumentException("url cannot be null");
