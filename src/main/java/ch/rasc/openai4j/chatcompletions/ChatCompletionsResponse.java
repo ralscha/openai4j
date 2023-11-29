@@ -20,7 +20,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import ch.rasc.openai4j.common.FunctionArguments;
+import ch.rasc.openai4j.common.ToolCall;
 
 /**
  * Represents a chat completion response returned by model, based on the provided input.
@@ -161,33 +161,6 @@ public record ChatCompletionsResponse(String id, List<Choice> choices, int creat
 		@Override
 		public String role() {
 			return this.role;
-		}
-	}
-
-	public record ToolCall(String id, String type, FunctionArguments function) {
-		/**
-		 * The ID of the tool call.
-		 */
-		@Override
-		public String id() {
-			return this.id;
-		}
-
-		/**
-		 *
-		 * The type of the tool. Currently, only function is supported.
-		 */
-		@Override
-		public String type() {
-			return this.type;
-		}
-
-		/**
-		 * The function that the model called.
-		 */
-		@Override
-		public FunctionArguments function() {
-			return this.function;
 		}
 	}
 

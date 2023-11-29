@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.assistants.Tool;
 import ch.rasc.openai4j.common.Error;
-import ch.rasc.openai4j.common.FunctionArguments;
+import ch.rasc.openai4j.common.ToolCall;
 
 /**
  * Represents an execution run on a thread.
@@ -240,34 +240,6 @@ public record ThreadRun(String id, String object,
 			@Override
 			public List<ToolCall> toolCalls() {
 				return this.toolCalls;
-			}
-
-			public record ToolCall(String id, String type, FunctionArguments function) {
-				/**
-				 * The ID of the tool call. This ID must be referenced when you submit the
-				 * tool outputs in using the Submit tool outputs to run endpoint.
-				 */
-				@Override
-				public String id() {
-					return this.id;
-				}
-
-				/**
-				 * The type of tool call the output is required for. For now, this is
-				 * always function.
-				 */
-				@Override
-				public String type() {
-					return this.type;
-				}
-
-				/**
-				 * The function definition.
-				 */
-				@Override
-				public FunctionArguments function() {
-					return this.function;
-				}
 			}
 		}
 	}

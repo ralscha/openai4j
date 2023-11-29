@@ -26,11 +26,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import ch.rasc.openai4j.Nullable;
-
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@SuppressWarnings("hiding")
+@SuppressWarnings({ "unused", "hiding" })
 public class ChatCompletionsCreateRequest {
 
 	private final List<ChatCompletionMessage> messages;
@@ -55,8 +53,6 @@ public class ChatCompletionsCreateRequest {
 	private final List<ChatCompletionTool> tools;
 	@JsonProperty("tool_choice")
 	private final ToolChoice toolChoice;
-
-	@Nullable
 	private final String user;
 
 	private ChatCompletionsCreateRequest(Builder builder) {
@@ -141,16 +137,6 @@ public class ChatCompletionsCreateRequest {
 		return new Builder();
 	}
 
-	public ChatCompletionsCreateRequest withMessages(
-			List<ChatCompletionMessage> messages) {
-		return new Builder().messages(messages).model(this.model)
-				.frequencyPenalty(this.frequencyPenalty).logitBias(this.logitBias)
-				.maxTokens(this.maxTokens).n(this.n).presencePenalty(this.presencePenalty)
-				.responseFormat(this.responseFormat).seed(this.seed).stop(this.stop)
-				.stream(this.stream).temperature(this.temperature).topP(this.topP)
-				.tools(this.tools).toolChoice(this.toolChoice).user(this.user).build();
-	}
-
 	public static final class Builder {
 		private List<ChatCompletionMessage> messages;
 		private String model;
@@ -170,6 +156,10 @@ public class ChatCompletionsCreateRequest {
 		private String user;
 
 		private Builder() {
+		}
+
+		public List<ChatCompletionMessage> messages() {
+			return List.copyOf(this.messages);
 		}
 
 		/**
