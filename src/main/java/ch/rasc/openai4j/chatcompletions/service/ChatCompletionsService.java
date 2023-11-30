@@ -23,6 +23,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -59,7 +61,8 @@ import jakarta.validation.ValidatorFactory;
  * High level chat completions client that supports calling Java methods
  */
 public class ChatCompletionsService {
-
+	private final static Logger log = LoggerFactory
+			.getLogger(ChatCompletionsService.class);
 	private final SchemaGenerator schemaGenerator;
 
 	private final ChatCompletionsClient chatCompletionsClient;
@@ -106,8 +109,9 @@ public class ChatCompletionsService {
 	public ChatCompletionsResponse createJavaFunctions(
 			Function<ChatCompletionsJavaFunctionRequest.Builder, ChatCompletionsJavaFunctionRequest.Builder> fn)
 			throws JsonProcessingException {
-		
-		var javaFunctionsRequest = fn.apply(ChatCompletionsJavaFunctionRequest.builder()).build();
+
+		var javaFunctionsRequest = fn.apply(ChatCompletionsJavaFunctionRequest.builder())
+				.build();
 		Map<String, JavaFunction<?, ?>> javaFunctionRegistry = new HashMap<>();
 		List<ChatCompletionTool> tools = new ArrayList<>();
 		for (JavaFunction<?, ?> javaFunction : javaFunctionsRequest.javaFunctions()) {
@@ -115,7 +119,8 @@ public class ChatCompletionsService {
 			tools.add(javaFunction.toTool(this.schemaGenerator));
 		}
 
-		var requestBuilder = javaFunctionsRequest.convertToChatCompletionsCreateRequestBuilder();
+		var requestBuilder = javaFunctionsRequest
+				.convertToChatCompletionsCreateRequestBuilder();
 		var request = requestBuilder.tools(tools).build();
 		ChatCompletionsResponse response = this.chatCompletionsClient.create(request);
 
@@ -125,8 +130,10 @@ public class ChatCompletionsService {
 		int iterationCount = 1;
 		while (choice.finishReason() == FinishReason.TOOL_CALLS) {
 			if (iterationCount > javaFunctionsRequest.maxIterations()) {
+				log.debug("Max iterations reached");
 				return response;
 			}
+			log.debug("Iteration {}", iterationCount);
 
 			var message = choice.message();
 			thread.add(AssistantMessage.of(choice.message()));
@@ -140,6 +147,10 @@ public class ChatCompletionsService {
 				}
 				var argument = this.objectMapper.readValue(
 						toolCall.function().arguments(), javaFunction.parameterClass());
+
+				log.debug("Calling function {}", javaFunction.name());
+				log.debug("with argument {}", argument);
+
 				Object result = javaFunction.call(argument);
 
 				if (result != null) {
@@ -223,13 +234,17 @@ public class ChatCompletionsService {
 
 			if (!originalMessages.isEmpty() && originalMessages
 					.get(0) instanceof SystemMessage firstSystemMessage) {
-				thread.add(SystemMessage.of(
-						firstSystemMessage.content() + "\n\n" + jsonSchemaSystemMessage));
+				SystemMessage newSystemMessage = SystemMessage.of(
+						firstSystemMessage.content() + "\n\n" + jsonSchemaSystemMessage);
+				thread.add(newSystemMessage);
 				thread.addAll(originalMessages.subList(1, originalMessages.size()));
+
+				log.debug("Replacing system message: {}", newSystemMessage.content());
 			}
 			else {
 				thread.add(SystemMessage.of(jsonSchemaSystemMessage));
 				thread.addAll(originalMessages);
+				log.debug("Adding system message: {}", jsonSchemaSystemMessage);
 			}
 		}
 		else {
@@ -239,15 +254,20 @@ public class ChatCompletionsService {
 			if (descriptionNode != null) {
 				description = descriptionNode.textValue();
 			}
-			requestBuilder.tools(List.of(ChatCompletionTool
-					.of(FunctionParameters.of(functionName, description, jsonSchema))));
+			List<ChatCompletionTool> tool = List.of(ChatCompletionTool
+					.of(FunctionParameters.of(functionName, description, jsonSchema)));
+			requestBuilder.tools(tool);
 			requestBuilder.toolChoice(ToolChoice.function(functionName));
+
+			log.debug("Adding tool: {}", tool);
 		}
 
 		int retryCount = 0;
 
 		ChatCompletionsResponse response = null;
 		while (retryCount < request.maxRetries()) {
+			log.debug("Retry {}", retryCount);
+
 			response = this.chatCompletionsClient
 					.create(requestBuilder.messages(thread).build());
 
@@ -301,6 +321,8 @@ public class ChatCompletionsService {
 					}
 					thread.add(AssistantMessage.of(choice.message()));
 					thread.add(UserMessage.of(validationErrors.toString()));
+					log.debug("Adding validation error user message: {}",
+							validationErrors);
 				}
 			}
 			catch (JsonProcessingException e) {
@@ -314,6 +336,7 @@ public class ChatCompletionsService {
 				}
 				thread.add(AssistantMessage.of(choice.message()));
 				thread.add(UserMessage.of(errorMessage));
+				log.debug("Adding deserialization error user message: {}", errorMessage);
 			}
 
 			retryCount++;

@@ -36,10 +36,10 @@ public class ChatCompletionsJavaFunctionRequest {
 	private final Double temperature;
 	private final Double topP;
 	private final String user;
-	
+
 	private final List<JavaFunction<?, ?>> javaFunctions;
 	private final Integer maxIterations;
-	
+
 	private ChatCompletionsJavaFunctionRequest(Builder builder) {
 		if (builder.maxIterations == null) {
 			builder.maxIterations = 1;
@@ -49,7 +49,7 @@ public class ChatCompletionsJavaFunctionRequest {
 		}
 		if (builder.javaFunctions == null || builder.javaFunctions.isEmpty()) {
 			throw new IllegalArgumentException("javaFunctions must not be null or empty");
-		}		
+		}
 		if (builder.messages == null || builder.messages.isEmpty()) {
 			throw new IllegalArgumentException("messages must not be null or empty");
 		}
@@ -92,7 +92,7 @@ public class ChatCompletionsJavaFunctionRequest {
 		return List.copyOf(this.javaFunctions);
 	}
 
-	public static  Builder builder() {
+	public static Builder builder() {
 		return new Builder();
 	}
 
@@ -243,9 +243,8 @@ public class ChatCompletionsJavaFunctionRequest {
 		}
 
 		/**
-		 * The maximum number of iterations to call the java functions.
-		 * Set it to a reasonable value to avoid infinite loops.
-		 * Defaults to 1
+		 * The maximum number of iterations to call the java functions. Set it to a
+		 * reasonable value to avoid infinite loops. Defaults to 1
 		 */
 		public Builder maxIterations(Integer maxIterations) {
 			this.maxIterations = maxIterations;
@@ -272,8 +271,7 @@ public class ChatCompletionsJavaFunctionRequest {
 			this.javaFunctions.addAll(List.of(javaFunction));
 			return this;
 		}
-		
-		
+
 		public ChatCompletionsJavaFunctionRequest build() {
 			return new ChatCompletionsJavaFunctionRequest(this);
 		}
