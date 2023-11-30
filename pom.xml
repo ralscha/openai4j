@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>ch.rasc</groupId>
 	<artifactId>openai4j</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>openai4j</name>
 	<url>https://github.com/ralscha/openai4j</url>
 	<description>Unofficial, community-maintained Java implementation of the OpenAI API</description>
@@ -42,7 +42,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.15.3</version>
+                <version>2.16.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

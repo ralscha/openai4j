@@ -42,7 +42,7 @@ public class AssistantCreateRequest {
 
 	private AssistantCreateRequest(Builder builder) {
 		if (builder.model == null || builder.model.isBlank()) {
-			throw new IllegalArgumentException("model is required");
+			throw new IllegalArgumentException("model must not be null or empty");
 		}
 		this.model = builder.model;
 		this.name = builder.name;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.openai4j.chatcompletions;
+package ch.rasc.openai4j.chatcompletions.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,9 +36,19 @@ import com.github.victools.jsonschema.generator.SchemaVersion;
 import com.github.victools.jsonschema.module.jackson.JacksonModule;
 import com.github.victools.jsonschema.module.jackson.JacksonOption;
 
+import ch.rasc.openai4j.chatcompletions.AssistantMessage;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionMessage;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionTool;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionsClient;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest.ResponseFormat;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest.ToolChoice;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Choice.FinishReason;
+import ch.rasc.openai4j.chatcompletions.SystemMessage;
+import ch.rasc.openai4j.chatcompletions.ToolMessage;
+import ch.rasc.openai4j.chatcompletions.UserMessage;
+import ch.rasc.openai4j.chatcompletions.service.ChatCompletionsModelRequest.Mode;
 import ch.rasc.openai4j.common.FunctionParameters;
 import ch.rasc.openai4j.common.ToolCall;
 import jakarta.validation.ConstraintViolation;
@@ -156,32 +166,64 @@ public class ChatCompletionsService {
 
 	public record ChatCompletionsModelResponse<T>(ChatCompletionsResponse response,
 			T responseModel, String error) {
-	}
 
-	public enum Mode {
-		TOOL, JSON
-	}
-
-	public <T> ChatCompletionsModelResponse<T> create(
-			Function<ChatCompletionsCreateRequest.Builder, ChatCompletionsCreateRequest.Builder> fn,
-			Class<T> responseModel, Mode mode, int maxRetries) {
-
-		if (maxRetries <= 0) {
-			throw new IllegalArgumentException("maxRetries must be greater than 0");
+		/**
+		 * The original response from the chat completions API
+		 */
+		@Override
+		public ChatCompletionsResponse response() {
+			return this.response;
 		}
 
-		var requestBuilder = fn.apply(ChatCompletionsCreateRequest.builder());
-		ObjectNode jsonSchema = this.schemaGenerator.generateSchema(responseModel);
+		/**
+		 * The response model that was created from the response
+		 */
+		@Override
+		public T responseModel() {
+			return this.responseModel;
+		}
 
-		if (mode == Mode.JSON) {
+		/**
+		 * An error message if the response model could not be created
+		 */
+		@Override
+		public String error() {
+			return this.error;
+		}
+	}
 
+	/**
+	 * Creates and calls the chat completions API for the provided prompt and parameters.
+	 * The response is converted to the provided response model. The method will repeat
+	 * this process when the response can't be converted to the response model or there
+	 * are validation errors in the response model.
+	 * <p>
+	 * The method will repeat this process until the completion is finished or the maximum
+	 * number of retries is reached.
+	 * @param fn A chat completion request model builder function
+	 * @return A chat completion response
+	 * @param <T> The response model type
+	 */
+	public <T> ChatCompletionsModelResponse<T> create(
+			Function<ChatCompletionsModelRequest.Builder<T>, ChatCompletionsModelRequest.Builder<T>> fn) {
+
+		ChatCompletionsModelRequest<T> request = fn
+				.apply(ChatCompletionsModelRequest.builder()).build();
+
+		List<ChatCompletionMessage> thread;
+		var requestBuilder = request.convertToChatCompletionsCreateRequestBuilder();
+		ObjectNode jsonSchema = this.schemaGenerator
+				.generateSchema(request.responseModel());
+		String functionName = request.responseModel().getSimpleName();
+
+		if (request.mode() == Mode.JSON) {
 			requestBuilder.responseFormat(ResponseFormat.JSON_OBJECT);
 
 			String jsonSchemaSystemMessage = "Make sure that your response to any message matches the json_schema below, "
 					+ "do not deviate at all: \n" + jsonSchema;
 
-			List<ChatCompletionMessage> originalMessages = requestBuilder.messages();
-			List<ChatCompletionMessage> thread = new ArrayList<>();
+			List<ChatCompletionMessage> originalMessages = request.messages();
+			thread = new ArrayList<>();
 
 			if (!originalMessages.isEmpty() && originalMessages
 					.get(0) instanceof SystemMessage firstSystemMessage) {
@@ -193,34 +235,23 @@ public class ChatCompletionsService {
 				thread.add(SystemMessage.of(jsonSchemaSystemMessage));
 				thread.addAll(originalMessages);
 			}
-
-			return executeRequest(responseModel, maxRetries, requestBuilder, mode, thread,
-					null);
 		}
-
-		List<ChatCompletionMessage> thread = new ArrayList<>(requestBuilder.messages());
-
-		JsonNode descriptionNode = jsonSchema.get("description");
-		String description = null;
-		if (descriptionNode != null) {
-			description = descriptionNode.textValue();
+		else {
+			thread = new ArrayList<>(request.messages());
+			JsonNode descriptionNode = jsonSchema.get("description");
+			String description = null;
+			if (descriptionNode != null) {
+				description = descriptionNode.textValue();
+			}
+			requestBuilder.tools(List.of(ChatCompletionTool
+					.of(FunctionParameters.of(functionName, description, jsonSchema))));
+			requestBuilder.toolChoice(ToolChoice.function(functionName));
 		}
-		String functionName = responseModel.getSimpleName();
-		requestBuilder.tools(List.of(ChatCompletionTool
-				.of(FunctionParameters.of(functionName, description, jsonSchema))));
-		requestBuilder.toolChoice(ToolChoice.function(functionName));
-		return executeRequest(responseModel, maxRetries, requestBuilder, mode, thread,
-				functionName);
-	}
-
-	private <T> ChatCompletionsModelResponse<T> executeRequest(Class<T> responseModel,
-			int maxRetries, ChatCompletionsCreateRequest.Builder requestBuilder,
-			Mode mode, List<ChatCompletionMessage> thread, String functionName) {
 
 		int retryCount = 0;
 
 		ChatCompletionsResponse response = null;
-		while (retryCount < maxRetries) {
+		while (retryCount < request.maxRetries()) {
 			response = this.chatCompletionsClient
 					.create(requestBuilder.messages(thread).build());
 
@@ -232,15 +263,16 @@ public class ChatCompletionsService {
 
 			try {
 				T responseModelInstance = null;
-				if (mode == Mode.JSON) {
-					responseModelInstance = this.objectMapper
-							.readValue(choice.message().content(), responseModel);
+				if (request.mode() == Mode.JSON) {
+					responseModelInstance = this.objectMapper.readValue(
+							choice.message().content(), request.responseModel());
 				}
 				else {
 					ToolCall firstToolCall = choice.message().toolCalls().get(0);
 					if (firstToolCall.function().name().equals(functionName)) {
 						responseModelInstance = this.objectMapper.readValue(
-								firstToolCall.function().arguments(), responseModel);
+								firstToolCall.function().arguments(),
+								request.responseModel());
 					}
 					else {
 						String errorMessage = "Recall the correct function, function "
@@ -259,7 +291,7 @@ public class ChatCompletionsService {
 					}
 
 					StringBuilder validationErrors;
-					if (mode == Mode.JSON) {
+					if (request.mode() == Mode.JSON) {
 						validationErrors = new StringBuilder("Validation errors found\n");
 					}
 					else {
@@ -277,7 +309,7 @@ public class ChatCompletionsService {
 			}
 			catch (JsonProcessingException e) {
 				String errorMessage;
-				if (mode == Mode.JSON) {
+				if (request.mode() == Mode.JSON) {
 					errorMessage = "Could not deserialize response\n" + e.getMessage();
 				}
 				else {
@@ -293,4 +325,5 @@ public class ChatCompletionsService {
 
 		return new ChatCompletionsModelResponse<>(response, null, "max retries reached");
 	}
+
 }

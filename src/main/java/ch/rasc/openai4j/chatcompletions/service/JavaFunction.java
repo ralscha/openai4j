@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.openai4j.chatcompletions;
+package ch.rasc.openai4j.chatcompletions.service;
 
 import java.util.function.Function;
 
 import com.github.victools.jsonschema.generator.SchemaGenerator;
 
+import ch.rasc.openai4j.chatcompletions.ChatCompletionTool;
 import ch.rasc.openai4j.common.FunctionParameters;
 
 public class JavaFunction<T, R> {

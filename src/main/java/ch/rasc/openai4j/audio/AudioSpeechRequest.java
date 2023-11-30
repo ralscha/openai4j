@@ -36,13 +36,13 @@ public class AudioSpeechRequest {
 
 	private AudioSpeechRequest(Builder builder) {
 		if (builder.model == null) {
-			throw new IllegalArgumentException("model is required");
+			throw new IllegalArgumentException("model must not be null");
 		}
 		if (builder.input == null || builder.input.isBlank()) {
-			throw new IllegalArgumentException("input is required");
+			throw new IllegalArgumentException("input must not be null or empty");
 		}
 		if (builder.voice == null) {
-			throw new IllegalArgumentException("voice is required");
+			throw new IllegalArgumentException("voice must not be null");
 		}
 		this.model = builder.model;
 		this.input = builder.input;

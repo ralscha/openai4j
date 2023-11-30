@@ -46,7 +46,6 @@ public class ChatCompletionsCreateRequest {
 	private final ResponseFormat responseFormat;
 	private final Integer seed;
 	private final Object stop;
-	private final Boolean stream;
 	private final Double temperature;
 	@JsonProperty("top_p")
 	private final Double topP;
@@ -56,11 +55,11 @@ public class ChatCompletionsCreateRequest {
 	private final String user;
 
 	private ChatCompletionsCreateRequest(Builder builder) {
-		if (builder.messages == null) {
-			throw new NullPointerException("messages are required");
+		if (builder.messages == null || builder.messages.isEmpty()) {
+			throw new NullPointerException("messages must not be null or empty");
 		}
 		if (builder.model == null || builder.model.isBlank()) {
-			throw new NullPointerException("model is required");
+			throw new NullPointerException("model must not be null or empty");
 		}
 
 		this.messages = builder.messages;
@@ -73,7 +72,6 @@ public class ChatCompletionsCreateRequest {
 		this.responseFormat = builder.responseFormat;
 		this.seed = builder.seed;
 		this.stop = builder.stop;
-		this.stream = builder.stream;
 		this.temperature = builder.temperature;
 		this.topP = builder.topP;
 		this.tools = builder.tools;
@@ -148,7 +146,6 @@ public class ChatCompletionsCreateRequest {
 		private ResponseFormat responseFormat;
 		private Integer seed;
 		private Object stop;
-		private Boolean stream;
 		private Double temperature;
 		private Double topP;
 		private List<ChatCompletionTool> tools;
@@ -156,10 +153,6 @@ public class ChatCompletionsCreateRequest {
 		private String user;
 
 		private Builder() {
-		}
-
-		public List<ChatCompletionMessage> messages() {
-			return List.copyOf(this.messages);
 		}
 
 		/**
@@ -288,7 +281,9 @@ public class ChatCompletionsCreateRequest {
 		 * Up to 4 sequences where the API will stop generating further tokens.
 		 */
 		public Builder stop(List<String> stop) {
-			this.stop = new ArrayList<>(stop);
+			if (stop != null) {
+				this.stop = new ArrayList<>(stop);
+			}
 			return this;
 		}
 
@@ -297,16 +292,6 @@ public class ChatCompletionsCreateRequest {
 		 */
 		public Builder stop(String stop) {
 			this.stop = stop;
-			return this;
-		}
-
-		/**
-		 * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be
-		 * sent as data-only server-sent events as they become available, with the stream
-		 * terminated by a data: [DONE] message. Example Python code.
-		 */
-		public Builder stream(Boolean stream) {
-			this.stream = stream;
 			return this;
 		}
 

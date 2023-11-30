@@ -28,10 +28,10 @@ public class AudioTranslationRequest {
 
 	private AudioTranslationRequest(Builder builder) {
 		if (builder.file == null) {
-			throw new IllegalArgumentException("file is required");
+			throw new IllegalArgumentException("file must not be null");
 		}
 		if (builder.model == null) {
-			throw new IllegalArgumentException("model is required");
+			throw new IllegalArgumentException("model must not be null");
 		}
 		this.file = builder.file;
 		this.model = builder.model;

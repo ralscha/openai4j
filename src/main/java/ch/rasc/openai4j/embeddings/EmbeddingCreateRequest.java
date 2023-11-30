@@ -37,10 +37,10 @@ public class EmbeddingCreateRequest {
 
 	private EmbeddingCreateRequest(Builder builder) {
 		if (builder.input == null) {
-			throw new IllegalArgumentException("input is required");
+			throw new IllegalArgumentException("input must not be null");
 		}
 		if (builder.model == null || builder.model.isBlank()) {
-			throw new IllegalArgumentException("model is required");
+			throw new IllegalArgumentException("model must not be null or empty");
 		}
 		this.input = builder.input;
 		this.model = builder.model;
