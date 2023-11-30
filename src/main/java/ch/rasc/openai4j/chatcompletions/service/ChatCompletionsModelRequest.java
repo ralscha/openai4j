@@ -22,7 +22,7 @@ import java.util.Map;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionMessage;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest;
 
-@SuppressWarnings({ "unused", "hiding" })
+@SuppressWarnings({ "hiding" })
 public class ChatCompletionsModelRequest<T> {
 
 	public enum Mode {
@@ -59,10 +59,10 @@ public class ChatCompletionsModelRequest<T> {
 			throw new IllegalArgumentException("responseModel must not be null");
 		}
 		if (builder.messages == null || builder.messages.isEmpty()) {
-			throw new NullPointerException("messages must not be null or empty");
+			throw new IllegalArgumentException("messages must not be null or empty");
 		}
 		if (builder.model == null || builder.model.isBlank()) {
-			throw new NullPointerException("model must not be null or empty");
+			throw new IllegalArgumentException("model must not be null or empty");
 		}
 
 		this.messages = builder.messages;

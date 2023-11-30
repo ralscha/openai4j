@@ -36,10 +36,10 @@ public class FineTuningJobCreateRequest {
 
 	private FineTuningJobCreateRequest(Builder builder) {
 		if (builder.model == null || builder.model.isBlank()) {
-			throw new NullPointerException("model cannot be null");
+			throw new IllegalArgumentException("model cannot be null");
 		}
 		if (builder.trainingFile == null || builder.trainingFile.isBlank()) {
-			throw new NullPointerException("trainingFile cannot be null");
+			throw new IllegalArgumentException("trainingFile cannot be null");
 		}
 		this.model = builder.model;
 		this.trainingFile = builder.trainingFile;

@@ -29,7 +29,7 @@ public class ImageVariationRequest {
 
 	private ImageVariationRequest(Builder builder) {
 		if (builder.image == null) {
-			throw new NullPointerException("image cannot be null");
+			throw new IllegalArgumentException("image cannot be null");
 		}
 		this.image = builder.image;
 		this.model = builder.model;

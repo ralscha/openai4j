@@ -40,7 +40,6 @@ import ch.rasc.openai4j.chatcompletions.AssistantMessage;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionMessage;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionTool;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsClient;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest.ResponseFormat;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest.ToolChoice;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse;
@@ -100,26 +99,23 @@ public class ChatCompletionsService {
 	 * number of iterations is reached.
 	 *
 	 * @param fn A chat completion request builder function
-	 * @param javaFunctions A list of java functions that can be called from the chat
-	 * completion
-	 * @param maxIterations The maximum number of iterations to call the java functions.
-	 * Set it to a reasonable value to avoid infinite loops.
 	 * @return A chat completion response
 	 * @throws JsonProcessingException If the java function arguments or results cannot be
 	 * serialized or deserialized
 	 */
-	public ChatCompletionsResponse create(
-			Function<ChatCompletionsCreateRequest.Builder, ChatCompletionsCreateRequest.Builder> fn,
-			List<JavaFunction<?, ?>> javaFunctions, int maxIterations)
+	public ChatCompletionsResponse createJavaFunctions(
+			Function<ChatCompletionsJavaFunctionRequest.Builder, ChatCompletionsJavaFunctionRequest.Builder> fn)
 			throws JsonProcessingException {
+		
+		var javaFunctionsRequest = fn.apply(ChatCompletionsJavaFunctionRequest.builder()).build();
 		Map<String, JavaFunction<?, ?>> javaFunctionRegistry = new HashMap<>();
 		List<ChatCompletionTool> tools = new ArrayList<>();
-		for (JavaFunction<?, ?> javaFunction : javaFunctions) {
+		for (JavaFunction<?, ?> javaFunction : javaFunctionsRequest.javaFunctions()) {
 			javaFunctionRegistry.put(javaFunction.name(), javaFunction);
 			tools.add(javaFunction.toTool(this.schemaGenerator));
 		}
 
-		var requestBuilder = fn.apply(ChatCompletionsCreateRequest.builder());
+		var requestBuilder = javaFunctionsRequest.convertToChatCompletionsCreateRequestBuilder();
 		var request = requestBuilder.tools(tools).build();
 		ChatCompletionsResponse response = this.chatCompletionsClient.create(request);
 
@@ -128,7 +124,7 @@ public class ChatCompletionsService {
 
 		int iterationCount = 1;
 		while (choice.finishReason() == FinishReason.TOOL_CALLS) {
-			if (iterationCount > maxIterations) {
+			if (iterationCount > javaFunctionsRequest.maxIterations()) {
 				return response;
 			}
 
@@ -204,7 +200,7 @@ public class ChatCompletionsService {
 	 * @return A chat completion response
 	 * @param <T> The response model type
 	 */
-	public <T> ChatCompletionsModelResponse<T> create(
+	public <T> ChatCompletionsModelResponse<T> createModel(
 			Function<ChatCompletionsModelRequest.Builder<T>, ChatCompletionsModelRequest.Builder<T>> fn) {
 
 		ChatCompletionsModelRequest<T> request = fn

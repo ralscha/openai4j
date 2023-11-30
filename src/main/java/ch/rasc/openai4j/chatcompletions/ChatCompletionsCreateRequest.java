@@ -56,10 +56,10 @@ public class ChatCompletionsCreateRequest {
 
 	private ChatCompletionsCreateRequest(Builder builder) {
 		if (builder.messages == null || builder.messages.isEmpty()) {
-			throw new NullPointerException("messages must not be null or empty");
+			throw new IllegalArgumentException("messages must not be null or empty");
 		}
 		if (builder.model == null || builder.model.isBlank()) {
-			throw new NullPointerException("model must not be null or empty");
+			throw new IllegalArgumentException("model must not be null or empty");
 		}
 
 		this.messages = builder.messages;

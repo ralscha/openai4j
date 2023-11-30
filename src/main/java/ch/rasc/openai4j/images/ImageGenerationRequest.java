@@ -39,7 +39,7 @@ public class ImageGenerationRequest {
 
 	private ImageGenerationRequest(Builder builder) {
 		if (builder.prompt == null || builder.prompt.isEmpty()) {
-			throw new NullPointerException("prompt cannot be null");
+			throw new IllegalArgumentException("prompt cannot be null");
 		}
 
 		this.prompt = builder.prompt;

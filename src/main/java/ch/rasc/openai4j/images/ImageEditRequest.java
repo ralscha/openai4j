@@ -31,10 +31,10 @@ public class ImageEditRequest {
 
 	private ImageEditRequest(Builder builder) {
 		if (builder.image == null) {
-			throw new NullPointerException("image cannot be null");
+			throw new IllegalArgumentException("image cannot be null");
 		}
 		if (builder.prompt == null || builder.prompt.isEmpty()) {
-			throw new NullPointerException("prompt cannot be null");
+			throw new IllegalArgumentException("prompt cannot be null");
 		}
 		this.image = builder.image;
 		this.prompt = builder.prompt;
