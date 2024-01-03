@@ -150,7 +150,7 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
-### 1.1.1 - January 4, 2024
+### 1.1.1 - January 3, 2024
   * Added additional_instructions parameter to run creation in the Assistants API
   * Added logprobs and top_logprobs parameters to the Chat Completions API
   * Changed function parameters argument on a tool call to be optional.
