@@ -14,7 +14,7 @@ Legacy and deprecated endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 
@@ -149,6 +149,11 @@ public class ChatCompletionsFunctionExample {
 Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) repository for more examples.
 
 ## Changelog
+
+### 1.1.1 - January 4, 2024
+  * Added additional_instructions parameter to run creation in the Assistants API
+  * Added logprobs and top_logprobs parameters to the Chat Completions API
+  * Changed function parameters argument on a tool call to be optional.
 
 ### 1.1.0 - November 30, 2023
   * Refactor all the builders
