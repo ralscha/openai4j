@@ -37,6 +37,9 @@ public class ChatCompletionsCreateRequest {
 	private final Double frequencyPenalty;
 	@JsonProperty("logit_bias")
 	private final Map<String, Double> logitBias;
+	private final Boolean logprobs;
+	@JsonProperty("top_logprobs")
+	private final Integer topLogprobs;
 	@JsonProperty("max_tokens")
 	private final Integer maxTokens;
 	private final Integer n;
@@ -61,11 +64,18 @@ public class ChatCompletionsCreateRequest {
 		if (builder.model == null || builder.model.isBlank()) {
 			throw new IllegalArgumentException("model must not be null or empty");
 		}
+		if (builder.topLogprobs != null && builder.topLogprobs < 0
+				|| builder.topLogprobs > 5) {
+			throw new IllegalArgumentException(
+					"topLogprobs must be between 0 and 5 (inclusive)");
+		}
 
 		this.messages = builder.messages;
 		this.model = builder.model;
 		this.frequencyPenalty = builder.frequencyPenalty;
 		this.logitBias = builder.logitBias;
+		this.logprobs = builder.logprobs;
+		this.topLogprobs = builder.topLogprobs;
 		this.maxTokens = builder.maxTokens;
 		this.n = builder.n;
 		this.presencePenalty = builder.presencePenalty;
@@ -140,6 +150,8 @@ public class ChatCompletionsCreateRequest {
 		private String model;
 		private Double frequencyPenalty;
 		private Map<String, Double> logitBias;
+		private Boolean logprobs;
+		private Integer topLogprobs;
 		private Integer maxTokens;
 		private Integer n;
 		private Double presencePenalty;
@@ -209,6 +221,29 @@ public class ChatCompletionsCreateRequest {
 			if (logitBias != null) {
 				this.logitBias = new HashMap<>(logitBias);
 			}
+			return this;
+		}
+
+		/**
+		 * Whether to return log probabilities of the output tokens or not. If true,
+		 * returns the log probabilities of each output token returned in the content of
+		 * message. This option is currently not available on the gpt-4-vision-preview
+		 * model.
+		 * <p>
+		 * Defaults to false
+		 */
+		public Builder logpropbs(Boolean logprobs) {
+			this.logprobs = logprobs;
+			return this;
+		}
+
+		/**
+		 * An integer between 0 and 5 specifying the number of most likely tokens to
+		 * return at each token position, each with an associated log probability.
+		 * logprobs must be set to true if this parameter is used.
+		 */
+		public Builder topLogprobs(Integer topLogprobs) {
+			this.topLogprobs = topLogprobs;
 			return this;
 		}
 

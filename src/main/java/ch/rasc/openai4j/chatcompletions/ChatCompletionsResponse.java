@@ -89,7 +89,8 @@ public record ChatCompletionsResponse(String id, List<Choice> choices, int creat
 	}
 
 	public record Choice(int index,
-			@JsonProperty("finish_reason") FinishReason finishReason, Message message) {
+			@JsonProperty("finish_reason") FinishReason finishReason, Message message,
+			Logprobs logprobs) {
 
 		/**
 		 * The index of the choice in the list of choices.
@@ -118,6 +119,14 @@ public record ChatCompletionsResponse(String id, List<Choice> choices, int creat
 		@Override
 		public Message message() {
 			return this.message;
+		}
+
+		/**
+		 * Log probability information for the choice.
+		 */
+		@Override
+		public Logprobs logprobs() {
+			return this.logprobs;
 		}
 
 		public enum FinishReason {
@@ -161,6 +170,86 @@ public record ChatCompletionsResponse(String id, List<Choice> choices, int creat
 		@Override
 		public String role() {
 			return this.role;
+		}
+	}
+
+	public record Logprobs(List<Logprob> content) {
+		/**
+		 * A list of message content tokens with log probability information.
+		 */
+		@Override
+		public List<Logprob> content() {
+			return this.content;
+		}
+	}
+
+	public record Logprob(String token, double logprob, List<Integer> bytes,
+			List<TopLogprob> topLogprobs) {
+		/**
+		 * The token.
+		 */
+		@Override
+		public String token() {
+			return this.token;
+		}
+
+		/**
+		 * The log probability of this token.
+		 */
+		@Override
+		public double logprob() {
+			return this.logprob;
+		}
+
+		/**
+		 * A list of integers representing the UTF-8 bytes representation of the token.
+		 * Useful in instances where characters are represented by multiple tokens and
+		 * their byte representations must be combined to generate the correct text
+		 * representation. Can be null if there is no bytes representation for the token.
+		 */
+		@Override
+		public List<Integer> bytes() {
+			return this.bytes;
+		}
+
+		/**
+		 * List of the most likely tokens and their log probability, at this token
+		 * position. In rare cases, there may be fewer than the number of requested
+		 * top_logprobs returned.
+		 */
+		@Override
+		public List<TopLogprob> topLogprobs() {
+			return this.topLogprobs;
+		}
+	}
+
+	public record TopLogprob(String token, double logprob, List<Integer> bytes) {
+
+		/**
+		 * The token.
+		 */
+		@Override
+		public String token() {
+			return this.token;
+		}
+
+		/**
+		 * The log probability of this token.
+		 */
+		@Override
+		public double logprob() {
+			return this.logprob;
+		}
+
+		/**
+		 * A list of integers representing the UTF-8 bytes representation of the token.
+		 * Useful in instances where characters are represented by multiple tokens and
+		 * their byte representations must be combined to generate the correct text
+		 * representation. Can be null if there is no bytes representation for the token.
+		 */
+		@Override
+		public List<Integer> bytes() {
+			return this.bytes;
 		}
 	}
 

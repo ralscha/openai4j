@@ -15,8 +15,6 @@
  */
 package ch.rasc.openai4j.common;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,13 +23,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class FunctionParameters {
 	/**
 	 * The parameters the functions accepts, described as a JSON Schema object.
-	 * <p>
-	 * To describe a function that accepts no parameters, provide the value {"type":
-	 * "object", "properties": {}}.
+	 * 
+	 * Omitting parameters defines a function with an empty parameter list.
 	 */
-	public static Map<String, Object> NO_PARAMETERS = Map.of("type", "object",
-			"properties", Map.of());
-
 	private final String name;
 	private final String description;
 	private final Object parameters;
@@ -52,6 +46,10 @@ public class FunctionParameters {
 	public static FunctionParameters of(String name, Object parameters) {
 		return new FunctionParameters(name, null, parameters);
 	}
+	
+	public static FunctionParameters of(String name) {
+		return new FunctionParameters(name, null, null);
+	}	
 
 	/**
 	 * A description of what the function does, used by the model to choose when and how

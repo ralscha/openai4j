@@ -36,6 +36,8 @@ public class ThreadRunCreateRequest {
 	private final String assistantId;
 	private final String model;
 	private final String instructions;
+	@JsonProperty("additional_instructions")
+	private final String additionalInstructions;
 	private final List<Tool> tools;
 	private final Map<String, Object> metadata;
 
@@ -46,6 +48,7 @@ public class ThreadRunCreateRequest {
 		this.assistantId = builder.assistantId;
 		this.model = builder.model;
 		this.instructions = builder.instructions;
+		this.additionalInstructions = builder.additionalInstructions;
 		this.tools = builder.tools;
 		this.metadata = builder.metadata;
 	}
@@ -58,6 +61,7 @@ public class ThreadRunCreateRequest {
 		private String assistantId;
 		private String model;
 		private String instructions;
+		private String additionalInstructions;
 		private List<Tool> tools;
 		private Map<String, Object> metadata;
 
@@ -88,6 +92,16 @@ public class ThreadRunCreateRequest {
 		 */
 		public Builder instructions(String instructions) {
 			this.instructions = instructions;
+			return this;
+		}
+
+		/*
+		 * Appends additional instructions at the end of the instructions for the run.
+		 * This is useful for modifying the behavior on a per-run basis without overriding
+		 * other instructions.
+		 */
+		public Builder additionalInstructions(String additionalInstructions) {
+			this.additionalInstructions = additionalInstructions;
 			return this;
 		}
 
