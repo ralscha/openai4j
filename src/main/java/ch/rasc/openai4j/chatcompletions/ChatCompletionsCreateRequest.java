@@ -64,8 +64,8 @@ public class ChatCompletionsCreateRequest {
 		if (builder.model == null || builder.model.isBlank()) {
 			throw new IllegalArgumentException("model must not be null or empty");
 		}
-		if (builder.topLogprobs != null && builder.topLogprobs < 0
-				|| builder.topLogprobs > 5) {
+		if (builder.topLogprobs != null
+				&& (builder.topLogprobs < 0 || builder.topLogprobs > 5)) {
 			throw new IllegalArgumentException(
 					"topLogprobs must be between 0 and 5 (inclusive)");
 		}
