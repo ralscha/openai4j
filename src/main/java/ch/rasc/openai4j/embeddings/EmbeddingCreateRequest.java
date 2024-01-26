@@ -33,6 +33,7 @@ public class EmbeddingCreateRequest {
 	private final String model;
 	@JsonProperty("encoding_format")
 	private final EncodingFormat encodingFormat;
+	private final Integer dimensions;
 	private final String user;
 
 	private EmbeddingCreateRequest(Builder builder) {
@@ -45,6 +46,7 @@ public class EmbeddingCreateRequest {
 		this.input = builder.input;
 		this.model = builder.model;
 		this.encodingFormat = builder.encodingFormat;
+		this.dimensions = builder.dimensions;
 		this.user = builder.user;
 	}
 
@@ -71,6 +73,7 @@ public class EmbeddingCreateRequest {
 		private Object input;
 		private String model;
 		private EncodingFormat encodingFormat;
+		private Integer dimensions;
 		private String user;
 
 		private Builder() {
@@ -133,6 +136,15 @@ public class EmbeddingCreateRequest {
 		 */
 		public Builder encodingFormat(EncodingFormat encodingFormat) {
 			this.encodingFormat = encodingFormat;
+			return this;
+		}
+
+		/**
+		 * The number of dimensions the resulting output embeddings should have. Only
+		 * supported in text-embedding-3 and later models.
+		 */
+		public Builder dimensions(Integer dimensions) {
+			this.dimensions = dimensions;
 			return this;
 		}
 
