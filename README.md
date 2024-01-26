@@ -4,9 +4,9 @@ Unofficial, community-maintained Java implementation of the OpenAI API:
 
 https://platform.openai.com/docs/api-reference
 
-openai4j is a Java library that implements all  [documented endpoints](https://platform.openai.com/docs/api-reference) as of 11.11.2023, 
+openai4j is a Java library that implements most [documented endpoints](https://platform.openai.com/docs/api-reference) as of 26.01.2024, 
 including the endpoints that are only available in beta.  
-Legacy and deprecated endpoints are not implemented.
+Legacy, deprecated and streaming endpoints are not implemented.
 
 ## Installation
 
@@ -14,7 +14,7 @@ Legacy and deprecated endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ Legacy and deprecated endpoints are not implemented.
   var response = client.chatCompletions.create(r -> r
 		.addMessages(SystemMessage.of("You are a helpful assistant"),
 				UserMessage.of("What is the capital of Spain?"))
-		.model("gpt-4-1106-preview"));
+		.model("gpt-4-0125-preview"));
   String response = response.choices().get(0).message().content();
 ```
 
@@ -92,7 +92,7 @@ public class ChatCompletionsFunctionExample {
 
 		var response = service.createJavaFunctions(r -> r.addMessages(UserMessage.of(
 				"What are the current temperatures in Oslo, Norway and Helsinki, Finland?"))
-				.model("gpt-4-1106-preview").javaFunctions(List.of(getWeather)));
+				.model("gpt-4-0125-preview").javaFunctions(List.of(getWeather)));
 		var choice = response.choices().get(0);
 		System.out.println(choice.message().content());
 
@@ -109,7 +109,7 @@ public class ChatCompletionsFunctionExample {
 
   Assistant assistant = client.assistants.create(c -> c.name("Math Tutor").instructions(
       "You are a personal math tutor. Write and run code to answer math questions.")
-      .addTools(CodeTool.of()).model("gpt-4-1106-preview"));
+      .addTools(CodeTool.of()).model("gpt-4-0125-preview"));
   }
 
   var thread = client.threads.create();
@@ -139,7 +139,7 @@ public class ChatCompletionsFunctionExample {
   String azureEndpoint = ... // "https://myresource.openai.azure.com/"
   var azureClient = OpenAIClient
      .create(Configuration.builder()
-     .apiVersion("2023-07-01-preview")
+     .apiVersion("2023-09-01-preview")
      .apiKey(apiKey)
      .azureDeployment("gpt-35-turbo")
      .azureEndpoint(azureEndpoint)
@@ -149,6 +149,9 @@ public class ChatCompletionsFunctionExample {
 Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) repository for more examples.
 
 ## Changelog
+
+### 1.1.2 - January 26, 2024
+  * Added dimensions parameter to the Embeddings API
 
 ### 1.1.1 - January 3, 2024
   * Added additional_instructions parameter to run creation in the Assistants API
