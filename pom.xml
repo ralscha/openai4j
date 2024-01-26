@@ -34,7 +34,7 @@
 		<url>https://github.com/ralscha/openai4j.git</url>
 	</scm>
 	<properties>
-		<openfeign.version>13.1</openfeign.version>
+		<openfeign.version>13.2</openfeign.version>
 	</properties>
 	
     <dependencyManagement>
