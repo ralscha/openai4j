@@ -16,6 +16,10 @@
 package ch.rasc.openai4j.audio;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 @SuppressWarnings("hiding")
 public class AudioTranscriptionRequest {
@@ -26,6 +30,22 @@ public class AudioTranscriptionRequest {
 	private final String prompt;
 	private final AudioRecognitionResponseFormat responseFormat;
 	private final Double temperature;
+	private final List<TimestampGranularities> timestampGranularities;
+
+	public enum TimestampGranularities {
+		WORD("word"), SEGMENT("segment");
+
+		private final String value;
+
+		TimestampGranularities(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public String value() {
+			return this.value;
+		}
+	}
 
 	private AudioTranscriptionRequest(Builder builder) {
 		if (builder.file == null) {
@@ -34,12 +54,21 @@ public class AudioTranscriptionRequest {
 		if (builder.model == null) {
 			throw new IllegalArgumentException("model must not be null");
 		}
+
+		if (builder.timestampGranularities != null
+				&& builder.timestampGranularities.size() > 0
+				&& builder.responseFormat != AudioRecognitionResponseFormat.VERBOSE_JSON) {
+			throw new IllegalArgumentException(
+					"responseFormat must be set to verbose_json if timestampGranularities is set");
+		}
+
 		this.file = builder.file;
 		this.model = builder.model;
 		this.language = builder.language;
 		this.prompt = builder.prompt;
 		this.responseFormat = builder.responseFormat;
 		this.temperature = builder.temperature;
+		this.timestampGranularities = builder.timestampGranularities;
 	}
 
 	public static Builder builder() {
@@ -53,6 +82,7 @@ public class AudioTranscriptionRequest {
 		private String prompt;
 		private AudioRecognitionResponseFormat responseFormat;
 		private Double temperature;
+		private List<TimestampGranularities> timestampGranularities;
 
 		private Builder() {
 		}
@@ -113,6 +143,24 @@ public class AudioTranscriptionRequest {
 			return this;
 		}
 
+		/**
+		 * The timestamp granularities to populate for this transcription. response_format
+		 * must be set verbose_json to use timestamp granularities. Either or both of
+		 * these options are supported: word, or segment. Note: There is no additional
+		 * latency for segment timestamps, but generating word timestamps incurs
+		 * additional latency.
+		 */
+		public Builder addTimestampGranularities(
+				TimestampGranularities... timestampGranularities) {
+			if (this.timestampGranularities == null) {
+				this.timestampGranularities = new ArrayList<>();
+			}
+			this.timestampGranularities.addAll(List.of(timestampGranularities));
+			this.timestampGranularities = this.timestampGranularities.stream().distinct()
+					.toList();
+			return this;
+		}
+
 		public AudioTranscriptionRequest build() {
 			return new AudioTranscriptionRequest(this);
 		}
@@ -141,4 +189,9 @@ public class AudioTranscriptionRequest {
 	public Double temperature() {
 		return this.temperature;
 	}
+
+	public List<TimestampGranularities> timestampGranularities() {
+		return this.timestampGranularities;
+	}
+
 }

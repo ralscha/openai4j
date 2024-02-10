@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class FunctionParameters {
 	/**
 	 * The parameters the functions accepts, described as a JSON Schema object.
-	 * 
+	 *
 	 * Omitting parameters defines a function with an empty parameter list.
 	 */
 	private final String name;

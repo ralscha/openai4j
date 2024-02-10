@@ -16,8 +16,10 @@
 package ch.rasc.openai4j.audio;
 
 import java.io.File;
+import java.util.List;
 import java.util.function.Function;
 
+import ch.rasc.openai4j.audio.AudioTranscriptionRequest.TimestampGranularities;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -67,7 +69,11 @@ public interface AudioClient {
 				request.language(), request.prompt(),
 				request.responseFormat() != null ? request.responseFormat().value()
 						: null,
-				request.temperature());
+				request.temperature(),
+				request.timestampGranularities() != null
+						? request.timestampGranularities().stream()
+								.map(TimestampGranularities::value).toList()
+						: null);
 	}
 
 	/**
@@ -81,7 +87,8 @@ public interface AudioClient {
 			@Param("model") String model, @Param("language") String language,
 			@Param("prompt") String prompt,
 			@Param("response_format") String responseFormat,
-			@Param("temperature") Double temperature);
+			@Param("temperature") Double temperature,
+			@Param("timestamp_granularities[]") List<String> timestampGranularities);
 
 	/**
 	 * Translates audio into English.
