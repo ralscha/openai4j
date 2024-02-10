@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>ch.rasc</groupId>
 	<artifactId>openai4j</artifactId>
-	<version>1.1.3-SNAPSHOT</version>
+	<version>1.1.3</version>
 	<name>openai4j</name>
 	<url>https://github.com/ralscha/openai4j</url>
 	<description>Unofficial, community-maintained Java implementation of the OpenAI API</description>
