@@ -40,6 +40,7 @@ public class ThreadCreateRunCreateRequest {
 	private final String instructions;
 	private final List<Tool> tools;
 	private final Map<String, Object> metadata;
+	private final Double temperature;
 
 	private ThreadCreateRunCreateRequest(Builder builder) {
 		if (builder.assistantId == null) {
@@ -51,6 +52,7 @@ public class ThreadCreateRunCreateRequest {
 		this.instructions = builder.instructions;
 		this.tools = builder.tools;
 		this.metadata = builder.metadata;
+		this.temperature = builder.temperature;
 	}
 
 	private record ThreadCreateRunCreateRequestThread(List<ThreadMessageRequest> messages,
@@ -69,6 +71,7 @@ public class ThreadCreateRunCreateRequest {
 		private String instructions;
 		private List<Tool> tools;
 		private Map<String, Object> metadata;
+		private Double temperature;
 
 		private Builder() {
 		}
@@ -169,6 +172,16 @@ public class ThreadCreateRunCreateRequest {
 				this.metadata = new HashMap<>();
 			}
 			this.metadata.put(key, value);
+			return this;
+		}
+
+		/**
+		 * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+		 * make the output more random, while lower values like 0.2 will make it more
+		 * focused and deterministic. Optional. Defaults to 1
+		 */
+		public Builder temperature(Double temperature) {
+			this.temperature = temperature;
 			return this;
 		}
 

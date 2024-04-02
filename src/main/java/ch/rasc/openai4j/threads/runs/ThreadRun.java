@@ -41,7 +41,9 @@ public record ThreadRun(String id, String object,
 		@JsonProperty("completed_at") Integer completedAt, String model,
 		String instructions, List<Tool> tools,
 		@JsonProperty("file_ids") List<String> fileIds,
-		@JsonProperty("metadata") Map<String, Object> metadata) {
+		@JsonProperty("metadata") Map<String, Object> metadata,
+		Usage usage,
+		Double temperature) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -189,6 +191,22 @@ public record ThreadRun(String id, String object,
 	public Map<String, Object> metadata() {
 		return this.metadata;
 	}
+	
+	/**
+	 * Usage statistics related to the run. This value will be null if the run is not in a terminal state (i.e. in_progress, queued, etc.).
+	 */
+	@Override
+	public Usage usage() {
+		return this.usage;
+	}
+	
+	/**
+	 * The sampling temperature used for this run. If not set, defaults to 1
+	 */
+	@Override
+	public Double temperature() {
+		return this.temperature;
+	}
 
 	public enum Status {
 		QUEUED("queued"), IN_PROGRESS("in_progress"), REQUIRES_ACTION("requires_action"),
@@ -242,6 +260,35 @@ public record ThreadRun(String id, String object,
 				return this.toolCalls;
 			}
 		}
+	}
+	
+	public record Usage(@JsonProperty("completion_tokens") int completionTokens,
+			@JsonProperty("prompt_tokens") int promptTokens,
+			@JsonProperty("total_tokens") int totalTokens) {
+		/**
+		 * Number of completion tokens used over the course of the run.
+		 */
+		@Override
+		public int completionTokens() {
+			return this.completionTokens;
+		}
+
+		/**
+		 * Number of prompt tokens used over the course of the run.
+		 */
+		@Override
+		public int promptTokens() {
+			return this.promptTokens;
+		}
+
+		/**
+		 * Total number of tokens used (prompt + completion).
+		 */
+		@Override
+		public int totalTokens() {
+			return this.totalTokens;
+		}
+
 	}
 
 }
