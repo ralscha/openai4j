@@ -150,6 +150,9 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
+### 1.1.4 - April 7, 2024
+  * Added support for temperature and assistant message creation in the Assistants API
+
 ### 1.1.3 - February 10, 2024
   * Added timestamp_granularities parameter to the Audio API
 
