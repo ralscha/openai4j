@@ -40,7 +40,7 @@ public class ThreadRunCreateRequest {
 	private final String additionalInstructions;
 	private final List<Tool> tools;
 	private final Map<String, Object> metadata;
-	private Double temperature;
+	private final Double temperature;
 
 	private ThreadRunCreateRequest(Builder builder) {
 		if (builder.assistantId == null) {

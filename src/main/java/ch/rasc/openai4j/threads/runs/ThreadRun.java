@@ -41,8 +41,7 @@ public record ThreadRun(String id, String object,
 		@JsonProperty("completed_at") Integer completedAt, String model,
 		String instructions, List<Tool> tools,
 		@JsonProperty("file_ids") List<String> fileIds,
-		@JsonProperty("metadata") Map<String, Object> metadata,
-		Usage usage,
+		@JsonProperty("metadata") Map<String, Object> metadata, Usage usage,
 		Double temperature) {
 
 	/**
@@ -191,15 +190,16 @@ public record ThreadRun(String id, String object,
 	public Map<String, Object> metadata() {
 		return this.metadata;
 	}
-	
+
 	/**
-	 * Usage statistics related to the run. This value will be null if the run is not in a terminal state (i.e. in_progress, queued, etc.).
+	 * Usage statistics related to the run. This value will be null if the run is not in a
+	 * terminal state (i.e. in_progress, queued, etc.).
 	 */
 	@Override
 	public Usage usage() {
 		return this.usage;
 	}
-	
+
 	/**
 	 * The sampling temperature used for this run. If not set, defaults to 1
 	 */
@@ -261,7 +261,7 @@ public record ThreadRun(String id, String object,
 			}
 		}
 	}
-	
+
 	public record Usage(@JsonProperty("completion_tokens") int completionTokens,
 			@JsonProperty("prompt_tokens") int promptTokens,
 			@JsonProperty("total_tokens") int totalTokens) {
