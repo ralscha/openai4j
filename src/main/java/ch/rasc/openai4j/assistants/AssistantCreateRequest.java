@@ -69,7 +69,7 @@ public class AssistantCreateRequest {
 		private Builder() {
 		}
 
-		/*
+		/**
 		 * ID of the model to use. You can use the List models API to see all of your
 		 * available models.
 		 */
@@ -78,7 +78,7 @@ public class AssistantCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * The name of the assistant. The maximum length is 256 characters.
 		 */
 		public Builder name(String name) {
@@ -86,7 +86,7 @@ public class AssistantCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * The description of the assistant. The maximum length is 512 characters.
 		 */
 		public Builder description(String description) {
@@ -94,7 +94,7 @@ public class AssistantCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * The system instructions that the assistant uses. The maximum length is 32768
 		 * characters.
 		 */
@@ -103,7 +103,7 @@ public class AssistantCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * A list of tool enabled on the assistant. There can be a maximum of 128 tools
 		 * per assistant. Tools can be of types code_interpreter, retrieval, or function.
 		 */
@@ -126,7 +126,7 @@ public class AssistantCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * A list of file IDs attached to this assistant. There can be a maximum of 20
 		 * files attached to the assistant. Files are ordered by their creation date in
 		 * ascending order.
@@ -151,7 +151,7 @@ public class AssistantCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
 		 * for storing additional information about the object in a structured format.
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512

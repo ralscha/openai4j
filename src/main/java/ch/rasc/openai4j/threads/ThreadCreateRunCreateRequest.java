@@ -76,7 +76,7 @@ public class ThreadCreateRunCreateRequest {
 		private Builder() {
 		}
 
-		/*
+		/**
 		 * The ID of the assistant to use to execute this run.
 		 */
 		public Builder assistantId(String assistantId) {
@@ -113,7 +113,7 @@ public class ThreadCreateRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * The ID of the Model to be used to execute this run. If a value is provided
 		 * here, it will override the model associated with the assistant. If not, the
 		 * model associated with the assistant will be used.
@@ -123,7 +123,7 @@ public class ThreadCreateRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Override the default system message of the assistant. This is useful for
 		 * modifying the behavior on a per-run basis.
 		 */
@@ -132,7 +132,7 @@ public class ThreadCreateRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Override the tools the assistant can use for this run. This is useful for
 		 * modifying the behavior on a per-run basis.
 		 */
@@ -141,7 +141,7 @@ public class ThreadCreateRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Add tools the assistant can use for this run. This is useful for modifying the
 		 * behavior on a per-run basis.
 		 */
@@ -153,7 +153,7 @@ public class ThreadCreateRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
 		 * for storing additional information about the object in a structured format.
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
