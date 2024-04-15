@@ -133,4 +133,31 @@ public interface FineTuningJobsClient {
 		}
 		return this.listEvents(fineTuningJobId, queryParameters);
 	}
+
+	@RequestLine("GET fine_tuning/jobs/{fine_tuning_job_id}/checkpoints")
+	ListResponse<FineTuningJobCheckpoint> listCheckpoints(
+			@Param("fine_tuning_job_id") String fineTuningJobId,
+			@QueryMap Map<String, Object> queryParameters);
+
+	/**
+	 * List checkpoints for a fine-tuning job.
+	 *
+	 * @param fineTuningJobId The ID of the fine-tuning job to get checkpoints for.
+	 * @param after Identifier for the last checkpoint ID from the previous pagination
+	 * request. Optional.
+	 * @param limit Number of checkpoints to retrieve. Optional. Defaults to 10.
+	 * @return A list of fine-tuning checkpoint objects for a fine-tuning job.
+	 */
+	default ListResponse<FineTuningJobCheckpoint> listCheckpoints(String fineTuningJobId,
+			String after, Integer limit) {
+		Map<String, Object> queryParameters = new HashMap<>();
+		if (after != null && !after.isBlank()) {
+			queryParameters.put("after", after);
+		}
+		if (limit != null) {
+			queryParameters.put("limit", limit);
+		}
+		return this.listCheckpoints(fineTuningJobId, queryParameters);
+	}
+
 }
