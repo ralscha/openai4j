@@ -33,6 +33,7 @@ public class FineTuningJobCreateRequest {
 	private final String suffix;
 	@JsonProperty("validation_file")
 	private final String validationFile;
+	private final Integer seed;
 
 	private FineTuningJobCreateRequest(Builder builder) {
 		if (builder.model == null || builder.model.isBlank()) {
@@ -46,6 +47,7 @@ public class FineTuningJobCreateRequest {
 		this.hyperparameters = builder.hyperparameters;
 		this.suffix = builder.suffix;
 		this.validationFile = builder.validationFile;
+		this.seed = builder.seed;
 	}
 
 	@JsonInclude(Include.NON_EMPTY)
@@ -144,6 +146,7 @@ public class FineTuningJobCreateRequest {
 		private Hyperparameters hyperparameters;
 		private String suffix;
 		private String validationFile;
+		private Integer seed;
 
 		private Builder() {
 		}
@@ -203,6 +206,16 @@ public class FineTuningJobCreateRequest {
 		 */
 		public Builder validationFile(String validationFile) {
 			this.validationFile = validationFile;
+			return this;
+		}
+
+		/**
+		 * The seed controls the reproducibility of the job. Passing in the same seed and
+		 * job parameters should produce the same results, but may differ in rare cases.
+		 * If a seed is not specified, one will be generated for you.
+		 */
+		public Builder seed(Integer seed) {
+			this.seed = seed;
 			return this;
 		}
 
