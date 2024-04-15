@@ -34,8 +34,7 @@ public record FineTuningJob(String id, @JsonProperty("created_at") int createdAt
 		@JsonProperty("result_files") List<String> resultFiles, Status status,
 		@JsonProperty("trained_tokens") Integer trainedTokens,
 		@JsonProperty("training_file") String trainingFile,
-		@JsonProperty("validation_file") String validationFile,
-		Integer seed) {
+		@JsonProperty("validation_file") String validationFile, Integer seed) {
 
 	/**
 	 * The object identifier, which can be referenced in the API endpoints.
@@ -155,7 +154,7 @@ public record FineTuningJob(String id, @JsonProperty("created_at") int createdAt
 	public String validationFile() {
 		return this.validationFile;
 	}
-	
+
 	/**
 	 * The seed used for the fine-tuning job.
 	 */
