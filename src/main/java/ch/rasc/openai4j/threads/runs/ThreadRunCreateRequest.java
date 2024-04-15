@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ch.rasc.openai4j.assistants.Tool;
+import ch.rasc.openai4j.threads.ThreadMessageRequest;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -38,6 +39,8 @@ public class ThreadRunCreateRequest {
 	private final String instructions;
 	@JsonProperty("additional_instructions")
 	private final String additionalInstructions;
+	@JsonProperty("additional_messages")
+	private final List<ThreadMessageRequest> additionalMessages;
 	private final List<Tool> tools;
 	private final Map<String, Object> metadata;
 	private final Double temperature;
@@ -50,6 +53,7 @@ public class ThreadRunCreateRequest {
 		this.model = builder.model;
 		this.instructions = builder.instructions;
 		this.additionalInstructions = builder.additionalInstructions;
+		this.additionalMessages = builder.additionalMessages;
 		this.tools = builder.tools;
 		this.metadata = builder.metadata;
 		this.temperature = builder.temperature;
@@ -64,6 +68,7 @@ public class ThreadRunCreateRequest {
 		private String model;
 		private String instructions;
 		private String additionalInstructions;
+		private List<ThreadMessageRequest> additionalMessages;
 		private List<Tool> tools;
 		private Map<String, Object> metadata;
 		private Double temperature;
@@ -71,7 +76,7 @@ public class ThreadRunCreateRequest {
 		private Builder() {
 		}
 
-		/*
+		/**
 		 * The ID of the assistant to use to execute this run.
 		 */
 		public Builder assistantId(String assistantId) {
@@ -79,7 +84,7 @@ public class ThreadRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * The ID of the Model to be used to execute this run. If a value is provided
 		 * here, it will override the model associated with the assistant. If not, the
 		 * model associated with the assistant will be used.
@@ -89,7 +94,7 @@ public class ThreadRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Override the default system message of the assistant. This is useful for
 		 * modifying the behavior on a per-run basis.
 		 */
@@ -98,7 +103,7 @@ public class ThreadRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Appends additional instructions at the end of the instructions for the run.
 		 * This is useful for modifying the behavior on a per-run basis without overriding
 		 * other instructions.
@@ -108,7 +113,26 @@ public class ThreadRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
+		 * Adds additional messages to the thread before creating the run.
+		 */
+		public Builder additionalMessages(List<ThreadMessageRequest> additionalMessages) {
+			this.additionalMessages = new ArrayList<>(additionalMessages);
+			return this;
+		}
+
+		/**
+		 * Adds additional messages to the thread before creating the run.
+		 */
+		public Builder addAdditionalMessages(ThreadMessageRequest... additionalMessages) {
+			if (this.additionalMessages == null) {
+				this.additionalMessages = new ArrayList<>();
+			}
+			this.additionalMessages.addAll(List.of(additionalMessages));
+			return this;
+		}
+
+		/**
 		 * Override the tools the assistant can use for this run. This is useful for
 		 * modifying the behavior on a per-run basis.
 		 */
@@ -117,7 +141,7 @@ public class ThreadRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Override the tools the assistant can use for this run. This is useful for
 		 * modifying the behavior on a per-run basis.
 		 */
@@ -129,7 +153,7 @@ public class ThreadRunCreateRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
 		 * for storing additional information about the object in a structured format.
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
