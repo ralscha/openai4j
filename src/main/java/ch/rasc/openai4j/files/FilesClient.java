@@ -37,8 +37,8 @@ public interface FilesClient {
 	ListResponse<FileObject> list();
 
 	/**
-	 * Returns a list of files that belong to the user's organization with the given
-	 * purpose.
+	 * Returns a list of files that belong to the user's organization. Only return files
+	 * with the given purpose.
 	 *
 	 * @return A list of File objects.
 	 */
@@ -46,8 +46,8 @@ public interface FilesClient {
 	ListResponse<FileObject> list(@Param("purpose") String purpose);
 
 	/**
-	 * Returns a list of files that belong to the user's organization with the given
-	 * purpose.
+	 * Returns a list of files that belong to the user's organization. Only return files
+	 * with the given purpose.
 	 *
 	 * @return A list of File objects.
 	 */
@@ -56,50 +56,56 @@ public interface FilesClient {
 	}
 
 	/**
-	 * Upload a file that can be used across various endpoints/features. The size of all
-	 * the files uploaded by one organization can be up to 100 GB. The size of individual
-	 * files for can be a maximum of 512MB. The Fine-tuning API only supports .jsonl
-	 * files.
+	 * Upload a file that can be used across various endpoints. The size of all the files
+	 * uploaded by one organization can be up to 100 GB.
+	 * <p>
+	 * The size of individual files can be a maximum of 512 MB or 2 million tokens for
+	 * Assistants. The Fine-tuning API only supports .jsonl files.
 	 *
 	 * @return The uploaded File object.
 	 */
-	default FileObject create(Path file, Purpose purpose) {
-		return this.create(file.toFile(), purpose.value());
+	default FileObject upload(Path file, Purpose purpose) {
+		return this.upload(file.toFile(), purpose.value());
 	}
 
 	/**
-	 * Upload a file for assistants. The size of all the files uploaded by one
-	 * organization can be up to 100 GB. The size of individual files for can be a maximum
-	 * of 512MB.
+	 * Upload a file that can be used across various endpoints. The size of all the files
+	 * uploaded by one organization can be up to 100 GB.
+	 * <p>
+	 * The size of individual files can be a maximum of 512 MB or 2 million tokens for
+	 * Assistants.
 	 *
 	 * @return The uploaded File object.
 	 */
 	default FileObject createForAssistants(Path file) {
-		return this.create(file, Purpose.ASSISTANTS);
+		return this.upload(file, Purpose.ASSISTANTS);
 	}
 
 	/**
-	 * Upload a file for fine-tune. The size of all the files uploaded by one organization
-	 * can be up to 100 GB. The size of individual files for can be a maximum of 512MB.
-	 * The Fine-tuning API only supports .jsonl files.
+	 * Upload a file that can be used across various endpoints. The size of all the files
+	 * uploaded by one organization can be up to 100 GB.
+	 * <p>
+	 * The size of individual files can be a maximum of 512 MB or 2 million tokens for
+	 * Assistants. The Fine-tuning API only supports .jsonl files.
 	 *
 	 * @return The uploaded File object.
 	 */
 	default FileObject createForFineTune(Path file) {
-		return this.create(file, Purpose.FINE_TUNE);
+		return this.upload(file, Purpose.FINE_TUNE);
 	}
 
 	/**
-	 * Upload a file that can be used across various endpoints/features. The size of all
-	 * the files uploaded by one organization can be up to 100 GB. The size of individual
-	 * files for can be a maximum of 512MB. The Fine-tuning API only supports .jsonl
-	 * files.
+	 * Upload a file that can be used across various endpoints. The size of all the files
+	 * uploaded by one organization can be up to 100 GB.
+	 * <p>
+	 * The size of individual files can be a maximum of 512 MB or 2 million tokens for
+	 * Assistants. The Fine-tuning API only supports .jsonl files.
 	 *
 	 * @return The uploaded File object.
 	 */
 	@RequestLine("POST /files")
 	@Headers("Content-Type: multipart/form-data")
-	FileObject create(@Param("file") File file, @Param("purpose") String purpose);
+	FileObject upload(@Param("file") File file, @Param("purpose") String purpose);
 
 	/**
 	 * Delete a file

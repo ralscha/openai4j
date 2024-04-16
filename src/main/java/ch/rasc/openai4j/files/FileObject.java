@@ -43,7 +43,7 @@ public record FileObject(String id, Integer bytes,
 	}
 
 	/**
-	 * The file identifier.
+	 * The file identifier, which can be referenced in the API endpoints.
 	 */
 	@Override
 	public String id() {
@@ -51,7 +51,7 @@ public record FileObject(String id, Integer bytes,
 	}
 
 	/**
-	 * The size of the file in bytes.
+	 * The size of the file, in bytes.
 	 */
 	@Override
 	public Integer bytes() {
@@ -59,7 +59,7 @@ public record FileObject(String id, Integer bytes,
 	}
 
 	/**
-	 * The Unix timestamp for when the file was created.
+	 * The Unix timestamp (in seconds) for when the file was created.
 	 */
 	@Override
 	public Integer createdAt() {
@@ -75,7 +75,7 @@ public record FileObject(String id, Integer bytes,
 	}
 
 	/**
-	 * The object type, which is always file.
+	 * The object type, which is always <code>file</code>.
 	 */
 	@Override
 	public String object() {
