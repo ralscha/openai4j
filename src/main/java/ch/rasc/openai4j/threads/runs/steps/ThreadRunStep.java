@@ -39,7 +39,8 @@ public record ThreadRunStep(String id, String object,
 		@JsonProperty("expired_at") Integer expiredAt,
 		@JsonProperty("cancelled_at") Integer cancelledAt,
 		@JsonProperty("failed_at") Integer failedAt,
-		@JsonProperty("completed_at") Integer completedAt, Map<String, Object> metadata) {
+		@JsonProperty("completed_at") Integer completedAt, Map<String, Object> metadata,
+		Usage usage) {
 
 	/**
 	 * The identifier of the run step, which can be referenced in API endpoints.
@@ -163,6 +164,15 @@ public record ThreadRunStep(String id, String object,
 	@Override
 	public Map<String, Object> metadata() {
 		return this.metadata;
+	}
+
+	/**
+	 * Usage statistics related to the run step. This value will be null while the run
+	 * step's status is in_progress.
+	 */
+	@Override
+	public Usage usage() {
+		return this.usage;
 	}
 
 	public enum ThreadRunStepType {
@@ -450,6 +460,35 @@ public record ThreadRunStep(String id, String object,
 					return this.output;
 				}
 			}
+		}
+
+	}
+
+	public record Usage(@JsonProperty("completion_tokens") int completionTokens,
+			@JsonProperty("prompt_tokens") int promptTokens,
+			@JsonProperty("total_tokens") int totalTokens) {
+		/**
+		 * Number of completion tokens used over the course of the run step.
+		 */
+		@Override
+		public int completionTokens() {
+			return this.completionTokens;
+		}
+
+		/**
+		 * Number of prompt tokens used over the course of the run step.
+		 */
+		@Override
+		public int promptTokens() {
+			return this.promptTokens;
+		}
+
+		/**
+		 * Total number of tokens used (prompt + completion).
+		 */
+		@Override
+		public int totalTokens() {
+			return this.totalTokens;
 		}
 
 	}

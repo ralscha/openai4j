@@ -28,8 +28,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  */
 public record ThreadMessage(String id, String object,
 		@JsonProperty("created_at") int createdAt,
-		@JsonProperty("thread_id") String threadId, String role, List<Content> content,
-		@JsonProperty("assistant_id") String assistantId,
+		@JsonProperty("thread_id") String threadId, String status,
+		@JsonProperty("incomplete_details") IncompleteDetail incompleteDetails,
+		@JsonProperty("completed_at") Integer completedAt,
+		@JsonProperty("incomplete_at") Integer incompleteAt, String role,
+		List<Content> content, @JsonProperty("assistant_id") String assistantId,
 		@JsonProperty("run_id") String runId,
 		@JsonProperty("file_ids") List<String> fileIds, Map<String, Object> metadata) {
 
@@ -63,6 +66,39 @@ public record ThreadMessage(String id, String object,
 	@Override
 	public String threadId() {
 		return this.threadId;
+	}
+
+	/**
+	 * The status of the message, which can be either in_progress, incomplete, or
+	 * completed.
+	 */
+	@Override
+	public String status() {
+		return this.status;
+	}
+
+	/**
+	 * On an incomplete message, details about why the message is incomplete.
+	 */
+	@Override
+	public IncompleteDetail incompleteDetails() {
+		return this.incompleteDetails;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the message was completed.
+	 */
+	@Override
+	public Integer completedAt() {
+		return this.completedAt;
+	}
+
+	/**
+	 * The Unix timestamp (in seconds) for when the message was marked as incomplete.
+	 */
+	@Override
+	public Integer incompleteAt() {
+		return this.incompleteAt;
 	}
 
 	/**
@@ -121,6 +157,16 @@ public record ThreadMessage(String id, String object,
 	@JsonSubTypes({ @Type(name = "image_file", value = MessageContentImageFile.class),
 			@Type(name = "text", value = MessageContentText.class) })
 	public interface Content {
+	}
+
+	public record IncompleteDetail(String reason) {
+		/**
+		 * The reason the message is incomplete.
+		 */
+		@Override
+		public String reason() {
+			return this.reason;
+		}
 	}
 
 	public record MessageContentImageFile(String type,

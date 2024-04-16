@@ -24,8 +24,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.assistants.Tool;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ToolChoice;
 import ch.rasc.openai4j.threads.ThreadMessageRequest;
 
 @JsonInclude(Include.NON_EMPTY)
@@ -44,6 +46,16 @@ public class ThreadRunCreateRequest {
 	private final List<Tool> tools;
 	private final Map<String, Object> metadata;
 	private final Double temperature;
+	@JsonProperty("max_prompt_tokens")
+	private final Integer maxPromptTokens;
+	@JsonProperty("max_completion_tokens")
+	private final Integer maxCompletionTokens;
+	@JsonProperty("truncation_strategy")
+	private final TruncationStrategy truncationStrategy;
+	@JsonProperty("tool_choice")
+	private final ToolChoice toolChoice;
+	@JsonProperty("response_format")
+	private final ResponseFormat responseFormat;
 
 	private ThreadRunCreateRequest(Builder builder) {
 		if (builder.assistantId == null) {
@@ -57,6 +69,11 @@ public class ThreadRunCreateRequest {
 		this.tools = builder.tools;
 		this.metadata = builder.metadata;
 		this.temperature = builder.temperature;
+		this.maxPromptTokens = builder.maxPromptTokens;
+		this.maxCompletionTokens = builder.maxCompletionTokens;
+		this.truncationStrategy = builder.truncationStrategy;
+		this.toolChoice = builder.toolChoice;
+		this.responseFormat = builder.responseFormat;
 	}
 
 	public static Builder builder() {
@@ -72,6 +89,11 @@ public class ThreadRunCreateRequest {
 		private List<Tool> tools;
 		private Map<String, Object> metadata;
 		private Double temperature;
+		private Integer maxPromptTokens;
+		private Integer maxCompletionTokens;
+		private TruncationStrategy truncationStrategy;
+		private ToolChoice toolChoice;
+		private ResponseFormat responseFormat;
 
 		private Builder() {
 		}
@@ -188,5 +210,136 @@ public class ThreadRunCreateRequest {
 			this.temperature = temperature;
 			return this;
 		}
+
+		/**
+		 * The maximum number of prompt tokens that may be used over the course of the
+		 * run. The run will make a best effort to use only the number of prompt tokens
+		 * specified, across multiple turns of the run. If the run exceeds the number of
+		 * prompt tokens specified, the run will end with status complete.
+		 */
+		public Builder maxPromptTokens(Integer maxPromptTokens) {
+			this.maxPromptTokens = maxPromptTokens;
+			return this;
+		}
+
+		/**
+		 * The maximum number of completion tokens that may be used over the course of the
+		 * run. The run will make a best effort to use only the number of completion
+		 * tokens specified, across multiple turns of the run. If the run exceeds the
+		 * number of completion tokens specified, the run will end with status complete.
+		 * See incomplete_details for more info.
+		 */
+		public Builder maxCompletionTokens(Integer maxCompletionTokens) {
+			this.maxCompletionTokens = maxCompletionTokens;
+			return this;
+		}
+
+		/**
+		 * The truncation strategy to use for the thread. The default is
+		 * <code>auto</code>. If set to <code>last_messages</code>, the thread will be
+		 * truncated to the n most recent messages in the thread. When set to
+		 * <code>auto</code>, messages in the middle of the thread will be dropped to fit
+		 * the context length of the model, max_prompt_tokens.
+		 */
+		public Builder truncationStrategy(TruncationStrategy truncationStrategy) {
+			this.truncationStrategy = truncationStrategy;
+			return this;
+		}
+
+		/**
+		 * Controls which (if any) tool is called by the model. none means the model will
+		 * not call any tools and instead generates a message. <code>auto</code> is the
+		 * default value and means the model can pick between generating a message or
+		 * calling a tool. Specifying a particular tool like {"type": "TOOL_TYPE"} or
+		 * {"type": "function", "function": {"name": "my_function"}} forces the model to
+		 * call that tool.
+		 * <p>
+		 * <code>none</code> means the model will not call a function and instead
+		 * generates a message. <code>auto</code> means the model can pick between
+		 * generating a message or calling a function.
+		 */
+		public Builder toolChoice(ToolChoice toolChoice) {
+			this.toolChoice = toolChoice;
+			return this;
+		}
+
+		/**
+		 * Specifies the format that the model must output. Compatible with GPT-4 Turbo
+		 * and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
+		 * <p>
+		 * Setting to { "type": "json_object" } enables JSON mode, which guarantees the
+		 * message the model generates is valid JSON.
+		 * <p>
+		 * Important: when using JSON mode, you must also instruct the model to produce
+		 * JSON yourself via a system or user message. Without this, the model may
+		 * generate an unending stream of whitespace until the generation reaches the
+		 * token limit, resulting in a long-running and seemingly "stuck" request. Also
+		 * note that the message content may be partially cut off if
+		 * finish_reason="length", which indicates the generation exceeded max_tokens or
+		 * the conversation exceeded the max context length.
+		 */
+		public Builder responseFormat(ResponseFormat responseFormat) {
+			this.responseFormat = responseFormat;
+			return this;
+		}
+
+	}
+
+	public static class ResponseFormat {
+		private final Object value;
+
+		ResponseFormat(Object value) {
+			this.value = value;
+		}
+
+		/**
+		 * The model can return text or any value needed.
+		 */
+		public static ResponseFormat text() {
+			return new ResponseFormat(Map.of("type", "text"));
+		}
+
+		/**
+		 * Only function type tools are allowed to be passed to the Run.
+		 */
+		public static ResponseFormat jsonObject() {
+			return new ResponseFormat(Map.of("type", "json_object"));
+		}
+
+		public static ResponseFormat auto() {
+			return new ResponseFormat("auto");
+		}
+
+		@JsonValue
+		public Object value() {
+			return this.value;
+		}
+	}
+
+	public static class TruncationStrategy {
+		private final String type;
+		private final @JsonProperty("last_messages") Integer lastMessages;
+
+		private TruncationStrategy(String type, Integer lastMessages) {
+			this.type = type;
+			this.lastMessages = lastMessages;
+		}
+
+		/**
+		 * Messages in the middle of the thread will be dropped to fit the context length
+		 * of the model, max_prompt_tokens.
+		 */
+		public static TruncationStrategy auto() {
+			return new TruncationStrategy("auto", null);
+		}
+
+		/**
+		 * The thread will be truncated to the <code>lastMessages</code> most recent
+		 * messages in the thread
+		 */
+		public static TruncationStrategy lastMessages(int lastMessages) {
+			return new TruncationStrategy("last_messages", lastMessages);
+		}
+
 	}
 }

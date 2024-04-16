@@ -95,7 +95,7 @@ public class AssistantCreateRequest {
 		}
 
 		/**
-		 * The system instructions that the assistant uses. The maximum length is 32768
+		 * The system instructions that the assistant uses. The maximum length is 256,000
 		 * characters.
 		 */
 		public Builder instructions(String instructions) {

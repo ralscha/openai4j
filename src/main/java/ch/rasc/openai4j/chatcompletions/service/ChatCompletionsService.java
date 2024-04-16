@@ -224,7 +224,7 @@ public class ChatCompletionsService {
 		String functionName = request.responseModel().getSimpleName();
 
 		if (request.mode() == Mode.JSON) {
-			requestBuilder.responseFormat(ResponseFormat.JSON_OBJECT);
+			requestBuilder.responseFormat(ResponseFormat.jsonObject());
 
 			String jsonSchemaSystemMessage = "Make sure that your response to any message matches the json_schema below, "
 					+ "do not deviate at all: \n" + jsonSchema;

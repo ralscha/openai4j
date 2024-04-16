@@ -4,7 +4,7 @@ Unofficial, community-maintained Java implementation of the OpenAI API:
 
 https://platform.openai.com/docs/api-reference
 
-openai4j is a Java library that implements most [documented endpoints](https://platform.openai.com/docs/api-reference) as of 26.01.2024, 
+openai4j is a Java library that implements most [documented endpoints](https://platform.openai.com/docs/api-reference) as of 16. April 2024, 
 including the endpoints that are only available in beta.  
 Legacy, deprecated and streaming endpoints are not implemented.
 
@@ -14,7 +14,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.1.4</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 
@@ -149,6 +149,9 @@ public class ChatCompletionsFunctionExample {
 Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) repository for more examples.
 
 ## Changelog
+
+### 1.2.0 - April ?, 2024
+  * 
 
 ### 1.1.4 - April 7, 2024
   * Added support for temperature and assistant message creation in the Assistants API
