@@ -19,7 +19,7 @@ import java.io.File;
 import java.util.List;
 import java.util.function.Function;
 
-import ch.rasc.openai4j.audio.AudioTranscriptionRequest.TimestampGranularities;
+import ch.rasc.openai4j.audio.AudioTranscriptionRequest.TimestampGranularity;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -72,7 +72,7 @@ public interface AudioClient {
 				request.temperature(),
 				request.timestampGranularities() != null
 						? request.timestampGranularities().stream()
-								.map(TimestampGranularities::value).toList()
+								.map(TimestampGranularity::value).toList()
 						: null);
 	}
 

@@ -52,7 +52,7 @@ public class AudioSpeechRequest {
 	}
 
 	public enum AudioResponseFormat {
-		MP3("mp3"), OPUS("opus"), AAC("aac"), FLAC("flac");
+		MP3("mp3"), OPUS("opus"), AAC("aac"), FLAC("flac"), WAV("wav"), PMC("pcm");
 
 		private final String value;
 
@@ -112,7 +112,7 @@ public class AudioSpeechRequest {
 		}
 
 		/**
-		 * One of the available TTS models: tts-1 or tts-1-hd
+		 * One of the available TTS models
 		 */
 		public Builder model(SpeechModel model) {
 			this.model = model;
@@ -128,8 +128,7 @@ public class AudioSpeechRequest {
 		}
 
 		/**
-		 * The voice to use when generating the audio. Supported voices are alloy, echo,
-		 * fable, onyx, nova, and shimmer.
+		 * The voice to use when generating the audio.
 		 */
 		public Builder voice(Voice voice) {
 			this.voice = voice;

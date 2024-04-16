@@ -90,7 +90,6 @@ public record AudioTranscriptionResponse(String language, String duration, Strin
 		/**
 		 * Text content of the segment.
 		 */
-
 		public String text() {
 			return this.text;
 		}

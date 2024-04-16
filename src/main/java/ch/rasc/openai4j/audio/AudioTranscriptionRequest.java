@@ -30,14 +30,14 @@ public class AudioTranscriptionRequest {
 	private final String prompt;
 	private final AudioRecognitionResponseFormat responseFormat;
 	private final Double temperature;
-	private final List<TimestampGranularities> timestampGranularities;
+	private final List<TimestampGranularity> timestampGranularities;
 
-	public enum TimestampGranularities {
+	public enum TimestampGranularity {
 		WORD("word"), SEGMENT("segment");
 
 		private final String value;
 
-		TimestampGranularities(String value) {
+		TimestampGranularity(String value) {
 			this.value = value;
 		}
 
@@ -82,7 +82,7 @@ public class AudioTranscriptionRequest {
 		private String prompt;
 		private AudioRecognitionResponseFormat responseFormat;
 		private Double temperature;
-		private List<TimestampGranularities> timestampGranularities;
+		private List<TimestampGranularity> timestampGranularities;
 
 		private Builder() {
 		}
@@ -97,7 +97,8 @@ public class AudioTranscriptionRequest {
 		}
 
 		/**
-		 * ID of the model to use. Only whisper-1 is currently available.
+		 * ID of the model to use. Only whisper-1 (which is powered by Whisper V2 model)
+		 * is currently available.
 		 */
 		public Builder model(AudioRecognitionModel model) {
 			this.model = model;
@@ -151,7 +152,7 @@ public class AudioTranscriptionRequest {
 		 * additional latency.
 		 */
 		public Builder addTimestampGranularities(
-				TimestampGranularities... timestampGranularities) {
+				TimestampGranularity... timestampGranularities) {
 			if (this.timestampGranularities == null) {
 				this.timestampGranularities = new ArrayList<>();
 			}
@@ -190,7 +191,7 @@ public class AudioTranscriptionRequest {
 		return this.temperature;
 	}
 
-	public List<TimestampGranularities> timestampGranularities() {
+	public List<TimestampGranularity> timestampGranularities() {
 		return this.timestampGranularities;
 	}
 

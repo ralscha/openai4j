@@ -55,8 +55,8 @@ public class AudioTranslationRequest {
 		}
 
 		/**
-		 * The audio file object to translate, in one of these formats: flac, mp3, mp4,
-		 * mpeg, mpga, m4a, ogg, wav, or webm.
+		 * The audio file object translate, in one of these formats: flac, mp3, mp4, mpeg,
+		 * mpga, m4a, ogg, wav, or webm.
 		 */
 		public Builder file(Path file) {
 			this.file = file;
@@ -64,7 +64,8 @@ public class AudioTranslationRequest {
 		}
 
 		/**
-		 * ID of the model to use. Only whisper-1 is currently available.
+		 * ID of the model to use. Only whisper-1 (which is powered by Whisper V2 model)
+		 * is currently available.
 		 */
 		public Builder model(AudioRecognitionModel model) {
 			this.model = model;
