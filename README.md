@@ -150,8 +150,11 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
-### 1.2.0 - April ?, 2024
-  * 
+### 1.2.0 - April 16, 2024
+  * Added support for the Batch API
+  * Added support for seed in the fine-tuning API
+  * Added support for checkpoints in the fine-tuning API
+  * Added support for adding Messages when creating a Run in the Assistants API
 
 ### 1.1.4 - April 7, 2024
   * Added support for temperature and assistant message creation in the Assistants API
