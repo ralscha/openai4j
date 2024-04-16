@@ -137,7 +137,8 @@ public class ImageGenerationRequest {
 
 		/**
 		 * The format in which the generated images are returned. Must be one of url or
-		 * b64_json. Defaults to url
+		 * b64_json. URLs are only valid for 60 minutes after the image has been
+		 * generated.
 		 */
 		public Builder responseFormat(ImageResponseFormat responseFormat) {
 			this.responseFormat = responseFormat;
@@ -156,8 +157,8 @@ public class ImageGenerationRequest {
 
 		/**
 		 * The style of the generated images. Must be one of vivid or natural. Vivid
-		 * causes the model to lean towards generating hyperreal and dramatic images.
-		 * Natural causes the model to produce more natural, less hyperreal looking
+		 * causes the model to lean towards generating hyper-real and dramatic images.
+		 * Natural causes the model to produce more natural, less hyper-real looking
 		 * images. This param is only supported for dall-e-3. Defaults to vivid
 		 */
 		public Builder style(Style style) {

@@ -22,7 +22,7 @@ import feign.RequestLine;
 
 public interface ModerationsClient {
 	/**
-	 * Classifies if text violates OpenAI's Content Policy
+	 * Classifies if text is potentially harmful.
 	 *
 	 * @return A moderation object.
 	 */

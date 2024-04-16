@@ -21,7 +21,7 @@ public record Moderations(boolean flagged, ModerationsCategories categories,
 		@JsonProperty("category_scores") ModerationsCategoryScores categoryScores) {
 
 	/**
-	 * Whether the content violates OpenAI's usage policies.
+	 * Whether any of the below categories are flagged.
 	 */
 	@Override
 	public boolean flagged() {

@@ -83,7 +83,8 @@ public class ImageVariationRequest {
 
 		/**
 		 * The format in which the generated images are returned. Must be one of url or
-		 * b64_json. Defaults to url.
+		 * b64_json. URLs are only valid for 60 minutes after the image has been
+		 * generated. Defaults to url.
 		 */
 		public Builder responseFormat(ImageResponseFormat responseFormat) {
 			this.responseFormat = responseFormat;
