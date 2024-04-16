@@ -29,7 +29,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
   var response = client.chatCompletions.create(r -> r
 		.addMessages(SystemMessage.of("You are a helpful assistant"),
 				UserMessage.of("What is the capital of Spain?"))
-		.model("gpt-4-0125-preview"));
+		.model("gpt-4-turbo"));
   String response = response.choices().get(0).message().content();
 ```
 
@@ -92,7 +92,7 @@ public class ChatCompletionsFunctionExample {
 
 		var response = service.createJavaFunctions(r -> r.addMessages(UserMessage.of(
 				"What are the current temperatures in Oslo, Norway and Helsinki, Finland?"))
-				.model("gpt-4-0125-preview").javaFunctions(List.of(getWeather)));
+				.model("gpt-4-turbo").javaFunctions(List.of(getWeather)));
 		var choice = response.choices().get(0);
 		System.out.println(choice.message().content());
 
@@ -109,7 +109,7 @@ public class ChatCompletionsFunctionExample {
 
   Assistant assistant = client.assistants.create(c -> c.name("Math Tutor").instructions(
       "You are a personal math tutor. Write and run code to answer math questions.")
-      .addTools(CodeTool.of()).model("gpt-4-0125-preview"));
+      .addTools(CodeTool.of()).model("gpt-4-turbo"));
   }
 
   var thread = client.threads.create();
@@ -139,7 +139,7 @@ public class ChatCompletionsFunctionExample {
   String azureEndpoint = ... // "https://myresource.openai.azure.com/"
   var azureClient = OpenAIClient
      .create(Configuration.builder()
-     .apiVersion("2023-09-01-preview")
+     .apiVersion("2024-02-01")
      .apiKey(apiKey)
      .azureDeployment("gpt-35-turbo")
      .azureEndpoint(azureEndpoint)

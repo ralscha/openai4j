@@ -17,8 +17,8 @@ package ch.rasc.openai4j.batch;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest;
 
@@ -28,7 +28,7 @@ import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest;
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
-public class BatchRequestInput {
+public class BatchRequestInput<T> {
 
 	@JsonProperty("custom_id")
 	private final String customId;
@@ -37,9 +37,12 @@ public class BatchRequestInput {
 
 	private final String url;
 
-	private final Object body;
+	private final T body;
 
-	private BatchRequestInput(Builder builder) {
+	private BatchRequestInput(Builder<T> builder) {
+		if (builder.customId == null || builder.customId.isBlank()) {
+			throw new IllegalArgumentException("customId must not be null or empty");
+		}
 		this.customId = builder.customId;
 
 		if (builder.method == null || builder.method.isBlank()) {
@@ -59,21 +62,21 @@ public class BatchRequestInput {
 		this.body = builder.body;
 	}
 
-	public static Builder builder() {
-		return new Builder();
+	public static <T> Builder<T> builder() {
+		return new Builder<T>();
 	}
 
-	public static final class Builder {
+	public static final class Builder<T> {
 		private String customId;
 		private String method;
 		private String url;
-		private Object body;
+		private T body;
 
 		/**
 		 * A developer-provided per-request id that will be used to match outputs to
 		 * inputs. Must be unique for each request in a batch.
 		 */
-		public Builder customId(String customId) {
+		public Builder<T> customId(String customId) {
 			this.customId = customId;
 			return this;
 		}
@@ -81,7 +84,7 @@ public class BatchRequestInput {
 		/**
 		 * The HTTP method to be used for the request. Currently only POST is supported.
 		 */
-		public Builder method(String method) {
+		public Builder<T> method(String method) {
 			this.method = method;
 			return this;
 		}
@@ -90,7 +93,7 @@ public class BatchRequestInput {
 		 * The OpenAI API relative URL to be used for the request. Currently only
 		 * /v1/chat/completions is supported.
 		 */
-		public Builder url(String url) {
+		public Builder<T> url(String url) {
 			this.url = url;
 			return this;
 		}
@@ -98,14 +101,20 @@ public class BatchRequestInput {
 		/**
 		 * The body of the request
 		 */
-		public Builder body(Object body) {
+		public Builder<T> body(T body) {
 			this.body = body;
 			return this;
 		}
 
-		public BatchRequestInput build() {
-			return new BatchRequestInput(this);
+		public BatchRequestInput<T> build() {
+			return new BatchRequestInput<T>(this);
 		}
+	}
+
+	public static BatchRequestInput<ChatCompletionCreateRequest> of(String customId,
+			ChatCompletionCreateRequest request) {
+		return BatchRequestInput.<ChatCompletionCreateRequest>builder().customId(customId)
+				.body(request).build();
 	}
 
 }

@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The per-line object of the batch output and error files
  */
-public record BatchRequestOutput(String id, @JsonProperty("custom_id") String customId,
-		Response response, Error error) {
+public record BatchRequestOutput<T>(String id, @JsonProperty("custom_id") String customId,
+		Response<T> response, Error error) {
 
 	/**
 	 * The ID of the batch.
@@ -48,8 +48,8 @@ public record BatchRequestOutput(String id, @JsonProperty("custom_id") String cu
 		return this.error;
 	}
 
-	public record Response(@JsonProperty("status_code") int statusCode,
-			@JsonProperty("request_id") String requestId, Object body) {
+	public record Response<T>(@JsonProperty("status_code") int statusCode,
+			@JsonProperty("request_id") String requestId, T body) {
 		/**
 		 * The HTTP status code of the response
 		 */
@@ -71,7 +71,7 @@ public record BatchRequestOutput(String id, @JsonProperty("custom_id") String cu
 		 * The body of the response
 		 */
 		@Override
-		public Object body() {
+		public T body() {
 			return this.body;
 		}
 	}

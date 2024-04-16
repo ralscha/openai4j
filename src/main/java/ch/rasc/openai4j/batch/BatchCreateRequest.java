@@ -33,9 +33,25 @@ public class BatchCreateRequest {
 	private final Object metadata;
 
 	private BatchCreateRequest(Builder builder) {
+		if (builder.inputFileId == null || builder.inputFileId.isEmpty()) {
+			throw new IllegalArgumentException("inputFileId must not be null or empty");
+		}
 		this.inputFileId = builder.inputFileId;
-		this.endpoint = builder.endpoint;
-		this.completionWindow = builder.completionWindow;
+
+		if (builder.endpoint == null || builder.endpoint.isEmpty()) {
+			this.endpoint = "/v1/chat/completions";
+		}
+		else {
+			this.endpoint = builder.endpoint;
+		}
+
+		if (builder.completionWindow == null || builder.completionWindow.isEmpty()) {
+			this.completionWindow = "24h";
+		}
+		else {
+			this.completionWindow = builder.completionWindow;
+		}
+
 		this.metadata = builder.metadata;
 	}
 

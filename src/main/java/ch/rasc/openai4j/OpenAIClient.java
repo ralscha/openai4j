@@ -22,6 +22,7 @@ import java.util.function.Function;
 import ch.rasc.openai4j.assistants.AssistantsClient;
 import ch.rasc.openai4j.assistants.files.AssistantsFilesClient;
 import ch.rasc.openai4j.audio.AudioClient;
+import ch.rasc.openai4j.batch.BatchesClient;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsClient;
 import ch.rasc.openai4j.embeddings.EmbeddingsClient;
 import ch.rasc.openai4j.files.FilesClient;
@@ -58,6 +59,7 @@ public class OpenAIClient {
 	public ThreadsMessagesFilesClient threadsMessagesFiles;
 	public AssistantsClient assistants;
 	public AssistantsFilesClient assistantsFiles;
+	public BatchesClient batches;
 
 	public static OpenAIClient create(
 			Function<Configuration.Builder, Configuration.Builder> fn) {
@@ -157,6 +159,8 @@ public class OpenAIClient {
 		client.assistantsFiles = betaClientBuilder(configuration, jsonDecoder,
 				jsonEncoder, betaInterceptors).target(AssistantsFilesClient.class,
 						baseUrl);
+		client.batches = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				betaInterceptors).target(BatchesClient.class, baseUrl);
 
 		return client;
 	}
