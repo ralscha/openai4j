@@ -13,22 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.openai4j.files;
+package ch.rasc.openai4j.batch;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import feign.Headers;
+import feign.RequestLine;
 
-public enum Purpose {
-	FINE_TUNE("fine-tune"), FINE_TUNE_RESULTS("fine-tune-results"),
-	ASSISTANTS("assistants"), ASSISTANTS_OUTPUT("assistants_output"), BATCH("batch");
+public interface BatchesClient {
 
-	private final String value;
+	/**
+	 * Creates and executes a batch from an uploaded file of requests
+	 */
+	@RequestLine("POST /batches")
+	@Headers("Content-Type: application/json")
+	Batch create(BatchCreateRequest request);
 
-	Purpose(String value) {
-		this.value = value;
-	}
+	/**
+	 * Retrieves a batch.
+	 */
+	@RequestLine("GET /batches/{batchId}")
+	Batch retrieve(String batchId);
 
-	@JsonValue
-	public String value() {
-		return this.value;
-	}
+	/**
+	 * Cancels an in-progress batch.
+	 */
+	@RequestLine("POST /batches/{batchId}/cancel")
+	Batch cancel(String batchId);
 }
