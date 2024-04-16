@@ -42,10 +42,10 @@ import ch.rasc.openai4j.chatcompletions.AssistantMessage;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionMessage;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionTool;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsClient;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest.ResponseFormat;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest.ToolChoice;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Choice.FinishReason;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ResponseFormat;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ToolChoice;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionResponse;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionResponse.Choice.FinishReason;
 import ch.rasc.openai4j.chatcompletions.SystemMessage;
 import ch.rasc.openai4j.chatcompletions.ToolMessage;
 import ch.rasc.openai4j.chatcompletions.UserMessage;
@@ -106,7 +106,7 @@ public class ChatCompletionsService {
 	 * @throws JsonProcessingException If the java function arguments or results cannot be
 	 * serialized or deserialized
 	 */
-	public ChatCompletionsResponse createJavaFunctions(
+	public ChatCompletionResponse createJavaFunctions(
 			Function<ChatCompletionsJavaFunctionRequest.Builder, ChatCompletionsJavaFunctionRequest.Builder> fn)
 			throws JsonProcessingException {
 
@@ -122,7 +122,7 @@ public class ChatCompletionsService {
 		var requestBuilder = javaFunctionsRequest
 				.convertToChatCompletionsCreateRequestBuilder();
 		var request = requestBuilder.tools(tools).build();
-		ChatCompletionsResponse response = this.chatCompletionsClient.create(request);
+		ChatCompletionResponse response = this.chatCompletionsClient.create(request);
 
 		var thread = new ArrayList<>(request.messages());
 		var choice = response.choices().get(0);
@@ -171,14 +171,14 @@ public class ChatCompletionsService {
 		return response;
 	}
 
-	public record ChatCompletionsModelResponse<T>(ChatCompletionsResponse response,
+	public record ChatCompletionsModelResponse<T>(ChatCompletionResponse response,
 			T responseModel, String error) {
 
 		/**
 		 * The original response from the chat completions API
 		 */
 		@Override
-		public ChatCompletionsResponse response() {
+		public ChatCompletionResponse response() {
 			return this.response;
 		}
 
@@ -264,7 +264,7 @@ public class ChatCompletionsService {
 
 		int retryCount = 0;
 
-		ChatCompletionsResponse response = null;
+		ChatCompletionResponse response = null;
 		while (retryCount < request.maxRetries()) {
 			log.debug("Retry {}", retryCount);
 

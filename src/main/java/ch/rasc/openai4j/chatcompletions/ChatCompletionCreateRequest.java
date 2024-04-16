@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
-public class ChatCompletionsCreateRequest {
+public class ChatCompletionCreateRequest {
 
 	private final List<ChatCompletionMessage> messages;
 	private final String model;
@@ -57,7 +57,7 @@ public class ChatCompletionsCreateRequest {
 	private final ToolChoice toolChoice;
 	private final String user;
 
-	private ChatCompletionsCreateRequest(Builder builder) {
+	private ChatCompletionCreateRequest(Builder builder) {
 		if (builder.messages == null || builder.messages.isEmpty()) {
 			throw new IllegalArgumentException("messages must not be null or empty");
 		}
@@ -401,8 +401,8 @@ public class ChatCompletionsCreateRequest {
 			return this;
 		}
 
-		public ChatCompletionsCreateRequest build() {
-			return new ChatCompletionsCreateRequest(this);
+		public ChatCompletionCreateRequest build() {
+			return new ChatCompletionCreateRequest(this);
 		}
 	}
 

@@ -25,7 +25,7 @@ import ch.rasc.openai4j.common.ToolCall;
 /**
  * Represents a chat completion response returned by model, based on the provided input.
  */
-public record ChatCompletionsResponse(String id, List<Choice> choices, int created,
+public record ChatCompletionResponse(String id, List<Choice> choices, int created,
 		String model, @JsonProperty("system_fingerprint") String systemFingerprint,
 		String object, Usage usage) {
 

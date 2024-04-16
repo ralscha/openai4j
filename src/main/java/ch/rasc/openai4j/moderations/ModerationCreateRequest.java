@@ -23,12 +23,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
-public class ModerationsCreateRequest {
+public class ModerationCreateRequest {
 
 	private final String input;
 	private final ModerationModel model;
 
-	private ModerationsCreateRequest(Builder builder) {
+	private ModerationCreateRequest(Builder builder) {
 		if (builder.input == null || builder.input.isBlank()) {
 			throw new IllegalArgumentException("input is required");
 		}
@@ -70,8 +70,8 @@ public class ModerationsCreateRequest {
 			return this;
 		}
 
-		public ModerationsCreateRequest build() {
-			return new ModerationsCreateRequest(this);
+		public ModerationCreateRequest build() {
+			return new ModerationCreateRequest(this);
 		}
 	}
 }

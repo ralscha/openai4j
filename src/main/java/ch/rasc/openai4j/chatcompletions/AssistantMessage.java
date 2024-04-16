@@ -20,7 +20,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsResponse.Message;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionResponse.Message;
 import ch.rasc.openai4j.common.ToolCall;
 
 public class AssistantMessage extends ChatCompletionMessage {

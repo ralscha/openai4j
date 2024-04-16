@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import ch.rasc.openai4j.chatcompletions.ChatCompletionMessage;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionsCreateRequest;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest;
 
 @SuppressWarnings({ "hiding" })
 public class ChatCompletionsJavaFunctionRequest {
@@ -72,8 +72,8 @@ public class ChatCompletionsJavaFunctionRequest {
 		this.maxIterations = builder.maxIterations;
 	}
 
-	public ChatCompletionsCreateRequest.Builder convertToChatCompletionsCreateRequestBuilder() {
-		return ChatCompletionsCreateRequest.builder().messages(this.messages)
+	public ChatCompletionCreateRequest.Builder convertToChatCompletionsCreateRequestBuilder() {
+		return ChatCompletionCreateRequest.builder().messages(this.messages)
 				.model(this.model).frequencyPenalty(this.frequencyPenalty)
 				.logitBias(this.logitBias).maxTokens(this.maxTokens)
 				.presencePenalty(this.presencePenalty).seed(this.seed).stop(this.stop)

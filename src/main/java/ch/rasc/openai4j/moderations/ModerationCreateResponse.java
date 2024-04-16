@@ -21,7 +21,7 @@ import java.util.List;
  * Represents policy compliance report by OpenAI's content moderation model against a
  * given input.
  */
-public record ModerationsCreateResponse(String id, String model,
+public record ModerationCreateResponse(String id, String model,
 		List<Moderations> results) {
 
 	/**

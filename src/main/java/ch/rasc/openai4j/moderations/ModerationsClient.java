@@ -28,16 +28,16 @@ public interface ModerationsClient {
 	 */
 	@RequestLine("POST /moderations")
 	@Headers("Content-Type: application/json")
-	ModerationsCreateResponse create(ModerationsCreateRequest request);
+	ModerationCreateResponse create(ModerationCreateRequest request);
 
 	/**
 	 * Classifies if text violates OpenAI's Content Policy
 	 *
 	 * @return A moderation object.
 	 */
-	default ModerationsCreateResponse create(
-			Function<ModerationsCreateRequest.Builder, ModerationsCreateRequest.Builder> fn) {
-		return this.create(fn.apply(ModerationsCreateRequest.builder()).build());
+	default ModerationCreateResponse create(
+			Function<ModerationCreateRequest.Builder, ModerationCreateRequest.Builder> fn) {
+		return this.create(fn.apply(ModerationCreateRequest.builder()).build());
 	}
 
 }

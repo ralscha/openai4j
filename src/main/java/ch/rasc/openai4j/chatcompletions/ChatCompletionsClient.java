@@ -29,16 +29,16 @@ public interface ChatCompletionsClient {
 	 */
 	@RequestLine("POST /chat/completions")
 	@Headers("Content-Type: application/json")
-	ChatCompletionsResponse create(ChatCompletionsCreateRequest request);
+	ChatCompletionResponse create(ChatCompletionCreateRequest request);
 
 	/**
 	 * Creates a completion for the provided prompt and parameters.
 	 *
 	 * @return Returns a completion object
 	 */
-	default ChatCompletionsResponse create(
-			Function<ChatCompletionsCreateRequest.Builder, ChatCompletionsCreateRequest.Builder> fn) {
-		return this.create(fn.apply(ChatCompletionsCreateRequest.builder()).build());
+	default ChatCompletionResponse create(
+			Function<ChatCompletionCreateRequest.Builder, ChatCompletionCreateRequest.Builder> fn) {
+		return this.create(fn.apply(ChatCompletionCreateRequest.builder()).build());
 	}
 
 }
