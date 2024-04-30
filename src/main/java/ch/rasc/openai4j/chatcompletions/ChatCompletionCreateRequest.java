@@ -136,6 +136,14 @@ public class ChatCompletionCreateRequest {
 		}
 
 		/**
+		 * required means the model must call one or more tools before responding to the
+		 * user.
+		 */
+		public static ToolChoice required() {
+			return new ToolChoice("required");
+		}
+
+		/**
 		 * Specifying a particular function via {"type: "function", "function": {"name":
 		 * "my_function"}} forces the model to call that function.
 		 */
