@@ -39,11 +39,9 @@ public class BatchCreateRequest {
 		this.inputFileId = builder.inputFileId;
 
 		if (builder.endpoint == null || builder.endpoint.isEmpty()) {
-			this.endpoint = "/v1/chat/completions";
+			throw new IllegalArgumentException("endpoint must not be null or empty");
 		}
-		else {
-			this.endpoint = builder.endpoint;
-		}
+		this.endpoint = builder.endpoint;
 
 		if (builder.completionWindow == null || builder.completionWindow.isEmpty()) {
 			this.completionWindow = "24h";
@@ -77,8 +75,8 @@ public class BatchCreateRequest {
 		}
 
 		/**
-		 * The endpoint to be used for all requests in the batch. Currently only
-		 * /v1/chat/completions is supported.
+		 * The endpoint to be used for all requests in the batch. Currently
+		 * /v1/chat/completions and /v1/embeddings are supported.
 		 */
 		public Builder endpoint(String endpoint) {
 			this.endpoint = endpoint;

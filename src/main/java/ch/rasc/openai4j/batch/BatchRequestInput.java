@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest;
+import ch.rasc.openai4j.embeddings.EmbeddingCreateRequest;
 
 /**
  * The per-line object of the batch input file
@@ -53,11 +54,9 @@ public class BatchRequestInput<T> {
 		}
 
 		if (builder.url == null || builder.url.isBlank()) {
-			this.url = "/v1/chat/completions";
+			throw new IllegalArgumentException("url must not be null or empty");
 		}
-		else {
-			this.url = builder.url;
-		}
+		this.url = builder.url;
 
 		this.body = builder.body;
 	}
@@ -90,8 +89,8 @@ public class BatchRequestInput<T> {
 		}
 
 		/**
-		 * The OpenAI API relative URL to be used for the request. Currently only
-		 * /v1/chat/completions is supported.
+		 * The OpenAI API relative URL to be used for the request. Currently
+		 * /v1/chat/completions and /v1/embeddings are supported.
 		 */
 		public Builder<T> url(String url) {
 			this.url = url;
@@ -114,7 +113,13 @@ public class BatchRequestInput<T> {
 	public static BatchRequestInput<ChatCompletionCreateRequest> of(String customId,
 			ChatCompletionCreateRequest request) {
 		return BatchRequestInput.<ChatCompletionCreateRequest>builder().customId(customId)
-				.body(request).build();
+				.body(request).url("/v1/chat/completions").build();
+	}
+
+	public static BatchRequestInput<EmbeddingCreateRequest> of(String customId,
+			EmbeddingCreateRequest request) {
+		return BatchRequestInput.<EmbeddingCreateRequest>builder().customId(customId)
+				.body(request).url("/v1/embeddings").build();
 	}
 
 }
