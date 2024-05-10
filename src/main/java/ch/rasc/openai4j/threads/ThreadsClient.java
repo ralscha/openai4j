@@ -86,11 +86,11 @@ public interface ThreadsClient {
 	/**
 	 * Modifies a thread.
 	 *
-	 * @return The modified thread object matching the specified ID.
+	 * @return The modified thread object matching the specified thread ID.
 	 */
 	@RequestLine("POST /threads/{thread_id}")
 	@Headers("Content-Type: application/json")
-	Thread update(@Param("thread_id") String threadId, ThreadUpdateRequest request);
+	Thread modify(@Param("thread_id") String threadId, ThreadModifyRequest request);
 
 	/**
 	 * Delete a thread

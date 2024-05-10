@@ -15,14 +15,14 @@
  */
 package ch.rasc.openai4j.assistants;
 
-public class CodeTool extends Tool {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
-	CodeTool() {
-		super("code_interpreter");
-	}
-
-	public static CodeTool of() {
-		return new CodeTool();
-	}
-
+@JsonTypeInfo(use = Id.DEDUCTION)
+@JsonSubTypes({ @Type(FileSearchToolResouces.class),
+		@Type(CodeInterpreterToolResouces.class) })
+public interface ToolResources {
+	// nothing here
 }

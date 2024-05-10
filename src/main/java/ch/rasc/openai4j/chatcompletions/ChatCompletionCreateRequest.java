@@ -23,11 +23,10 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-import ch.rasc.openai4j.threads.runs.ThreadRunCreateRequest.ResponseFormat;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import ch.rasc.openai4j.common.ResponseFormat;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -90,27 +89,6 @@ public class ChatCompletionCreateRequest {
 		this.tools = builder.tools;
 		this.toolChoice = builder.toolChoice;
 		this.user = builder.user;
-	}
-
-	public static class ResponseFormat {
-		private final Object value;
-
-		ResponseFormat(Object value) {
-			this.value = value;
-		}
-
-		public static ResponseFormat text() {
-			return new ResponseFormat(Map.of("type", "text"));
-		}
-
-		public static ResponseFormat jsonObject() {
-			return new ResponseFormat(Map.of("type", "json_object"));
-		}
-
-		@JsonValue
-		public Object value() {
-			return this.value;
-		}
 	}
 
 	public static class ToolChoice {

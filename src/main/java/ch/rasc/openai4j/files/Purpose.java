@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Purpose {
 	FINE_TUNE("fine-tune"), FINE_TUNE_RESULTS("fine-tune-results"),
-	ASSISTANTS("assistants"), ASSISTANTS_OUTPUT("assistants_output"), BATCH("batch");
+	ASSISTANTS("assistants"), ASSISTANTS_OUTPUT("assistants_output"), BATCH("batch"),
+	VISION("vision");
 
 	private final String value;
 

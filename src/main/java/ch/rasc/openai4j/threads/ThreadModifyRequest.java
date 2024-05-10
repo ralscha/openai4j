@@ -19,27 +19,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import ch.rasc.openai4j.assistants.ToolResources;
+import ch.rasc.openai4j.threads.ThreadCreateRequest.Builder;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
-public class ThreadCreateRequest {
+public class ThreadModifyRequest {
 
-	private final List<ThreadMessageRequest> messages;
 	@JsonProperty("tool_resources")
 	private final List<ToolResources> toolResources;
 	private final Map<String, Object> metadata;
 
-	private ThreadCreateRequest(Builder builder) {
-		this.messages = builder.messages;
+	private ThreadModifyRequest(Builder builder) {
 		this.toolResources = builder.toolResources;
 		this.metadata = builder.metadata;
 	}
@@ -49,7 +47,6 @@ public class ThreadCreateRequest {
 	}
 
 	public static final class Builder {
-		private List<ThreadMessageRequest> messages;
 		private List<ToolResources> toolResources;
 		private Map<String, Object> metadata;
 
@@ -57,37 +54,10 @@ public class ThreadCreateRequest {
 		}
 
 		/**
-		 * A list of messages to start the thread with.
-		 */
-		public Builder messages(List<ThreadMessageRequest> messages) {
-			this.messages = new ArrayList<>(messages);
-			return this;
-		}
-
-		/**
-		 * Adds messages to start the thread with.
-		 */
-		public Builder addMessages(ThreadMessageRequest... message) {
-			if (this.messages == null) {
-				this.messages = new ArrayList<>();
-			}
-			this.messages.addAll(List.of(message));
-			return this;
-		}
-
-		/**
-		 * Adds a message to start the thread with.
-		 */
-		public Builder addMessage(
-				Function<ThreadMessageRequest.Builder, ThreadMessageRequest.Builder> fn) {
-			return addMessages(fn.apply(ThreadMessageRequest.builder()).build());
-		}
-
-		/**
-		 * A set of resources that are used by the assistant's tools. The resources are
-		 * specific to the type of tool. For example, the code_interpreter tool requires a
-		 * list of file IDs, while the file_search tool requires a list of vector store
-		 * IDs.
+		 * A set of resources that are made available to the assistant's tools in this
+		 * thread. The resources are specific to the type of tool. For example, the
+		 * code_interpreter tool requires a list of file IDs, while the file_search tool
+		 * requires a list of vector store IDs.
 		 */
 		public Builder toolResources(List<ToolResources> toolResources) {
 			this.toolResources = new ArrayList<>(toolResources);
@@ -95,10 +65,10 @@ public class ThreadCreateRequest {
 		}
 
 		/**
-		 * A set of resources that are used by the assistant's tools. The resources are
-		 * specific to the type of tool. For example, the code_interpreter tool requires a
-		 * list of file IDs, while the file_search tool requires a list of vector store
-		 * IDs.
+		 * A set of resources that are made available to the assistant's tools in this
+		 * thread. The resources are specific to the type of tool. For example, the
+		 * code_interpreter tool requires a list of file IDs, while the file_search tool
+		 * requires a list of vector store IDs.
 		 */
 		public Builder addToolResources(ToolResources... toolResources) {
 			if (toolResources == null || toolResources.length == 0) {
@@ -133,8 +103,9 @@ public class ThreadCreateRequest {
 			return this;
 		}
 
-		public ThreadCreateRequest build() {
-			return new ThreadCreateRequest(this);
+		public ThreadModifyRequest build() {
+			return new ThreadModifyRequest(this);
 		}
 	}
+
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.openai4j.assistants;
+package ch.rasc.openai4j.threads;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -22,13 +22,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 @JsonTypeInfo(use = Id.NAME, property = "type", visible = true)
-@JsonSubTypes({ @Type(name = "code_interpreter", value = CodeInterpreterTool.class),
-		@Type(name = "function", value = FunctionTool.class),
-		@Type(name = "file_search", value = FileSearchTool.class) })
-public abstract class Tool {
+@JsonSubTypes({ @Type(name = "image_file", value = ImageFileMessageContent.class),
+		@Type(name = "text", value = TextMessageContent.class),
+		@Type(name = "image_url", value = ImageUrlMessageContent.class) })
+public abstract class MessageContent {
 	private final String type;
 
-	Tool(String type) {
+	MessageContent(String type) {
 		this.type = type;
 	}
 

@@ -19,9 +19,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
-import ch.rasc.openai4j.chatcompletions.UserMessage.ImageContent.ImageUrl.ImageDetail;
+import ch.rasc.openai4j.common.ImageDetail;
+import ch.rasc.openai4j.common.ImageUrl;
 
 public class UserMessage extends ChatCompletionMessage {
 	private final Object content;
@@ -91,51 +91,6 @@ public class UserMessage extends ChatCompletionMessage {
 			}
 			this.type = type;
 			this.imageUrl = imageUrl;
-		}
-
-		public static class ImageUrl {
-
-			private final String url;
-			private final ImageDetail detail;
-
-			public enum ImageDetail {
-				LOW("low"), HIGH("high"), AUTO("auto");
-
-				private final String value;
-
-				ImageDetail(String value) {
-					this.value = value;
-				}
-
-				@JsonValue
-				public String value() {
-					return this.value;
-				}
-			}
-
-			private ImageUrl(String url, ImageDetail detail) {
-				if (url == null) {
-					throw new IllegalArgumentException("url cannot be null");
-				}
-				this.url = url;
-				this.detail = detail;
-			}
-
-			/**
-			 * Either a URL of the image or the base64 encoded image data.
-			 */
-			@JsonProperty
-			public String url() {
-				return this.url;
-			}
-
-			/**
-			 * Specifies the detail level of the image.
-			 */
-			@JsonProperty
-			public ImageDetail detail() {
-				return this.detail;
-			}
 		}
 
 		/**

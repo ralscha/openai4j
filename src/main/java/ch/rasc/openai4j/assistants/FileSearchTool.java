@@ -15,14 +15,14 @@
  */
 package ch.rasc.openai4j.assistants;
 
-public class RetrievalTool extends Tool {
+public class FileSearchTool extends Tool {
 
-	RetrievalTool() {
-		super("retrieval");
+	FileSearchTool() {
+		super("file_search");
 	}
 
-	public static RetrievalTool of() {
-		return new RetrievalTool();
+	public static FileSearchTool of() {
+		return new FileSearchTool();
 	}
 
 }

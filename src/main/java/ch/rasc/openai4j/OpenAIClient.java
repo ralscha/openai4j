@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.assistants.AssistantsClient;
-import ch.rasc.openai4j.assistants.files.AssistantsFilesClient;
 import ch.rasc.openai4j.audio.AudioClient;
 import ch.rasc.openai4j.batch.BatchesClient;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionsClient;
@@ -32,7 +31,6 @@ import ch.rasc.openai4j.models.ModelsClient;
 import ch.rasc.openai4j.moderations.ModerationsClient;
 import ch.rasc.openai4j.threads.ThreadsClient;
 import ch.rasc.openai4j.threads.messages.ThreadsMessagesClient;
-import ch.rasc.openai4j.threads.messages.files.ThreadsMessagesFilesClient;
 import ch.rasc.openai4j.threads.runs.ThreadsRunsClient;
 import ch.rasc.openai4j.threads.runs.steps.ThreadsRunsStepsClient;
 import feign.Feign;
@@ -56,9 +54,7 @@ public class OpenAIClient {
 	public ThreadsRunsClient threadsRuns;
 	public ThreadsRunsStepsClient threadsRunsSteps;
 	public ThreadsMessagesClient threadsMessages;
-	public ThreadsMessagesFilesClient threadsMessagesFiles;
 	public AssistantsClient assistants;
-	public AssistantsFilesClient assistantsFiles;
 	public BatchesClient batches;
 
 	public static OpenAIClient create(
@@ -151,14 +147,8 @@ public class OpenAIClient {
 		client.threadsMessages = betaClientBuilder(configuration, jsonDecoder,
 				jsonEncoder, betaInterceptors).target(ThreadsMessagesClient.class,
 						baseUrl);
-		client.threadsMessagesFiles = betaClientBuilder(configuration, jsonDecoder,
-				jsonEncoder, betaInterceptors).target(ThreadsMessagesFilesClient.class,
-						baseUrl);
 		client.assistants = betaClientBuilder(configuration, jsonDecoder, jsonEncoder,
 				betaInterceptors).target(AssistantsClient.class, baseUrl);
-		client.assistantsFiles = betaClientBuilder(configuration, jsonDecoder,
-				jsonEncoder, betaInterceptors).target(AssistantsFilesClient.class,
-						baseUrl);
 		client.batches = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
 				betaInterceptors).target(BatchesClient.class, baseUrl);
 

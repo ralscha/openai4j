@@ -27,6 +27,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ch.rasc.openai4j.assistants.Tool;
+import ch.rasc.openai4j.assistants.ToolResources;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ToolChoice;
+import ch.rasc.openai4j.common.ResponseFormat;
+import ch.rasc.openai4j.threads.ThreadCreateRequest.Builder;
+import ch.rasc.openai4j.threads.runs.ThreadRunCreateRequest.TruncationStrategy;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -39,8 +44,22 @@ public class ThreadCreateRunCreateRequest {
 	private final String model;
 	private final String instructions;
 	private final List<Tool> tools;
+	@JsonProperty("tool_resources")
+	private List<ToolResources> toolResources;
 	private final Map<String, Object> metadata;
 	private final Double temperature;
+	@JsonProperty("top_p")
+	private final Double topP;
+	@JsonProperty("max_prompt_tokens")
+	private final Integer maxPromptTokens;
+	@JsonProperty("max_completion_tokens")
+	private final Integer maxCompletionTokens;
+	@JsonProperty("truncation_strategy")
+	private final TruncationStrategy truncationStrategy;
+	@JsonProperty("tool_choice")
+	private final ToolChoice toolChoice;
+	@JsonProperty("response_format")
+	private final ResponseFormat responseFormat;
 
 	private ThreadCreateRunCreateRequest(Builder builder) {
 		if (builder.assistantId == null) {
@@ -51,8 +70,15 @@ public class ThreadCreateRunCreateRequest {
 		this.model = builder.model;
 		this.instructions = builder.instructions;
 		this.tools = builder.tools;
+		this.toolResources = builder.toolResources;
 		this.metadata = builder.metadata;
 		this.temperature = builder.temperature;
+		this.topP = builder.topP;
+		this.maxPromptTokens = builder.maxPromptTokens;
+		this.maxCompletionTokens = builder.maxCompletionTokens;
+		this.truncationStrategy = builder.truncationStrategy;
+		this.toolChoice = builder.toolChoice;
+		this.responseFormat = builder.responseFormat;
 	}
 
 	private record ThreadCreateRunCreateRequestThread(List<ThreadMessageRequest> messages,
@@ -70,8 +96,15 @@ public class ThreadCreateRunCreateRequest {
 		private String model;
 		private String instructions;
 		private List<Tool> tools;
+		private List<ToolResources> toolResources;
 		private Map<String, Object> metadata;
 		private Double temperature;
+		private Double topP;
+		private Integer maxPromptTokens;
+		private Integer maxCompletionTokens;
+		private TruncationStrategy truncationStrategy;
+		private ToolChoice toolChoice;
+		private ResponseFormat responseFormat;
 
 		private Builder() {
 		}
@@ -154,6 +187,34 @@ public class ThreadCreateRunCreateRequest {
 		}
 
 		/**
+		 * A set of resources that are used by the assistant's tools. The resources are
+		 * specific to the type of tool. For example, the code_interpreter tool requires a
+		 * list of file IDs, while the file_search tool requires a list of vector store
+		 * IDs.
+		 */
+		public Builder toolResources(List<ToolResources> toolResources) {
+			this.toolResources = new ArrayList<>(toolResources);
+			return this;
+		}
+
+		/**
+		 * A set of resources that are used by the assistant's tools. The resources are
+		 * specific to the type of tool. For example, the code_interpreter tool requires a
+		 * list of file IDs, while the file_search tool requires a list of vector store
+		 * IDs.
+		 */
+		public Builder addToolResources(ToolResources... toolResources) {
+			if (toolResources == null || toolResources.length == 0) {
+				return this;
+			}
+			if (this.toolResources == null) {
+				this.toolResources = new ArrayList<>();
+			}
+			this.toolResources.addAll(List.of(toolResources));
+			return this;
+		}
+
+		/**
 		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
 		 * for storing additional information about the object in a structured format.
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
@@ -178,10 +239,93 @@ public class ThreadCreateRunCreateRequest {
 		/**
 		 * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
 		 * make the output more random, while lower values like 0.2 will make it more
-		 * focused and deterministic. Optional. Defaults to 1
+		 * focused and deterministic.
+		 * <p>
+		 * Defaults to 1.0.
 		 */
 		public Builder temperature(Double temperature) {
 			this.temperature = temperature;
+			return this;
+		}
+
+		/**
+		 * An alternative to sampling with temperature, called nucleus sampling, where the
+		 * model considers the results of the tokens with top_p probability mass. So 0.1
+		 * means only the tokens comprising the top 10% probability mass are considered.
+		 * <p>
+		 * We generally recommend altering this or temperature but not both.
+		 * <p>
+		 * Defaults to 1.0.
+		 */
+		public Builder topP(Double topP) {
+			this.topP = topP;
+			return this;
+		}
+
+		/**
+		 * The maximum number of prompt tokens that may be used over the course of the
+		 * run. The run will make a best effort to use only the number of prompt tokens
+		 * specified, across multiple turns of the run. If the run exceeds the number of
+		 * prompt tokens specified, the run will end with status incomplete. See
+		 * incomplete_details for more info.
+		 */
+		public Builder maxPromptTokens(Integer maxPromptTokens) {
+			this.maxPromptTokens = maxPromptTokens;
+			return this;
+		}
+
+		/**
+		 * The maximum number of completion tokens that may be used over the course of the
+		 * run. The run will make a best effort to use only the number of completion
+		 * tokens specified, across multiple turns of the run. If the run exceeds the
+		 * number of completion tokens specified, the run will end with status incomplete.
+		 * See incomplete_details for more info.
+		 */
+		public Builder maxCompletionTokens(Integer maxCompletionTokens) {
+			this.maxCompletionTokens = maxCompletionTokens;
+			return this;
+		}
+
+		/**
+		 * Controls for how a thread will be truncated prior to the run. Use this to
+		 * control the intial context window of the run.
+		 */
+		public Builder truncationStrategy(TruncationStrategy truncationStrategy) {
+			this.truncationStrategy = truncationStrategy;
+			return this;
+		}
+
+		/**
+		 * Controls which (if any) tool is called by the model. none means the model will
+		 * not call any tools and instead generates a message. auto is the default value
+		 * and means the model can pick between generating a message or calling one or
+		 * more tools. required means the model must call one or more tools before
+		 * responding to the user. Specifying a particular tool like {"type":
+		 * "file_search"} or {"type": "function", "function": {"name": "my_function"}}
+		 * forces the model to call that tool.
+		 */
+		public Builder toolChoice(ToolChoice toolChoice) {
+			this.toolChoice = toolChoice;
+			return this;
+		}
+
+		/**
+		 * Specifies the format that the model must output. Compatible with GPT-4 Turbo
+		 * and all GPT-3.5 Turbo models since gpt-3.5-turbo-1106.
+		 * <p>
+		 * Setting to { "type": "json_object" } enables JSON mode, which guarantees the
+		 * message the model generates is valid JSON.
+		 * <p>
+		 * Important: when using JSON mode, you must also instruct the model to produce
+		 * JSON yourself via a system or user message. Without this, the model may
+		 * generate an unending stream of whitespace until the generation reaches the
+		 * token limit, resulting in a long-running and seemingly "stuck" request. Also
+		 * note that the message content may be partially cut off if
+		 * finish_reason="length", which indicates the generation exceeded max_tokens or
+		 * the conversation exceeded the max context length.
+		 */
+		public Builder responseFormat(ResponseFormat responseFormat) {
+			this.responseFormat = responseFormat;
 			return this;
 		}
 

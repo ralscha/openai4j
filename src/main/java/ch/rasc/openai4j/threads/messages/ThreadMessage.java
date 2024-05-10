@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import ch.rasc.openai4j.threads.MessageContent;
+import ch.rasc.openai4j.threads.ThreadMessageRequest.Attachment;
 
 /**
  * Represents a message within a thread.
@@ -32,9 +32,9 @@ public record ThreadMessage(String id, String object,
 		@JsonProperty("incomplete_details") IncompleteDetail incompleteDetails,
 		@JsonProperty("completed_at") Integer completedAt,
 		@JsonProperty("incomplete_at") Integer incompleteAt, String role,
-		List<Content> content, @JsonProperty("assistant_id") String assistantId,
-		@JsonProperty("run_id") String runId,
-		@JsonProperty("file_ids") List<String> fileIds, Map<String, Object> metadata) {
+		List<MessageContent> content, @JsonProperty("assistant_id") String assistantId,
+		@JsonProperty("run_id") String runId, List<Attachment> attachments,
+		Map<String, Object> metadata) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -113,7 +113,7 @@ public record ThreadMessage(String id, String object,
 	 * The content of the message in array of text and/or images.
 	 */
 	@Override
-	public List<Content> content() {
+	public List<MessageContent> content() {
 		return this.content;
 	}
 
@@ -126,7 +126,8 @@ public record ThreadMessage(String id, String object,
 	}
 
 	/**
-	 * If applicable, the ID of the run associated with the authoring of this message.
+	 * The ID of the run associated with the creation of this message. Value is null when
+	 * messages are created manually using the create message or create thread endpoints.
 	 */
 	@Override
 	public String runId() {
@@ -134,13 +135,11 @@ public record ThreadMessage(String id, String object,
 	}
 
 	/**
-	 * A list of file IDs that the assistant should use. Useful for tools like retrieval
-	 * and code_interpreter that can access files. A maximum of 10 files can be attached
-	 * to a message.
+	 * A list of files attached to the message, and the tools they were added to.
 	 */
 	@Override
-	public List<String> fileIds() {
-		return this.fileIds;
+	public List<Attachment> attachments() {
+		return this.attachments;
 	}
 
 	/**
@@ -153,12 +152,6 @@ public record ThreadMessage(String id, String object,
 		return this.metadata;
 	}
 
-	@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
-	@JsonSubTypes({ @Type(name = "image_file", value = MessageContentImageFile.class),
-			@Type(name = "text", value = MessageContentText.class) })
-	public interface Content {
-	}
-
 	public record IncompleteDetail(String reason) {
 		/**
 		 * The reason the message is incomplete.
@@ -166,167 +159,6 @@ public record ThreadMessage(String id, String object,
 		@Override
 		public String reason() {
 			return this.reason;
-		}
-	}
-
-	public record MessageContentImageFile(String type,
-			@JsonProperty("image_file") File imageFile) implements Content {
-
-		/**
-		 * Always image_file.
-		 */
-		@Override
-		public String type() {
-			return this.type;
-		}
-
-		@Override
-		public File imageFile() {
-			return this.imageFile;
-		}
-	}
-
-	public record File(@JsonProperty("file_id") String fileId) {
-		/**
-		 * The File ID of the image in the message content.
-		 */
-		@Override
-		public String fileId() {
-			return this.fileId;
-		}
-	}
-
-	public record MessageContentText(String type, Text text) implements Content {
-		/**
-		 * Always text.
-		 */
-		@Override
-		public String type() {
-			return this.type;
-		}
-
-		@Override
-		public Text text() {
-			return this.text;
-		}
-	}
-
-	public record Text(String value, List<Annotation> annotations) {
-
-		/**
-		 * The data that makes up the text.
-		 */
-		@Override
-		public String value() {
-			return this.value;
-		}
-
-		@Override
-		public List<Annotation> annotations() {
-			return this.annotations;
-		}
-
-		@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
-		@JsonSubTypes({ @Type(value = FileCitation.class, name = "file_citation"),
-				@Type(value = FilePath.class, name = "file_path") })
-		public interface Annotation {
-		}
-
-		/**
-		 * A citation within the message that points to a specific quote from a specific
-		 * File associated with the assistant or the message. Generated when the assistant
-		 * uses the "retrieval" tool to search files.
-		 */
-		public record FileCitation(String type, String text,
-				@JsonProperty("file_citation") Citation fileCitation,
-				@JsonProperty("start_index") int startIndex,
-				@JsonProperty("end_index") int endIndex) implements Annotation {
-
-			/**
-			 * Always file_citation.
-			 */
-			@Override
-			public String type() {
-				return this.type;
-			}
-
-			/**
-			 * The text in the message content that needs to be replaced.
-			 */
-			@Override
-			public String text() {
-				return this.text;
-			}
-
-			@Override
-			public Citation fileCitation() {
-				return this.fileCitation;
-			}
-
-			@Override
-			public int startIndex() {
-				return this.startIndex;
-			}
-
-			@Override
-			public int endIndex() {
-				return this.endIndex;
-			}
-
-		}
-
-		public record Citation(@JsonProperty("file_id") String fileId, String quote) {
-			/**
-			 * The ID of the specific File the citation is from.
-			 */
-			@Override
-			public String fileId() {
-				return this.fileId;
-			}
-
-			/**
-			 * The specific quote in the file.
-			 */
-			@Override
-			public String quote() {
-				return this.quote;
-			}
-		}
-
-		public record FilePath(String type, String text,
-				@JsonProperty("file_path") File filePath,
-				@JsonProperty("start_index") int startIndex,
-				@JsonProperty("end_index") int endIndex) implements Annotation {
-			/**
-			 * Always file_path.
-			 */
-			@Override
-			public String type() {
-				return this.type;
-			}
-
-			/**
-			 * The text in the message content that needs to be replaced.
-			 */
-			@Override
-			public String text() {
-				return this.text;
-			}
-
-			@Override
-			public File filePath() {
-				return this.filePath;
-			}
-
-			@Override
-			public int startIndex() {
-				return this.startIndex;
-			}
-
-			@Override
-			public int endIndex() {
-				return this.endIndex;
-			}
 		}
 	}
 

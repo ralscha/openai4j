@@ -20,13 +20,18 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ch.rasc.openai4j.common.ResponseFormat;
+
 /**
  * Represents an assistant that can call the model and use tools.
  */
 public record Assistant(String id, String object,
 		@JsonProperty("created_at") int createdAt, String name, String description,
 		String model, String instructions, List<Tool> tools,
-		@JsonProperty("file_ids") List<String> fileIds, Map<String, Object> metadata) {
+		@JsonProperty("tool_resources") List<ToolResources> toolResources,
+		Map<String, Object> metadata, Double temperature,
+		@JsonProperty("top_p") Double topP,
+		@JsonProperty("response_format") ResponseFormat responseFormat) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -78,7 +83,7 @@ public record Assistant(String id, String object,
 	}
 
 	/**
-	 * The system instructions that the assistant uses. The maximum length is 32768
+	 * The system instructions that the assistant uses. The maximum length is 256,000
 	 * characters.
 	 */
 	@Override
@@ -88,7 +93,7 @@ public record Assistant(String id, String object,
 
 	/**
 	 * A list of tool enabled on the assistant. There can be a maximum of 128 tools per
-	 * assistant. Tools can be of types code_interpreter, retrieval, or function.
+	 * assistant. Tools can be of types code_interpreter, file_search, or function.
 	 */
 	@Override
 	public List<Tool> tools() {
@@ -96,13 +101,13 @@ public record Assistant(String id, String object,
 	}
 
 	/**
-	 * A list of file IDs attached to this assistant. There can be a maximum of 20 files
-	 * attached to the assistant. Files are ordered by their creation date in ascending
-	 * order.
+	 * A set of resources that are used by the assistant's tools. The resources are
+	 * specific to the type of tool. For example, the code_interpreter tool requires a
+	 * list of file IDs, while the file_search tool requires a list of vector store IDs.
 	 */
 	@Override
-	public List<String> fileIds() {
-		return this.fileIds;
+	public List<ToolResources> toolResources() {
+		return this.toolResources;
 	}
 
 	/**
@@ -114,4 +119,47 @@ public record Assistant(String id, String object,
 	public Map<String, Object> metadata() {
 		return this.metadata;
 	}
+
+	/**
+	 * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+	 * the output more random, while lower values like 0.2 will make it more focused and
+	 * deterministic.
+	 */
+	@Override
+	public Double temperature() {
+		return this.temperature;
+	}
+
+	/**
+	 * An alternative to sampling with temperature, called nucleus sampling, where the
+	 * model considers the results of the tokens with top_p probability mass. So 0.1 means
+	 * only the tokens comprising the top 10% probability mass are considered.
+	 * <p>
+	 * We generally recommend altering this or temperature but not both.
+	 */
+	@Override
+	public Double topP() {
+		return this.topP;
+	}
+
+	/**
+	 * Specifies the format that the model must output. Compatible with GPT-4 Turbo and
+	 * all GPT-3.5 Turbo models since gpt-3.5-turbo-1106.
+	 * <p>
+	 * Setting to { "type": "json_object" } enables JSON mode, which guarantees the
+	 * message the model generates is valid JSON.
+	 * <p>
+	 * Important: when using JSON mode, you must also instruct the model to produce JSON
+	 * yourself via a system or user message. Without this, the model may generate an
+	 * unending stream of whitespace until the generation reaches the token limit,
+	 * resulting in a long-running and seemingly "stuck" request. Also note that the
+	 * message content may be partially cut off if finish_reason="length", which indicates
+	 * the generation exceeded max_tokens or the conversation exceeded the max context
+	 * length.
+	 */
+	@Override
+	public ResponseFormat responseFormat() {
+		return this.responseFormat;
+	}
+
 }

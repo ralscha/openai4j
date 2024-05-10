@@ -15,14 +15,18 @@
  */
 package ch.rasc.openai4j.threads;
 
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import ch.rasc.openai4j.assistants.ToolResources;
 
 /**
  * Represents a thread that contains messages.
  */
 public record Thread(String id, String object, @JsonProperty("created_at") int createdAt,
+		@JsonProperty("tool_resources") List<ToolResources> toolResources,
 		Map<String, Object> metadata) {
 
 	/**
@@ -47,6 +51,17 @@ public record Thread(String id, String object, @JsonProperty("created_at") int c
 	@Override
 	public int createdAt() {
 		return this.createdAt;
+	}
+
+	/**
+	 * A set of resources that are made available to the assistant's tools in this thread.
+	 * The resources are specific to the type of tool. For example, the code_interpreter
+	 * tool requires a list of file IDs, while the file_search tool requires a list of
+	 * vector store IDs.
+	 */
+	@Override
+	public List<ToolResources> toolResources() {
+		return this.toolResources;
 	}
 
 	/**

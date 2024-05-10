@@ -19,20 +19,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import ch.rasc.openai4j.assistants.Tool;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
 public class ThreadMessageRequest {
 	private final String role;
-	private final String content;
-	@JsonProperty("file_ids")
-	private final List<String> fileIds;
+	private final Object content;
+	private final List<Attachment> attachments;
 	private final Map<String, Object> metadata;
 
 	private ThreadMessageRequest(Builder builder) {
@@ -44,7 +47,7 @@ public class ThreadMessageRequest {
 		}
 		this.role = builder.role;
 		this.content = builder.content;
-		this.fileIds = builder.fileIds;
+		this.attachments = builder.attachments;
 		this.metadata = builder.metadata;
 	}
 
@@ -54,8 +57,8 @@ public class ThreadMessageRequest {
 
 	public static final class Builder {
 		private String role;
-		private String content;
-		private List<String> fileIds;
+		private Object content;
+		private List<Attachment> attachments;
 		private Map<String, Object> metadata;
 
 		private Builder() {
@@ -84,7 +87,15 @@ public class ThreadMessageRequest {
 		}
 
 		/**
-		 * The content of the message.
+		 * Set the role of the entity that is creating the message to assistant
+		 */
+		public Builder assistantRole() {
+			this.role = "assistant";
+			return this;
+		}
+
+		/**
+		 * The text contents of the message.
 		 */
 		public Builder content(String content) {
 			this.content = content;
@@ -92,26 +103,54 @@ public class ThreadMessageRequest {
 		}
 
 		/**
-		 * A list of File IDs that the message should use. There can be a maximum of 10
-		 * files attached to a message. Useful for tools like retrieval and
-		 * code_interpreter that can access and use files.
+		 * An array of content parts with a defined type, each can be of type text or
+		 * images can be passed with image_url or image_file. Image types are only
+		 * supported on Vision-compatible models.
 		 */
-		public Builder fileIds(List<String> fileIds) {
-			this.fileIds = new ArrayList<>(fileIds);
+		public Builder content(List<MessageContent> content) {
+			this.content = new ArrayList<>(content);
 			return this;
 		}
 
 		/**
-		 * A list of File IDs that the message should use. There can be a maximum of 10
-		 * files attached to a message. Useful for tools like retrieval and
-		 * code_interpreter that can access and use files.
+		 * An array of content parts with a defined type, each can be of type text or
+		 * images can be passed with image_url or image_file. Image types are only
+		 * supported on Vision-compatible models.
 		 */
-		public Builder addFileIds(String... fileId) {
-			if (this.fileIds == null) {
-				this.fileIds = new ArrayList<>();
+		@SuppressWarnings("unchecked")
+		public Builder addContent(MessageContent... content) {
+			if (this.content == null || !(this.content instanceof List)) {
+				this.content = new ArrayList<>();
 			}
-			this.fileIds.addAll(List.of(fileId));
+			((List<MessageContent>) this.content).addAll(List.of(content));
 			return this;
+		}
+
+		/**
+		 * A list of files attached to the message, and the tools they should be added to.
+		 */
+		public Builder attachments(List<Attachment> attachments) {
+			this.attachments = new ArrayList<>(attachments);
+			return this;
+		}
+
+		/**
+		 * A list of files attached to the message, and the tools they should be added to.
+		 */
+		public Builder addAttachments(Attachment... attachments) {
+			if (this.attachments == null) {
+				this.attachments = new ArrayList<>();
+			}
+			this.attachments.addAll(List.of(attachments));
+			return this;
+		}
+
+		/**
+		 * A file attached to the message, and the tools they should be added to.
+		 */
+		public Builder addAttachment(
+				Function<Attachment.Builder, Attachment.Builder> fn) {
+			return addAttachments(fn.apply(Attachment.builder()).build());
 		}
 
 		/**
@@ -140,4 +179,61 @@ public class ThreadMessageRequest {
 			return new ThreadMessageRequest(this);
 		}
 	}
+
+	@JsonInclude(Include.NON_EMPTY)
+	@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+	public static class Attachment {
+		@JsonProperty("file_id")
+		private final String fileId;
+		private final List<Tool> tools;
+
+		private Attachment(Builder builder) {
+			this.fileId = builder.fileId;
+			this.tools = builder.tools;
+		}
+
+		public static Builder builder() {
+			return new Builder();
+		}
+
+		public static final class Builder {
+			private String fileId;
+			private List<Tool> tools;
+
+			private Builder() {
+			}
+
+			/**
+			 * The ID of the file to attach to the message.
+			 */
+			public Builder fileId(String fileId) {
+				this.fileId = fileId;
+				return this;
+			}
+
+			/**
+			 * The tools to add this file to.
+			 */
+			public Builder tools(List<Tool> tools) {
+				this.tools = new ArrayList<>(tools);
+				return this;
+			}
+
+			/**
+			 * The tools to add this file to.
+			 */
+			public Builder addTools(Tool... tools) {
+				if (this.tools == null) {
+					this.tools = new ArrayList<>();
+				}
+				this.tools.addAll(List.of(tools));
+				return this;
+			}
+
+			public Attachment build() {
+				return new Attachment(this);
+			}
+		}
+	}
+
 }

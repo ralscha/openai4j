@@ -21,11 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class FunctionParameters {
-	/**
-	 * The parameters the functions accepts, described as a JSON Schema object.
-	 *
-	 * Omitting parameters defines a function with an empty parameter list.
-	 */
 	private final String name;
 	private final String description;
 	private final Object parameters;
@@ -43,10 +38,25 @@ public class FunctionParameters {
 		return new FunctionParameters(name, description, parameters);
 	}
 
+	/**
+	 * Create a FunctionParameters object with the given name and description.
+	 * @param name The name of the function to be called. Must be a-z, A-Z, 0-9, or
+	 * contain
+	 * @param parameters The parameters the functions accepts, described as a JSON Schema
+	 * object.Omitting parameters defines a function with an empty parameter list.
+	 * @return A FunctionParameters object with the given name and description.
+	 */
 	public static FunctionParameters of(String name, Object parameters) {
 		return new FunctionParameters(name, null, parameters);
 	}
 
+	/**
+	 * Create a FunctionParameters object with the given name and description. Omits the
+	 * parameters and therefore defines a function with an empty parameter list.
+	 * @param name The name of the function to be called. Must be a-z, A-Z, 0-9, or
+	 * contain
+	 * @return A FunctionParameters object with the given name and description.
+	 */
 	public static FunctionParameters of(String name) {
 		return new FunctionParameters(name, null, null);
 	}
@@ -69,6 +79,11 @@ public class FunctionParameters {
 		return this.name;
 	}
 
+	/**
+	 * The parameters the functions accepts, described as a JSON Schema object.
+	 * 
+	 * Omitting parameters defines a function with an empty parameter list.
+	 */
 	@JsonProperty
 	public Object parameters() {
 		return this.parameters;

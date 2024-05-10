@@ -22,6 +22,6 @@ public class OpenAIBetaRequestInterceptor implements RequestInterceptor {
 
 	@Override
 	public void apply(RequestTemplate template) {
-		template.header("OpenAI-Beta", "assistants=v1");
+		template.header("OpenAI-Beta", "assistants=v2");
 	}
 }

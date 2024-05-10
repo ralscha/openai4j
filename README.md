@@ -150,6 +150,9 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
+### 1.3.0 - May ??, 2024
+  * Support for Assistants API v2
+
 ### 1.2.0 - April 16, 2024
   * Added support for the Batch API
   * Added support for seed in the fine-tuning API

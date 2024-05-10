@@ -24,10 +24,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.assistants.Tool;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ToolChoice;
+import ch.rasc.openai4j.common.ResponseFormat;
 import ch.rasc.openai4j.threads.ThreadMessageRequest;
 
 @JsonInclude(Include.NON_EMPTY)
@@ -283,37 +283,6 @@ public class ThreadRunCreateRequest {
 			return this;
 		}
 
-	}
-
-	public static class ResponseFormat {
-		private final Object value;
-
-		ResponseFormat(Object value) {
-			this.value = value;
-		}
-
-		/**
-		 * The model can return text or any value needed.
-		 */
-		public static ResponseFormat text() {
-			return new ResponseFormat(Map.of("type", "text"));
-		}
-
-		/**
-		 * Only function type tools are allowed to be passed to the Run.
-		 */
-		public static ResponseFormat jsonObject() {
-			return new ResponseFormat(Map.of("type", "json_object"));
-		}
-
-		public static ResponseFormat auto() {
-			return new ResponseFormat("auto");
-		}
-
-		@JsonValue
-		public Object value() {
-			return this.value;
-		}
 	}
 
 	public static class TruncationStrategy {

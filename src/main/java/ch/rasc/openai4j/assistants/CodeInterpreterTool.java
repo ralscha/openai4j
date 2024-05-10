@@ -13,26 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.openai4j.threads.messages;
+package ch.rasc.openai4j.assistants;
 
-import java.util.HashMap;
-import java.util.Map;
+public class CodeInterpreterTool extends Tool {
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class ThreadMessageUpdateRequest {
-	private final Map<String, Object> metadata;
-
-	ThreadMessageUpdateRequest(Map<String, Object> metadata) {
-		this.metadata = Map.copyOf(metadata);
+	CodeInterpreterTool() {
+		super("code_interpreter");
 	}
 
-	public static ThreadMessageUpdateRequest of(Map<String, Object> metadata) {
-		return new ThreadMessageUpdateRequest(new HashMap<>(metadata));
+	public static CodeInterpreterTool of() {
+		return new CodeInterpreterTool();
 	}
 
-	@JsonProperty
-	public Map<String, Object> metadata() {
-		return this.metadata;
-	}
 }

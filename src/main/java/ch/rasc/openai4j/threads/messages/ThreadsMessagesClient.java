@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
-import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
+import ch.rasc.openai4j.threads.ThreadMessageRequest;
 import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
@@ -56,7 +56,7 @@ public interface ThreadsMessagesClient {
 	 * @return A list of message objects.
 	 */
 	default ListResponse<ThreadMessage> list(@Param("thread_id") String threadId,
-			ListRequest request) {
+			ThreadMessagesListRequest request) {
 		return this.list(threadId, request.toMap());
 	}
 
@@ -68,8 +68,8 @@ public interface ThreadsMessagesClient {
 	 * @return A list of message objects.
 	 */
 	default ListResponse<ThreadMessage> list(@Param("thread_id") String threadId,
-			Function<ListRequest.Builder, ListRequest.Builder> fn) {
-		return this.list(threadId, fn.apply(ListRequest.builder()).build());
+			Function<ThreadMessagesListRequest.Builder, ThreadMessagesListRequest.Builder> fn) {
+		return this.list(threadId, fn.apply(ThreadMessagesListRequest.builder()).build());
 	}
 
 	/**
@@ -80,7 +80,7 @@ public interface ThreadsMessagesClient {
 	@RequestLine("POST /threads/{thread_id}/messages")
 	@Headers("Content-Type: application/json")
 	ThreadMessage create(@Param("thread_id") String threadId,
-			ThreadMessageCreateRequest request);
+			ThreadMessageRequest request);
 
 	/**
 	 * Create a message.
@@ -88,9 +88,8 @@ public interface ThreadsMessagesClient {
 	 * @return A message object.
 	 */
 	default ThreadMessage create(@Param("thread_id") String threadId,
-			Function<ThreadMessageCreateRequest.Builder, ThreadMessageCreateRequest.Builder> fn) {
-		return this.create(threadId,
-				fn.apply(ThreadMessageCreateRequest.builder()).build());
+			Function<ThreadMessageRequest.Builder, ThreadMessageRequest.Builder> fn) {
+		return this.create(threadId, fn.apply(ThreadMessageRequest.builder()).build());
 	}
 
 	/**
@@ -109,7 +108,7 @@ public interface ThreadsMessagesClient {
 	 */
 	@RequestLine("POST /threads/{thread_id}/messages/{message_id}")
 	@Headers("Content-Type: application/json")
-	ThreadMessage update(@Param("thread_id") String threadId,
-			@Param("message_id") String messageId, ThreadMessageUpdateRequest request);
+	ThreadMessage modify(@Param("thread_id") String threadId,
+			@Param("message_id") String messageId, ThreadMessageModifyRequest request);
 
 }
