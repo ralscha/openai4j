@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
-public class AssistantUpdateRequest {
+public class AssistantModifyRequest {
 
 	private final String model;
 	private final String name;
@@ -40,7 +40,7 @@ public class AssistantUpdateRequest {
 	private final List<String> fileIds;
 	private final Map<String, String> metadata;
 
-	private AssistantUpdateRequest(Builder builder) {
+	private AssistantModifyRequest(Builder builder) {
 		this.model = builder.model;
 		this.name = builder.name;
 		this.description = builder.description;
@@ -102,7 +102,8 @@ public class AssistantUpdateRequest {
 
 		/*
 		 * A list of tool enabled on the assistant. There can be a maximum of 128 tools
-		 * per assistant. Tools can be of types code_interpreter, retrieval, or function.
+		 * per assistant. Tools can be of types code_interpreter, file_search, or
+		 * function.
 		 */
 		public Builder tools(List<Tool> tools) {
 			this.tools = new ArrayList<>(tools);
@@ -170,8 +171,8 @@ public class AssistantUpdateRequest {
 			return this;
 		}
 
-		public AssistantUpdateRequest build() {
-			return new AssistantUpdateRequest(this);
+		public AssistantModifyRequest build() {
+			return new AssistantModifyRequest(this);
 		}
 	}
 }

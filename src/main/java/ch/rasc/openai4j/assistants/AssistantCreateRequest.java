@@ -118,10 +118,25 @@ public class AssistantCreateRequest {
 
 		/**
 		 * A list of tool enabled on the assistant. There can be a maximum of 128 tools
-		 * per assistant. Tools can be of types code_interpreter, retrieval, or function.
+		 * per assistant. Tools can be of types code_interpreter, file_search, or
+		 * function.
 		 */
 		public Builder tools(List<Tool> tools) {
 			this.tools = new ArrayList<>(tools);
+			return this;
+		}
+
+		/**
+		 * Add a tool to the list of tools enabled on the assistant
+		 */
+		public Builder addTools(Tool... tools) {
+			if (tools == null || tools.length == 0) {
+				return this;
+			}
+			if (this.tools == null) {
+				this.tools = new ArrayList<>();
+			}
+			this.tools.addAll(List.of(tools));
 			return this;
 		}
 
@@ -150,20 +165,6 @@ public class AssistantCreateRequest {
 				this.toolResources = new ArrayList<>();
 			}
 			this.toolResources.addAll(List.of(toolResources));
-			return this;
-		}
-
-		/**
-		 * Add a tool to the list of tools enabled on the assistant
-		 */
-		public Builder addTools(Tool... tools) {
-			if (tools == null || tools.length == 0) {
-				return this;
-			}
-			if (this.tools == null) {
-				this.tools = new ArrayList<>();
-			}
-			this.tools.addAll(List.of(tools));
 			return this;
 		}
 

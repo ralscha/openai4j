@@ -379,7 +379,8 @@ public record ThreadRunStep(String id, String object,
 			}
 		}
 
-		record FileSearchCall(String id, String type, Map<String, Object> retrieval)
+		record FileSearchCall(String id, String type,
+				@JsonProperty("file_search") Map<String, Object> fileSearch)
 				implements ToolCall {
 			/**
 			 * The ID of the tool call object.
@@ -390,7 +391,7 @@ public record ThreadRunStep(String id, String object,
 			}
 
 			/**
-			 * The type of tool call. This is always going to be retrieval for this type
+			 * The type of tool call. This is always going to be file_search for this type
 			 * of tool call.
 			 */
 			@Override
@@ -402,8 +403,8 @@ public record ThreadRunStep(String id, String object,
 			 * For now, this is always going to be an empty object.
 			 */
 			@Override
-			public Map<String, Object> retrieval() {
-				return this.retrieval;
+			public Map<String, Object> fileSearch() {
+				return this.fileSearch;
 			}
 		}
 
