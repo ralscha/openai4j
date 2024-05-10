@@ -15,6 +15,7 @@
  */
 package ch.rasc.openai4j.threads;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import ch.rasc.openai4j.common.ImageDetail;
@@ -33,6 +34,7 @@ public class ImageUrlMessageContent extends MessageContent {
 		return new ImageUrlMessageContent(new ImageUrl(url, null));
 	}
 
+	@JsonCreator
 	public static ImageUrlMessageContent of(String url, ImageDetail detail) {
 		return new ImageUrlMessageContent(new ImageUrl(url, detail));
 	}

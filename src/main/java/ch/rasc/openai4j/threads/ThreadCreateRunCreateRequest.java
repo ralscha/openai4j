@@ -30,7 +30,6 @@ import ch.rasc.openai4j.assistants.Tool;
 import ch.rasc.openai4j.assistants.ToolResources;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ToolChoice;
 import ch.rasc.openai4j.common.ResponseFormat;
-import ch.rasc.openai4j.threads.ThreadCreateRequest.Builder;
 import ch.rasc.openai4j.threads.runs.ThreadRunCreateRequest.TruncationStrategy;
 
 @JsonInclude(Include.NON_EMPTY)

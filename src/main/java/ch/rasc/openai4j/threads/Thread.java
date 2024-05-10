@@ -15,7 +15,6 @@
  */
 package ch.rasc.openai4j.threads;
 
-import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -17,6 +17,7 @@ package ch.rasc.openai4j.vectorstores.files;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import ch.rasc.openai4j.common.Error;
 
 /**
