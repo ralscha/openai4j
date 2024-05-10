@@ -15,25 +15,30 @@
  */
 package ch.rasc.openai4j.threads;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
+import ch.rasc.openai4j.common.ImageFile;
+import ch.rasc.openai4j.common.ImageUrl;
+import ch.rasc.openai4j.threads.TextMessageContent.Text;
+
 @JsonTypeInfo(use = Id.NAME, property = "type", visible = true)
 @JsonSubTypes({ @Type(name = "image_file", value = ImageFileMessageContent.class),
 		@Type(name = "text", value = TextMessageContent.class),
 		@Type(name = "image_url", value = ImageUrlMessageContent.class) })
-public abstract class MessageContent {
-	private final String type;
+public interface MessageContent {
 
-	MessageContent(String type) {
-		this.type = type;
+	default ImageFileMessageContent ofImageFile(ImageFile imageFile) {
+		return new ImageFileMessageContent("image_file", imageFile);
 	}
 
-	@JsonProperty
-	public String type() {
-		return this.type;
+	default TextMessageContent ofText(Text text) {
+		return new TextMessageContent("text", text);
+	}
+
+	default ImageUrlMessageContent ofImageUrl(ImageUrl imageUrl) {
+		return new ImageUrlMessageContent("image_url", imageUrl);
 	}
 }

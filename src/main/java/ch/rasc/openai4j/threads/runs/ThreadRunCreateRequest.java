@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -285,14 +286,8 @@ public class ThreadRunCreateRequest {
 
 	}
 
-	public static class TruncationStrategy {
-		private final String type;
-		private final @JsonProperty("last_messages") Integer lastMessages;
-
-		private TruncationStrategy(String type, Integer lastMessages) {
-			this.type = type;
-			this.lastMessages = lastMessages;
-		}
+	public record TruncationStrategy(String type,
+			@JsonProperty("last_messages") Integer lastMessages) {
 
 		/**
 		 * Messages in the middle of the thread will be dropped to fit the context length

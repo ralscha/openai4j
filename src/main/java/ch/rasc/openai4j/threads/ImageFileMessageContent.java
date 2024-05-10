@@ -15,31 +15,22 @@
  */
 package ch.rasc.openai4j.threads;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.common.ImageDetail;
 import ch.rasc.openai4j.common.ImageFile;
 
-public class ImageFileMessageContent extends MessageContent {
+public record ImageFileMessageContent(String type,
+		@JsonProperty("image_file") ImageFile imageFile) implements MessageContent {
 
-	private final ImageFile imageFile;
-
-	private ImageFileMessageContent(ImageFile imageFile) {
-		super("image_file");
-		this.imageFile = imageFile;
+	/**
+	 * Always image_file.
+	 */
+	@Override
+	public String type() {
+		return this.type;
 	}
 
-	public static ImageFileMessageContent of(String fileId) {
-		return new ImageFileMessageContent(new ImageFile(fileId, null));
-	}
-
-	@JsonCreator
-	public static ImageFileMessageContent of(String fileId, ImageDetail detail) {
-		return new ImageFileMessageContent(new ImageFile(fileId, detail));
-	}
-
-	@JsonProperty("image_file")
+	@Override
 	public ImageFile imageFile() {
 		return this.imageFile;
 	}

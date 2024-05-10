@@ -15,31 +15,22 @@
  */
 package ch.rasc.openai4j.threads;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.common.ImageDetail;
 import ch.rasc.openai4j.common.ImageUrl;
 
-public class ImageUrlMessageContent extends MessageContent {
+public record ImageUrlMessageContent(String type,
+		@JsonProperty("image_url") ImageUrl imageUrl) implements MessageContent {
 
-	private final ImageUrl imageUrl;
-
-	private ImageUrlMessageContent(ImageUrl imageUrl) {
-		super("image_url");
-		this.imageUrl = imageUrl;
+	/**
+	 * Always image_url.
+	 */
+	@Override
+	public String type() {
+		return this.type;
 	}
 
-	public static ImageUrlMessageContent of(String url) {
-		return new ImageUrlMessageContent(new ImageUrl(url, null));
-	}
-
-	@JsonCreator
-	public static ImageUrlMessageContent of(String url, ImageDetail detail) {
-		return new ImageUrlMessageContent(new ImageUrl(url, detail));
-	}
-
-	@JsonProperty("image_url")
+	@Override
 	public ImageUrl imageUrl() {
 		return this.imageUrl;
 	}
