@@ -46,7 +46,7 @@ public class ThreadCreateRunCreateRequest {
 	private final List<Tool> tools;
 	@JsonProperty("tool_resources")
 	private List<ToolResources> toolResources;
-	private final Map<String, Object> metadata;
+	private final Map<String, String> metadata;
 	private final Double temperature;
 	@JsonProperty("top_p")
 	private final Double topP;
@@ -82,7 +82,7 @@ public class ThreadCreateRunCreateRequest {
 	}
 
 	private record ThreadCreateRunCreateRequestThread(List<ThreadMessageRequest> messages,
-			Map<String, Object> metadata) {
+			Map<String, String> metadata) {
 
 	}
 
@@ -97,7 +97,7 @@ public class ThreadCreateRunCreateRequest {
 		private String instructions;
 		private List<Tool> tools;
 		private List<ToolResources> toolResources;
-		private Map<String, Object> metadata;
+		private Map<String, String> metadata;
 		private Double temperature;
 		private Double topP;
 		private Integer maxPromptTokens;
@@ -140,7 +140,7 @@ public class ThreadCreateRunCreateRequest {
 		 * A message thread to start with
 		 */
 		public Builder thread(List<ThreadMessageRequest> messages,
-				Map<String, Object> metadata) {
+				Map<String, String> metadata) {
 			this.thread = new ThreadCreateRunCreateRequestThread(List.copyOf(messages),
 					Map.copyOf(metadata));
 			return this;
@@ -220,7 +220,7 @@ public class ThreadCreateRunCreateRequest {
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
 		 * characters long.
 		 */
-		public Builder metadata(Map<String, Object> metadata) {
+		public Builder metadata(Map<String, String> metadata) {
 			this.metadata = new HashMap<>(metadata);
 			return this;
 		}
@@ -228,7 +228,7 @@ public class ThreadCreateRunCreateRequest {
 		/**
 		 * Add a key-value pair to the metadata
 		 */
-		public Builder putMetadata(String key, Object value) {
+		public Builder putMetadata(String key, String value) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}

@@ -36,7 +36,7 @@ public class ThreadMessageRequest {
 	private final String role;
 	private final Object content;
 	private final List<Attachment> attachments;
-	private final Map<String, Object> metadata;
+	private final Map<String, String> metadata;
 
 	private ThreadMessageRequest(Builder builder) {
 		if (builder.content == null) {
@@ -59,7 +59,7 @@ public class ThreadMessageRequest {
 		private String role;
 		private Object content;
 		private List<Attachment> attachments;
-		private Map<String, Object> metadata;
+		private Map<String, String> metadata;
 
 		private Builder() {
 		}
@@ -159,7 +159,7 @@ public class ThreadMessageRequest {
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
 		 * characters long.
 		 */
-		public Builder metadata(Map<String, Object> metadata) {
+		public Builder metadata(Map<String, String> metadata) {
 			this.metadata = new HashMap<>(metadata);
 			return this;
 		}
@@ -167,7 +167,7 @@ public class ThreadMessageRequest {
 		/**
 		 * Add a key-value pair to the metadata
 		 */
-		public Builder putMetadata(String key, Object value) {
+		public Builder putMetadata(String key, String value) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}

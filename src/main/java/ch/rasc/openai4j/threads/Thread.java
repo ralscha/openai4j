@@ -27,7 +27,7 @@ import ch.rasc.openai4j.assistants.ToolResources;
  */
 public record Thread(String id, String object, @JsonProperty("created_at") int createdAt,
 		@JsonProperty("tool_resources") List<ToolResources> toolResources,
-		Map<String, Object> metadata) {
+		Map<String, String> metadata) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -70,7 +70,7 @@ public record Thread(String id, String object, @JsonProperty("created_at") int c
 	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
 	 */
 	@Override
-	public Map<String, Object> metadata() {
+	public Map<String, String> metadata() {
 		return this.metadata;
 	}
 }

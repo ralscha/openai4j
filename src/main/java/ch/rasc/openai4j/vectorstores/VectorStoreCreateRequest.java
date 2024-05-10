@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.openai4j.threads;
+package ch.rasc.openai4j.vectorstores;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,23 +22,29 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ch.rasc.openai4j.assistants.ToolResources;
-import ch.rasc.openai4j.threads.ThreadCreateRequest.Builder;
+import ch.rasc.openai4j.assistants.AssistantCreateRequest.Builder;
+import ch.rasc.openai4j.vectorstores.VectorStore.ExpirationPolicy;
+import ch.rasc.openai4j.vectorstores.VectorStore.ExpirationPolicyAnchor;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
-public class ThreadModifyRequest {
+public class VectorStoreCreateRequest {
 
-	@JsonProperty("tool_resources")
-	private final List<ToolResources> toolResources;
+	@JsonProperty("file_ids")
+	private final List<String> fileIds;
+	private final String name;
+	@JsonProperty("expires_after")
+	private final ExpirationPolicy expiresAfter;
 	private final Map<String, String> metadata;
 
-	private ThreadModifyRequest(Builder builder) {
-		this.toolResources = builder.toolResources;
+	private VectorStoreCreateRequest(Builder builder) {
+		this.fileIds = builder.fileIds;
+		this.name = builder.name;
+		this.expiresAfter = builder.expiresAfter;
 		this.metadata = builder.metadata;
 	}
 
@@ -47,37 +53,52 @@ public class ThreadModifyRequest {
 	}
 
 	public static final class Builder {
-		private List<ToolResources> toolResources;
+		private List<String> fileIds;
+		private String name;
+		private ExpirationPolicy expiresAfter;
 		private Map<String, String> metadata;
 
 		private Builder() {
 		}
 
 		/**
-		 * A set of resources that are made available to the assistant's tools in this
-		 * thread. The resources are specific to the type of tool. For example, the
-		 * code_interpreter tool requires a list of file IDs, while the file_search tool
-		 * requires a list of vector store IDs.
+		 * A list of File IDs that the vector store should use. Useful for tools like
+		 * file_search that can access files.
 		 */
-		public Builder toolResources(List<ToolResources> toolResources) {
-			this.toolResources = new ArrayList<>(toolResources);
+		public Builder fileIds(List<String> fileIds) {
+			this.fileIds = new ArrayList<>(fileIds);
 			return this;
 		}
 
 		/**
-		 * A set of resources that are made available to the assistant's tools in this
-		 * thread. The resources are specific to the type of tool. For example, the
-		 * code_interpreter tool requires a list of file IDs, while the file_search tool
-		 * requires a list of vector store IDs.
+		 * A list of File IDs that the vector store should use. Useful for tools like
+		 * file_search that can access files.
 		 */
-		public Builder addToolResources(ToolResources... toolResources) {
-			if (toolResources == null || toolResources.length == 0) {
-				return this;
+		public Builder addFileIds(String... fileIds) {
+			if (fileIds == null || fileIds.length == 0) {
+				this.fileIds = new ArrayList<>();
 			}
-			if (this.toolResources == null) {
-				this.toolResources = new ArrayList<>();
+			if (this.fileIds == null) {
+				this.fileIds = new ArrayList<>();
 			}
-			this.toolResources.addAll(List.of(toolResources));
+			this.fileIds.addAll(List.of(fileIds));
+			return this;
+		}
+
+		/**
+		 * The name of the vector store.
+		 */
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		/**
+		 * The expiration policy for a vector store.
+		 */
+		public Builder expiresAfterLastActiveAt(int days) {
+			this.expiresAfter = new ExpirationPolicy(
+					ExpirationPolicyAnchor.LAST_ACTIVE_AT, days);
 			return this;
 		}
 
@@ -103,8 +124,8 @@ public class ThreadModifyRequest {
 			return this;
 		}
 
-		public ThreadModifyRequest build() {
-			return new ThreadModifyRequest(this);
+		public VectorStoreCreateRequest build() {
+			return new VectorStoreCreateRequest(this);
 		}
 	}
 

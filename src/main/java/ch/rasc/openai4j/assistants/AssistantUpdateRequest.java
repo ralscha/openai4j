@@ -38,7 +38,7 @@ public class AssistantUpdateRequest {
 	private final List<Tool> tools;
 	@JsonProperty("file_ids")
 	private final List<String> fileIds;
-	private final Map<String, Object> metadata;
+	private final Map<String, String> metadata;
 
 	private AssistantUpdateRequest(Builder builder) {
 		this.model = builder.model;
@@ -61,7 +61,7 @@ public class AssistantUpdateRequest {
 		private String instructions;
 		private List<Tool> tools;
 		private List<String> fileIds;
-		private Map<String, Object> metadata;
+		private Map<String, String> metadata;
 
 		private Builder() {
 		}
@@ -154,7 +154,7 @@ public class AssistantUpdateRequest {
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
 		 * characters long.
 		 */
-		public Builder metadata(Map<String, Object> metadata) {
+		public Builder metadata(Map<String, String> metadata) {
 			this.metadata = new HashMap<>(metadata);
 			return this;
 		}
@@ -162,7 +162,7 @@ public class AssistantUpdateRequest {
 		/**
 		 * Add a key-value pair to the metadata
 		 */
-		public Builder putMetadata(String key, Object value) {
+		public Builder putMetadata(String key, String value) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}

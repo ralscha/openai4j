@@ -20,18 +20,18 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ThreadRunModifyRequest {
-	private final Map<String, Object> metadata;
+	private final Map<String, String> metadata;
 
-	ThreadRunModifyRequest(Map<String, Object> metadata) {
+	ThreadRunModifyRequest(Map<String, String> metadata) {
 		this.metadata = Map.copyOf(metadata);
 	}
 
-	public static ThreadRunModifyRequest of(Map<String, Object> metadata) {
+	public static ThreadRunModifyRequest of(Map<String, String> metadata) {
 		return new ThreadRunModifyRequest(metadata);
 	}
 
 	@JsonProperty
-	public Map<String, Object> metadata() {
+	public Map<String, String> metadata() {
 		return this.metadata;
 	}
 }

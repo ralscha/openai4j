@@ -97,7 +97,7 @@ public class FileSearchToolResouces implements ToolResources {
 	public static class VectorStore {
 		@JsonProperty("file_ids")
 		private final List<String> fileIds;
-		private final Map<String, Object> metadata;
+		private final Map<String, String> metadata;
 
 		private VectorStore(Builder builder) {
 			this.fileIds = builder.fileIds;
@@ -110,7 +110,7 @@ public class FileSearchToolResouces implements ToolResources {
 
 		public static class Builder {
 			private List<String> fileIds;
-			private Map<String, Object> metadata;
+			private Map<String, String> metadata;
 
 			/**
 			 * A list of file IDs to add to the vector store. There can be a maximum of
@@ -143,7 +143,7 @@ public class FileSearchToolResouces implements ToolResources {
 			 * structured format. Keys can be a maximum of 64 characters long and values
 			 * can be a maxium of 512 characters long.
 			 */
-			public Builder metadata(Map<String, Object> metadata) {
+			public Builder metadata(Map<String, String> metadata) {
 				this.metadata = new HashMap<>(metadata);
 				return this;
 			}
@@ -151,7 +151,7 @@ public class FileSearchToolResouces implements ToolResources {
 			/**
 			 * Add a key-value pair to the metadata
 			 */
-			public Builder putMetadata(String key, Object value) {
+			public Builder putMetadata(String key, String value) {
 				if (this.metadata == null) {
 					this.metadata = new HashMap<>();
 				}

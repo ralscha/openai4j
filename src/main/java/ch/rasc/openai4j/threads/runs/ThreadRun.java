@@ -43,7 +43,7 @@ public record ThreadRun(String id, String object,
 		@JsonProperty("failed_at") Integer failedAt,
 		@JsonProperty("completed_at") Integer completedAt, String model,
 		String instructions, List<Tool> tools,
-		@JsonProperty("metadata") Map<String, Object> metadata, Usage usage,
+		@JsonProperty("metadata") Map<String, String> metadata, Usage usage,
 		Double temperature, @JsonProperty("top_p") Double topP,
 		@JsonProperty("max_prompt_tokens") Integer maxPromptTokens,
 		@JsonProperty("max_completion_tokens") Integer maxCompletionTokens,
@@ -186,7 +186,7 @@ public record ThreadRun(String id, String object,
 	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
 	 */
 	@Override
-	public Map<String, Object> metadata() {
+	public Map<String, String> metadata() {
 		return this.metadata;
 	}
 

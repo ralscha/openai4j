@@ -40,7 +40,7 @@ public class AssistantCreateRequest {
 	private final List<Tool> tools;
 	@JsonProperty("tool_resources")
 	private final List<ToolResources> toolResources;
-	private final Map<String, Object> metadata;
+	private final Map<String, String> metadata;
 	private final Double temperature;
 	@JsonProperty("top_p")
 	private final Double topP;
@@ -74,7 +74,7 @@ public class AssistantCreateRequest {
 		private String instructions;
 		private List<Tool> tools;
 		private List<ToolResources> toolResources;
-		private Map<String, Object> metadata;
+		private Map<String, String> metadata;
 		private Double temperature;
 		private Double topP;
 		private ResponseFormat responseFormat;
@@ -173,7 +173,7 @@ public class AssistantCreateRequest {
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
 		 * characters long.
 		 */
-		public Builder metadata(Map<String, Object> metadata) {
+		public Builder metadata(Map<String, String> metadata) {
 			this.metadata = new HashMap<>(metadata);
 			return this;
 		}
@@ -181,7 +181,7 @@ public class AssistantCreateRequest {
 		/**
 		 * Add a key-value pair to the metadata
 		 */
-		public Builder putMetadata(String key, Object value) {
+		public Builder putMetadata(String key, String value) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}

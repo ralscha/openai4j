@@ -15,10 +15,13 @@
  */
 package ch.rasc.openai4j.batch;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -30,7 +33,7 @@ public class BatchCreateRequest {
 	private final String endpoint;
 	@JsonProperty("completion_window")
 	private final String completionWindow;
-	private final Object metadata;
+	private final Map<String, String> metadata;
 
 	private BatchCreateRequest(Builder builder) {
 		if (builder.inputFileId == null || builder.inputFileId.isEmpty()) {
@@ -61,7 +64,7 @@ public class BatchCreateRequest {
 		private String inputFileId;
 		private String endpoint;
 		private String completionWindow;
-		private Object metadata;
+		private Map<String, String> metadata;
 
 		/**
 		 * The ID of an uploaded file that contains requests for the new batch.
@@ -95,8 +98,19 @@ public class BatchCreateRequest {
 		/**
 		 * Optional custom metadata for the batch.
 		 */
-		public Builder metadata(Object metadata) {
-			this.metadata = metadata;
+		public Builder metadata(Map<String, String> metadata) {
+			this.metadata = new HashMap<>(metadata);
+			return this;
+		}
+
+		/**
+		 * Add a key-value pair to the metadata
+		 */
+		public Builder putMetadata(String key, String value) {
+			if (this.metadata == null) {
+				this.metadata = new HashMap<>();
+			}
+			this.metadata.put(key, value);
 			return this;
 		}
 

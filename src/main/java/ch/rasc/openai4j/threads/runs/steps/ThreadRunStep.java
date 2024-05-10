@@ -39,7 +39,7 @@ public record ThreadRunStep(String id, String object,
 		@JsonProperty("expired_at") Integer expiredAt,
 		@JsonProperty("cancelled_at") Integer cancelledAt,
 		@JsonProperty("failed_at") Integer failedAt,
-		@JsonProperty("completed_at") Integer completedAt, Map<String, Object> metadata,
+		@JsonProperty("completed_at") Integer completedAt, Map<String, String> metadata,
 		Usage usage) {
 
 	/**
@@ -162,7 +162,7 @@ public record ThreadRunStep(String id, String object,
 	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
 	 */
 	@Override
-	public Map<String, Object> metadata() {
+	public Map<String, String> metadata() {
 		return this.metadata;
 	}
 

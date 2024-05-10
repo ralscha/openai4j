@@ -29,7 +29,7 @@ public record Assistant(String id, String object,
 		@JsonProperty("created_at") int createdAt, String name, String description,
 		String model, String instructions, List<Tool> tools,
 		@JsonProperty("tool_resources") List<ToolResources> toolResources,
-		Map<String, Object> metadata, Double temperature,
+		Map<String, String> metadata, Double temperature,
 		@JsonProperty("top_p") Double topP,
 		@JsonProperty("response_format") ResponseFormat responseFormat) {
 
@@ -116,7 +116,7 @@ public record Assistant(String id, String object,
 	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
 	 */
 	@Override
-	public Map<String, Object> metadata() {
+	public Map<String, String> metadata() {
 		return this.metadata;
 	}
 

@@ -34,7 +34,7 @@ public record ThreadMessage(String id, String object,
 		@JsonProperty("incomplete_at") Integer incompleteAt, String role,
 		List<MessageContent> content, @JsonProperty("assistant_id") String assistantId,
 		@JsonProperty("run_id") String runId, List<Attachment> attachments,
-		Map<String, Object> metadata) {
+		Map<String, String> metadata) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -148,7 +148,7 @@ public record ThreadMessage(String id, String object,
 	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
 	 */
 	@Override
-	public Map<String, Object> metadata() {
+	public Map<String, String> metadata() {
 		return this.metadata;
 	}
 

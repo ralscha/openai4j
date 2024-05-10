@@ -36,7 +36,7 @@ public class ThreadCreateRequest {
 	private final List<ThreadMessageRequest> messages;
 	@JsonProperty("tool_resources")
 	private final List<ToolResources> toolResources;
-	private final Map<String, Object> metadata;
+	private final Map<String, String> metadata;
 
 	private ThreadCreateRequest(Builder builder) {
 		this.messages = builder.messages;
@@ -51,7 +51,7 @@ public class ThreadCreateRequest {
 	public static final class Builder {
 		private List<ThreadMessageRequest> messages;
 		private List<ToolResources> toolResources;
-		private Map<String, Object> metadata;
+		private Map<String, String> metadata;
 
 		private Builder() {
 		}
@@ -117,7 +117,7 @@ public class ThreadCreateRequest {
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
 		 * characters long.
 		 */
-		public Builder metadata(Map<String, Object> metadata) {
+		public Builder metadata(Map<String, String> metadata) {
 			this.metadata = new HashMap<>(metadata);
 			return this;
 		}
@@ -125,7 +125,7 @@ public class ThreadCreateRequest {
 		/**
 		 * Add a key-value pair to the metadata
 		 */
-		public Builder putMetadata(String key, Object value) {
+		public Builder putMetadata(String key, String value) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}

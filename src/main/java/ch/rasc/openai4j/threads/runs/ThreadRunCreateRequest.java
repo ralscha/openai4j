@@ -44,7 +44,7 @@ public class ThreadRunCreateRequest {
 	@JsonProperty("additional_messages")
 	private final List<ThreadMessageRequest> additionalMessages;
 	private final List<Tool> tools;
-	private final Map<String, Object> metadata;
+	private final Map<String, String> metadata;
 	private final Double temperature;
 	@JsonProperty("max_prompt_tokens")
 	private final Integer maxPromptTokens;
@@ -87,7 +87,7 @@ public class ThreadRunCreateRequest {
 		private String additionalInstructions;
 		private List<ThreadMessageRequest> additionalMessages;
 		private List<Tool> tools;
-		private Map<String, Object> metadata;
+		private Map<String, String> metadata;
 		private Double temperature;
 		private Integer maxPromptTokens;
 		private Integer maxCompletionTokens;
@@ -181,7 +181,7 @@ public class ThreadRunCreateRequest {
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
 		 * characters long.
 		 */
-		public Builder metadata(Map<String, Object> metadata) {
+		public Builder metadata(Map<String, String> metadata) {
 			this.metadata = new HashMap<>(metadata);
 			return this;
 		}
@@ -189,7 +189,7 @@ public class ThreadRunCreateRequest {
 		/**
 		 * Add a key-value pair to the metadata
 		 */
-		public Builder putMetadata(String key, Object value) {
+		public Builder putMetadata(String key, String value) {
 			if (this.metadata == null) {
 				this.metadata = new HashMap<>();
 			}
