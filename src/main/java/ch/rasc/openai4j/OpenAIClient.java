@@ -33,6 +33,9 @@ import ch.rasc.openai4j.threads.ThreadsClient;
 import ch.rasc.openai4j.threads.messages.ThreadsMessagesClient;
 import ch.rasc.openai4j.threads.runs.ThreadsRunsClient;
 import ch.rasc.openai4j.threads.runs.steps.ThreadsRunsStepsClient;
+import ch.rasc.openai4j.vectorstores.VectorStoresClient;
+import ch.rasc.openai4j.vectorstores.filebatches.VectorStoresFileBatchesClient;
+import ch.rasc.openai4j.vectorstores.files.VectorStoresFilesClient;
 import feign.Feign;
 import feign.Feign.Builder;
 import feign.RequestInterceptor;
@@ -56,6 +59,9 @@ public class OpenAIClient {
 	public ThreadsMessagesClient threadsMessages;
 	public AssistantsClient assistants;
 	public BatchesClient batches;
+	public VectorStoresClient vectorStores;
+	public VectorStoresFilesClient vectorStoresFiles;
+	public VectorStoresFileBatchesClient vectorStoresFileBatches;
 
 	public static OpenAIClient create(
 			Function<Configuration.Builder, Configuration.Builder> fn) {
@@ -151,6 +157,14 @@ public class OpenAIClient {
 				betaInterceptors).target(AssistantsClient.class, baseUrl);
 		client.batches = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
 				betaInterceptors).target(BatchesClient.class, baseUrl);
+		client.vectorStores = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				betaInterceptors).target(VectorStoresClient.class, baseUrl);
+		client.vectorStoresFiles = jsonClientBuilder(configuration, jsonDecoder,
+				jsonEncoder, betaInterceptors).target(VectorStoresFilesClient.class,
+						baseUrl);
+		client.vectorStoresFileBatches = jsonClientBuilder(configuration, jsonDecoder,
+				jsonEncoder, betaInterceptors).target(VectorStoresFileBatchesClient.class,
+						baseUrl);
 
 		return client;
 	}

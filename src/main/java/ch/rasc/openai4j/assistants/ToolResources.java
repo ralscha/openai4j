@@ -15,6 +15,8 @@
  */
 package ch.rasc.openai4j.assistants;
 
+import java.util.function.Function;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -49,8 +51,20 @@ public class ToolResources {
 		return new ToolResources(codeInterpreter, null);
 	}
 
+	public static ToolResources ofCodeInterpreter(
+			Function<CodeInterpreterToolResources.Builder, CodeInterpreterToolResources.Builder> fn) {
+		return new ToolResources(
+				fn.apply(new CodeInterpreterToolResources.Builder()).build(), null);
+	}
+
 	public static ToolResources ofFileSearch(FileSearchToolResources fileSearch) {
 		return new ToolResources(null, fileSearch);
+	}
+
+	public static ToolResources ofFileSearch(
+			Function<FileSearchToolResources.Builder, FileSearchToolResources.Builder> fn) {
+		return new ToolResources(null,
+				fn.apply(new FileSearchToolResources.Builder()).build());
 	}
 
 	public CodeInterpreterToolResources codeInterpreter() {

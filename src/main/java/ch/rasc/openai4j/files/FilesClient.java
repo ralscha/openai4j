@@ -86,6 +86,32 @@ public interface FilesClient {
 	 * uploaded by one organization can be up to 100 GB.
 	 * <p>
 	 * The size of individual files can be a maximum of 512 MB or 2 million tokens for
+	 * Assistants.
+	 *
+	 * @return The uploaded File object.
+	 */
+	default FileObject createForVision(Path file) {
+		return this.upload(file, Purpose.VISION);
+	}
+
+	/**
+	 * Upload a file that can be used across various endpoints. The size of all the files
+	 * uploaded by one organization can be up to 100 GB.
+	 * <p>
+	 * The size of individual files can be a maximum of 512 MB or 2 million tokens for
+	 * Assistants.
+	 *
+	 * @return The uploaded File object.
+	 */
+	default FileObject createForBatch(Path file) {
+		return this.upload(file, Purpose.BATCH);
+	}
+
+	/**
+	 * Upload a file that can be used across various endpoints. The size of all the files
+	 * uploaded by one organization can be up to 100 GB.
+	 * <p>
+	 * The size of individual files can be a maximum of 512 MB or 2 million tokens for
 	 * Assistants. The Fine-tuning API only supports .jsonl files.
 	 *
 	 * @return The uploaded File object.
