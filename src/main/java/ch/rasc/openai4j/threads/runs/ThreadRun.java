@@ -22,8 +22,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.assistants.Tool;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ToolChoice;
 import ch.rasc.openai4j.common.Error;
+import ch.rasc.openai4j.common.ResponseFormat;
 import ch.rasc.openai4j.common.ToolCall;
+import ch.rasc.openai4j.threads.runs.ThreadRunCreateRequest.TruncationStrategy;
 
 /**
  * Represents an execution run on a thread.
@@ -40,9 +43,13 @@ public record ThreadRun(String id, String object,
 		@JsonProperty("failed_at") Integer failedAt,
 		@JsonProperty("completed_at") Integer completedAt, String model,
 		String instructions, List<Tool> tools,
-		@JsonProperty("file_ids") List<String> fileIds,
 		@JsonProperty("metadata") Map<String, Object> metadata, Usage usage,
-		Double temperature) {
+		Double temperature, @JsonProperty("top_p") Double topP,
+		@JsonProperty("max_prompt_tokens") Integer maxPromptTokens,
+		@JsonProperty("max_completion_tokens") Integer maxCompletionTokens,
+		@JsonProperty("truncation_strategy") TruncationStrategy truncationStrategy,
+		@JsonProperty("tool_choice") ToolChoice toolChoice,
+		@JsonProperty("response_format") ResponseFormat responseFormat) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -174,14 +181,6 @@ public record ThreadRun(String id, String object,
 	}
 
 	/**
-	 * The list of File IDs the assistant used for this run.
-	 */
-	@Override
-	public List<String> fileIds() {
-		return this.fileIds;
-	}
-
-	/**
 	 * Set of 16 key-value pairs that can be attached to an object. This can be useful for
 	 * storing additional information about the object in a structured format. Keys can be
 	 * a maximum of 64 characters long and values can be a maxium of 512 characters long.
@@ -206,6 +205,74 @@ public record ThreadRun(String id, String object,
 	@Override
 	public Double temperature() {
 		return this.temperature;
+	}
+
+	/**
+	 * The nucleus sampling value used for this run. If not set, defaults to 1.
+	 */
+	@Override
+	public Double topP() {
+		return this.topP;
+	}
+
+	/**
+	 * The maximum number of prompt tokens specified to have been used over the course of
+	 * the run.
+	 */
+	@Override
+	public Integer maxPromptTokens() {
+		return this.maxPromptTokens;
+	}
+
+	/**
+	 * The maximum number of completion tokens specified to have been used over the course
+	 * of the run.
+	 */
+	@Override
+	public Integer maxCompletionTokens() {
+		return this.maxCompletionTokens;
+	}
+
+	/**
+	 * Controls for how a thread will be truncated prior to the run. Use this to control
+	 * the intial context window of the run.
+	 */
+	@Override
+	public TruncationStrategy truncationStrategy() {
+		return this.truncationStrategy;
+	}
+
+	/**
+	 * Controls which (if any) tool is called by the model. none means the model will not
+	 * call any tools and instead generates a message. auto is the default value and means
+	 * the model can pick between generating a message or calling one or more tools.
+	 * required means the model must call one or more tools before responding to the user.
+	 * Specifying a particular tool like {"type": "file_search"} or {"type": "function",
+	 * "function": {"name": "my_function"}} forces the model to call that tool.
+	 */
+	@Override
+	public ToolChoice toolChoice() {
+		return this.toolChoice;
+	}
+
+	/**
+	 * Specifies the format that the model must output. Compatible with GPT-4 Turbo and
+	 * all GPT-3.5 Turbo models since gpt-3.5-turbo-1106.
+	 * <p>
+	 * Setting to { "type": "json_object" } enables JSON mode, which guarantees the
+	 * message the model generates is valid JSON.
+	 * <p>
+	 * Important: when using JSON mode, you must also instruct the model to produce JSON
+	 * yourself via a system or user message. Without this, the model may generate an
+	 * unending stream of whitespace until the generation reaches the token limit,
+	 * resulting in a long-running and seemingly "stuck" request. Also note that the
+	 * message content may be partially cut off if finish_reason="length", which indicates
+	 * the generation exceeded max_tokens or the conversation exceeded the max context
+	 * length.
+	 */
+	@Override
+	public ResponseFormat responseFormat() {
+		return this.responseFormat;
 	}
 
 	public enum Status {

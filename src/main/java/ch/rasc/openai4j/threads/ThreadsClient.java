@@ -93,6 +93,16 @@ public interface ThreadsClient {
 	Thread modify(@Param("thread_id") String threadId, ThreadModifyRequest request);
 
 	/**
+	 * Modifies a thread.
+	 * 
+	 * @return The modified thread object matching the specified thread ID.
+	 */
+	default Thread modify(@Param("thread_id") String threadId,
+			Function<ThreadModifyRequest.Builder, ThreadModifyRequest.Builder> fn) {
+		return this.modify(threadId, fn.apply(ThreadModifyRequest.builder()).build());
+	}
+
+	/**
 	 * Delete a thread
 	 *
 	 * @return Deletion status.

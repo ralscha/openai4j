@@ -19,15 +19,15 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ThreadRunUpdateRequest {
+public class ThreadRunModifyRequest {
 	private final Map<String, Object> metadata;
 
-	ThreadRunUpdateRequest(Map<String, Object> metadata) {
+	ThreadRunModifyRequest(Map<String, Object> metadata) {
 		this.metadata = Map.copyOf(metadata);
 	}
 
-	public static ThreadRunUpdateRequest of(Map<String, Object> metadata) {
-		return new ThreadRunUpdateRequest(metadata);
+	public static ThreadRunModifyRequest of(Map<String, Object> metadata) {
+		return new ThreadRunModifyRequest(metadata);
 	}
 
 	@JsonProperty

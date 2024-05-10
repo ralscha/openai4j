@@ -69,8 +69,8 @@ public interface ThreadsRunsClient {
 	 */
 	@RequestLine("POST /threads/{thread_id}/runs/{run_id}")
 	@Headers("Content-Type: application/json")
-	ThreadRun update(@Param("thread_id") String threadId, @Param("run_id") String runId,
-			ThreadRunUpdateRequest request);
+	ThreadRun modify(@Param("thread_id") String threadId, @Param("run_id") String runId,
+			ThreadRunModifyRequest request);
 
 	/**
 	 * Cancels a run that is in_progress.

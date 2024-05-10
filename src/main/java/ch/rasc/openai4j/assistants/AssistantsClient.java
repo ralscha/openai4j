@@ -64,7 +64,7 @@ public interface AssistantsClient {
 	 */
 	@RequestLine("POST /assistants/{assistant_id}")
 	@Headers("Content-Type: application/json")
-	Assistant update(@Param("assistant_id") String assistantId,
+	Assistant modify(@Param("assistant_id") String assistantId,
 			AssistantUpdateRequest request);
 
 	/**
@@ -72,9 +72,9 @@ public interface AssistantsClient {
 	 *
 	 * @return The modified assistant object.
 	 */
-	default Assistant update(@Param("assistant_id") String assistantId,
+	default Assistant modify(@Param("assistant_id") String assistantId,
 			Function<AssistantUpdateRequest.Builder, AssistantUpdateRequest.Builder> fn) {
-		return this.update(assistantId,
+		return this.modify(assistantId,
 				fn.apply(AssistantUpdateRequest.builder()).build());
 	}
 

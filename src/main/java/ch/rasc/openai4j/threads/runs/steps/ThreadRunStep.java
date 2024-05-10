@@ -218,7 +218,7 @@ public record ThreadRunStep(String id, String object,
 			implements StepDetail {
 
 		/**
-		 * Always `message_creation`.
+		 * Always <code>message_creation</code>.
 		 */
 		@Override
 		public String type() {
@@ -248,7 +248,7 @@ public record ThreadRunStep(String id, String object,
 			@JsonProperty("tool_calls") List<ToolCall> toolCalls) implements StepDetail {
 
 		/**
-		 * Always tool_calls.
+		 * Always <code>tool_calls</code>.
 		 */
 		@Override
 		public String type() {
@@ -257,7 +257,7 @@ public record ThreadRunStep(String id, String object,
 
 		/**
 		 * An array of tool calls the run step was involved in. These can be associated
-		 * with one of three types of tools: code_interpreter, retrieval, or function.
+		 * with one of three types of tools: code_interpreter, file_search, or function.
 		 */
 		@Override
 		public List<ToolCall> toolCalls() {
@@ -265,13 +265,14 @@ public record ThreadRunStep(String id, String object,
 		}
 
 		@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
-		@JsonSubTypes({ @Type(value = CodeToolCall.class, name = "code_interpreter"),
-				@Type(value = RetrievalToolCall.class, name = "retrieval"),
+		@JsonSubTypes({
+				@Type(value = CodeInterpreterCall.class, name = "code_interpreter"),
+				@Type(value = FileSearchCall.class, name = "file_search"),
 				@Type(value = FunctionToolCall.class, name = "function") })
 		public interface ToolCall {
 		}
 
-		record CodeToolCall(String id, String type,
+		record CodeInterpreterCall(String id, String type,
 				@JsonProperty("code_interpreter") CodeInterpreter codeInterpreter)
 				implements ToolCall {
 
@@ -378,7 +379,7 @@ public record ThreadRunStep(String id, String object,
 			}
 		}
 
-		record RetrievalToolCall(String id, String type, Map<String, Object> retrieval)
+		record FileSearchCall(String id, String type, Map<String, Object> retrieval)
 				implements ToolCall {
 			/**
 			 * The ID of the tool call object.

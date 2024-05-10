@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
+import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListResponse;
 import ch.rasc.openai4j.threads.ThreadMessageRequest;
 import feign.Headers;
@@ -110,5 +111,15 @@ public interface ThreadsMessagesClient {
 	@Headers("Content-Type: application/json")
 	ThreadMessage modify(@Param("thread_id") String threadId,
 			@Param("message_id") String messageId, ThreadMessageModifyRequest request);
+
+	/**
+	 * Deletes a message.
+	 * 
+	 * @return Deletion status
+	 */
+	@RequestLine("DELETE /threads/{thread_id}/messages/{message_id}")
+	@Headers("Content-Type: application/json")
+	DeletionStatus delete(@Param("thread_id") String threadId,
+			@Param("message_id") String messageId);
 
 }
