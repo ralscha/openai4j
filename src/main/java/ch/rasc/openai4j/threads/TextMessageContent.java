@@ -30,7 +30,7 @@ public class TextMessageContent extends MessageContent {
 	}
 
 	@JsonProperty("text")
-	public String getText() {
+	public String text() {
 		return this.text;
 	}
 }

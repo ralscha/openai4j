@@ -35,7 +35,7 @@ public class ThreadCreateRequest {
 
 	private final List<ThreadMessageRequest> messages;
 	@JsonProperty("tool_resources")
-	private final List<ToolResources> toolResources;
+	private final ToolResources toolResources;
 	private final Map<String, String> metadata;
 
 	private ThreadCreateRequest(Builder builder) {
@@ -50,7 +50,7 @@ public class ThreadCreateRequest {
 
 	public static final class Builder {
 		private List<ThreadMessageRequest> messages;
-		private List<ToolResources> toolResources;
+		private ToolResources toolResources;
 		private Map<String, String> metadata;
 
 		private Builder() {
@@ -89,25 +89,8 @@ public class ThreadCreateRequest {
 		 * list of file IDs, while the file_search tool requires a list of vector store
 		 * IDs.
 		 */
-		public Builder toolResources(List<ToolResources> toolResources) {
-			this.toolResources = new ArrayList<>(toolResources);
-			return this;
-		}
-
-		/**
-		 * A set of resources that are used by the assistant's tools. The resources are
-		 * specific to the type of tool. For example, the code_interpreter tool requires a
-		 * list of file IDs, while the file_search tool requires a list of vector store
-		 * IDs.
-		 */
-		public Builder addToolResources(ToolResources... toolResources) {
-			if (toolResources == null || toolResources.length == 0) {
-				return this;
-			}
-			if (this.toolResources == null) {
-				this.toolResources = new ArrayList<>();
-			}
-			this.toolResources.addAll(List.of(toolResources));
+		public Builder toolResources(ToolResources toolResources) {
+			this.toolResources = toolResources;
 			return this;
 		}
 

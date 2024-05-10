@@ -34,7 +34,7 @@ import ch.rasc.openai4j.threads.ThreadCreateRequest.Builder;
 public class ThreadModifyRequest {
 
 	@JsonProperty("tool_resources")
-	private final List<ToolResources> toolResources;
+	private final ToolResources toolResources;
 	private final Map<String, String> metadata;
 
 	private ThreadModifyRequest(Builder builder) {
@@ -47,7 +47,7 @@ public class ThreadModifyRequest {
 	}
 
 	public static final class Builder {
-		private List<ToolResources> toolResources;
+		private ToolResources toolResources;
 		private Map<String, String> metadata;
 
 		private Builder() {
@@ -59,25 +59,8 @@ public class ThreadModifyRequest {
 		 * code_interpreter tool requires a list of file IDs, while the file_search tool
 		 * requires a list of vector store IDs.
 		 */
-		public Builder toolResources(List<ToolResources> toolResources) {
-			this.toolResources = new ArrayList<>(toolResources);
-			return this;
-		}
-
-		/**
-		 * A set of resources that are made available to the assistant's tools in this
-		 * thread. The resources are specific to the type of tool. For example, the
-		 * code_interpreter tool requires a list of file IDs, while the file_search tool
-		 * requires a list of vector store IDs.
-		 */
-		public Builder addToolResources(ToolResources... toolResources) {
-			if (toolResources == null || toolResources.length == 0) {
-				return this;
-			}
-			if (this.toolResources == null) {
-				this.toolResources = new ArrayList<>();
-			}
-			this.toolResources.addAll(List.of(toolResources));
+		public Builder toolResources(ToolResources toolResources) {
+			this.toolResources = toolResources;
 			return this;
 		}
 

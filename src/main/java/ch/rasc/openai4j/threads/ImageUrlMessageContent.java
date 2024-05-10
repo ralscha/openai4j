@@ -38,7 +38,7 @@ public class ImageUrlMessageContent extends MessageContent {
 	}
 
 	@JsonProperty("image_url")
-	public ImageUrl getImageUrl() {
+	public ImageUrl imageUrl() {
 		return this.imageUrl;
 	}
 }

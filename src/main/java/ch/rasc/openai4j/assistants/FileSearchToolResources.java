@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 @SuppressWarnings({ "hiding" })
-public class FileSearchToolResouces implements ToolResources {
+public class FileSearchToolResources {
 
 	@JsonProperty("vector_store_ids")
 	private final List<String> vectorStoreIds;
@@ -38,16 +39,24 @@ public class FileSearchToolResouces implements ToolResources {
 	@JsonProperty("vector_stores")
 	private final List<VectorStore> vectorStores;
 
-	private FileSearchToolResouces(Builder builder) {
+	@JsonCreator
+	private FileSearchToolResources(
+			@JsonProperty("vector_store_ids") List<String> vectorStoreIds,
+			@JsonProperty("vector_stores") List<VectorStore> vectorStores) {
+		this.vectorStoreIds = vectorStoreIds;
+		this.vectorStores = vectorStores;
+	}
+
+	private FileSearchToolResources(Builder builder) {
 		this.vectorStoreIds = builder.vectorStoreIds;
 		this.vectorStores = builder.vectorStores;
 	}
 
-	public List<String> getVectorStoreIds() {
+	public List<String> vectorStoreIds() {
 		return this.vectorStoreIds;
 	}
 
-	public List<VectorStore> getVectorStores() {
+	public List<VectorStore> vectorStores() {
 		return this.vectorStores;
 	}
 
@@ -86,8 +95,8 @@ public class FileSearchToolResouces implements ToolResources {
 			return this.vectorStores(fn.apply(VectorStore.builder()).build());
 		}
 
-		public FileSearchToolResouces build() {
-			return new FileSearchToolResouces(this);
+		public FileSearchToolResources build() {
+			return new FileSearchToolResources(this);
 		}
 	}
 

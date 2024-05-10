@@ -28,7 +28,7 @@ import ch.rasc.openai4j.common.ResponseFormat;
 public record Assistant(String id, String object,
 		@JsonProperty("created_at") int createdAt, String name, String description,
 		String model, String instructions, List<Tool> tools,
-		@JsonProperty("tool_resources") List<ToolResources> toolResources,
+		@JsonProperty("tool_resources") ToolResources toolResources,
 		Map<String, String> metadata, Double temperature,
 		@JsonProperty("top_p") Double topP,
 		@JsonProperty("response_format") ResponseFormat responseFormat) {
@@ -106,7 +106,7 @@ public record Assistant(String id, String object,
 	 * list of file IDs, while the file_search tool requires a list of vector store IDs.
 	 */
 	@Override
-	public List<ToolResources> toolResources() {
+	public ToolResources toolResources() {
 		return this.toolResources;
 	}
 

@@ -15,14 +15,49 @@
  */
 package ch.rasc.openai4j.assistants;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonTypeInfo(use = Id.DEDUCTION)
-@JsonSubTypes({ @Type(FileSearchToolResouces.class),
-		@Type(CodeInterpreterToolResouces.class) })
-public interface ToolResources {
-	// nothing here
+/**
+ * A set of resources that are used by the assistant's tools. The resources are specific
+ * to the type of tool. For example, the code_interpreter tool requires a list of file
+ * IDs, while the file_search tool requires a list of vector store IDs.
+ */
+@JsonInclude(Include.NON_EMPTY)
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+public class ToolResources {
+
+	@JsonProperty("code_interpreter")
+	CodeInterpreterToolResources codeInterpreter;
+	@JsonProperty("file_search")
+	private final FileSearchToolResources fileSearch;
+
+	@JsonCreator
+	private ToolResources(
+			@JsonProperty("code_interpreter") CodeInterpreterToolResources codeInterpreter,
+			@JsonProperty("file_search") FileSearchToolResources fileSearch) {
+		this.codeInterpreter = codeInterpreter;
+		this.fileSearch = fileSearch;
+	}
+
+	public static ToolResources ofCodeInterpreter(
+			CodeInterpreterToolResources codeInterpreter) {
+		return new ToolResources(codeInterpreter, null);
+	}
+
+	public static ToolResources ofFileSearch(FileSearchToolResources fileSearch) {
+		return new ToolResources(null, fileSearch);
+	}
+
+	public CodeInterpreterToolResources codeInterpreter() {
+		return this.codeInterpreter;
+	}
+
+	public FileSearchToolResources fileSearch() {
+		return this.fileSearch;
+	}
 }

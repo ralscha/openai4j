@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,16 +28,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 @SuppressWarnings({ "hiding" })
-public class CodeInterpreterToolResouces implements ToolResources {
+public class CodeInterpreterToolResources {
 
 	@JsonProperty("file_ids")
 	private final List<String> fileIds;
 
-	private CodeInterpreterToolResouces(Builder builder) {
+	@JsonCreator
+	private CodeInterpreterToolResources(@JsonProperty("file_ids") List<String> fileIds) {
+		this.fileIds = fileIds;
+	}
+
+	private CodeInterpreterToolResources(Builder builder) {
 		this.fileIds = builder.fileIds;
 	}
 
-	public List<String> getFileIds() {
+	public List<String> fileIds() {
 		return this.fileIds;
 	}
 
@@ -72,8 +78,8 @@ public class CodeInterpreterToolResouces implements ToolResources {
 			return this;
 		}
 
-		public CodeInterpreterToolResouces build() {
-			return new CodeInterpreterToolResouces(this);
+		public CodeInterpreterToolResources build() {
+			return new CodeInterpreterToolResources(this);
 		}
 	}
 }

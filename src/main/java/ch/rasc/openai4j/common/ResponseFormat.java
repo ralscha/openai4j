@@ -17,11 +17,13 @@ package ch.rasc.openai4j.common;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class ResponseFormat {
 	private final Object value;
 
+	@JsonCreator
 	ResponseFormat(Object value) {
 		this.value = value;
 	}

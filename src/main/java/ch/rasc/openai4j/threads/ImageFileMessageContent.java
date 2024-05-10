@@ -38,7 +38,7 @@ public class ImageFileMessageContent extends MessageContent {
 	}
 
 	@JsonProperty("image_file")
-	public ImageFile getImageFile() {
+	public ImageFile imageFile() {
 		return this.imageFile;
 	}
 

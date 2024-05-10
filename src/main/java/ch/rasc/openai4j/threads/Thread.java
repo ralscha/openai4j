@@ -26,7 +26,7 @@ import ch.rasc.openai4j.assistants.ToolResources;
  * Represents a thread that contains messages.
  */
 public record Thread(String id, String object, @JsonProperty("created_at") int createdAt,
-		@JsonProperty("tool_resources") List<ToolResources> toolResources,
+		@JsonProperty("tool_resources") ToolResources toolResources,
 		Map<String, String> metadata) {
 
 	/**
@@ -60,7 +60,7 @@ public record Thread(String id, String object, @JsonProperty("created_at") int c
 	 * vector store IDs.
 	 */
 	@Override
-	public List<ToolResources> toolResources() {
+	public ToolResources toolResources() {
 		return this.toolResources;
 	}
 
