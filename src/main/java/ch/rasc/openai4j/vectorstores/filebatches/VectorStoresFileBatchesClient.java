@@ -21,6 +21,8 @@ import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListResponse;
+import ch.rasc.openai4j.common.PollConfig;
+import ch.rasc.openai4j.vectorstores.VectorStore;
 import ch.rasc.openai4j.vectorstores.files.VectorStoreFile;
 import ch.rasc.openai4j.vectorstores.files.VectorStoresFilesListRequest;
 import feign.Headers;
@@ -116,6 +118,58 @@ public interface VectorStoresFileBatchesClient {
 	@RequestLine("GET /vector_stores/{vector_store_id}/file_batches/{batch_id}")
 	VectorStoreFileBatch retrieve(@Param("vector_store_id") String vectorStoreId,
 			@Param("batch_id") String batchId);
+
+	/**
+	 * Adding files to vector stores is an async operation. This method will poll the
+	 * server every 1 second until all files have been processed or 2 minutes have passed.
+	 *
+	 * @return The latest VectorStoreFileBatch object
+	 */
+	default VectorStoreFileBatch waitForProcessing(
+			VectorStoreFileBatch vectorStoreFileBatch) {
+		return waitForProcessing(vectorStoreFileBatch, pollConfig -> pollConfig);
+	}
+
+	/**
+	 * Adding files to vector stores is an async operation. This method will poll the
+	 * server every pollInterval until all files have been processed or maxWait has
+	 * passed.
+	 *
+	 * @return The latest VectorStoreFileBatch object
+	 */
+	default VectorStoreFileBatch waitForProcessing(
+			VectorStoreFileBatch vectorStoreFileBatch,
+			Function<PollConfig.Builder, PollConfig.Builder> fn) {
+		PollConfig pollConfig = fn.apply(PollConfig.builder()).build();
+
+		long start = System.currentTimeMillis();
+		long maxWaitInMillis = pollConfig.maxWaitTimeUnit()
+				.toMillis(pollConfig.maxWait());
+		long waitUntil = start + maxWaitInMillis;
+
+		VectorStoreFileBatch currentVectorStoreBatch = this.retrieve(
+				vectorStoreFileBatch.vectorStoreId(), vectorStoreFileBatch.id());
+		while (currentVectorStoreBatch.fileCounts().inProgress() > 0) {
+			try {
+				pollConfig.pollIntervalTimeUnit().sleep(pollConfig.pollInterval());
+			}
+			catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new RuntimeException(e);
+			}
+
+			if (System.currentTimeMillis() > waitUntil) {
+				throw new RuntimeException("Giving up on waiting for vector store batch "
+						+ currentVectorStoreBatch.id() + " to finish processing after "
+						+ pollConfig.maxWait() + " " + pollConfig.maxWaitTimeUnit());
+			}
+			currentVectorStoreBatch = this.retrieve(
+					currentVectorStoreBatch.vectorStoreId(),
+					currentVectorStoreBatch.id());
+		}
+
+		return currentVectorStoreBatch;
+	}
 
 	/**
 	 * Cancel a vector store file batch. This attempts to cancel the processing of files

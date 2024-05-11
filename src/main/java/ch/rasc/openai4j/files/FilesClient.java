@@ -17,10 +17,11 @@ package ch.rasc.openai4j.files;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListResponse;
+import ch.rasc.openai4j.common.PollConfig;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
@@ -158,26 +159,32 @@ public interface FilesClient {
 	Response retrieveContent(@Param("file_id") String fileId);
 
 	default FileObject waitForProcessing(String fileId) {
-		return this.waitForProcessing(fileId, 5, TimeUnit.SECONDS, 30, TimeUnit.SECONDS);
+		return this.waitForProcessing(fileId, pollConfig -> pollConfig);
 	}
 
-	default FileObject waitForProcessing(String fileId, long pollInterval,
-			TimeUnit pollIntervalTimeUnit, long maxWait, TimeUnit maxWaitTimeUnit) {
+	default FileObject waitForProcessing(String fileId,
+			Function<PollConfig.Builder, PollConfig.Builder> fn) {
+
+		PollConfig pollConfig = fn.apply(PollConfig.builder()).build();
 		long start = System.currentTimeMillis();
+		long maxWaitInMillis = pollConfig.maxWaitTimeUnit()
+				.toMillis(pollConfig.maxWait());
+		long waitUntil = start + maxWaitInMillis;
+
 		FileObject file = this.retrieve(fileId);
 		while (!file.status().isTerminal()) {
 			try {
-				pollIntervalTimeUnit.sleep(pollInterval);
+				pollConfig.pollIntervalTimeUnit().sleep(pollConfig.pollInterval());
 			}
 			catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				throw new RuntimeException(e);
 			}
 
-			if (System.currentTimeMillis() - start > maxWaitTimeUnit.toMillis(maxWait)) {
+			if (System.currentTimeMillis() > waitUntil) {
 				throw new RuntimeException("Giving up on waiting for file " + fileId
-						+ " to finish processing after " + maxWait + " "
-						+ maxWaitTimeUnit);
+						+ " to finish processing after " + pollConfig.maxWait() + " "
+						+ pollConfig.maxWaitTimeUnit());
 			}
 
 			file = this.retrieve(fileId);

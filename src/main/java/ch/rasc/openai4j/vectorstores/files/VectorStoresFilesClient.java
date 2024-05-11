@@ -21,6 +21,8 @@ import java.util.function.Function;
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.DeletionStatus;
 import ch.rasc.openai4j.common.ListResponse;
+import ch.rasc.openai4j.common.PollConfig;
+import ch.rasc.openai4j.vectorstores.files.VectorStoreFile.VectorStoreFileStatus;
 import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
@@ -88,6 +90,54 @@ public interface VectorStoresFilesClient {
 	 */
 	default VectorStoreFile create(String vectorStoreId, String fileId) {
 		return this.create(vectorStoreId, VectorStoreFileCreateRequest.of(fileId));
+	}
+
+	/**
+	 * Adding file to vector stores is an async operation. This method will poll the
+	 * server every 1 second until file has been processed or 2 minutes have passed.
+	 *
+	 * @return The latest VectorStore object
+	 */
+	default VectorStoreFile waitForProcessing(VectorStoreFile vectorStoreFile) {
+		return waitForProcessing(vectorStoreFile, pollConfig -> pollConfig);
+	}
+
+	/**
+	 * Adding file to vector stores is an async operation. This method will poll the
+	 * server every pollInterval until file has been processed or maxWait has passed.
+	 *
+	 * @return The latest VectorStore object
+	 */
+	default VectorStoreFile waitForProcessing(VectorStoreFile vectorStoreFile,
+			Function<PollConfig.Builder, PollConfig.Builder> fn) {
+		PollConfig pollConfig = fn.apply(PollConfig.builder()).build();
+
+		long start = System.currentTimeMillis();
+		long maxWaitInMillis = pollConfig.maxWaitTimeUnit()
+				.toMillis(pollConfig.maxWait());
+		long waitUntil = start + maxWaitInMillis;
+
+		VectorStoreFile currentVectorStoreFile = this
+				.retrieve(vectorStoreFile.vectorStoreId(), vectorStoreFile.id());
+		while (currentVectorStoreFile.status() == VectorStoreFileStatus.IN_PROGRESS) {
+			try {
+				pollConfig.pollIntervalTimeUnit().sleep(pollConfig.pollInterval());
+			}
+			catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new RuntimeException(e);
+			}
+
+			if (System.currentTimeMillis() > waitUntil) {
+				throw new RuntimeException("Giving up on waiting for vector store file "
+						+ currentVectorStoreFile.id() + " to finish processing after "
+						+ pollConfig.maxWait() + " " + pollConfig.maxWaitTimeUnit());
+			}
+			currentVectorStoreFile = this.retrieve(currentVectorStoreFile.vectorStoreId(),
+					currentVectorStoreFile.id());
+		}
+
+		return currentVectorStoreFile;
 	}
 
 	/**

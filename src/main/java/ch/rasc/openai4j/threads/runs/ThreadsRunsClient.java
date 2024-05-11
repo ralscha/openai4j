@@ -16,12 +16,12 @@
 package ch.rasc.openai4j.threads.runs;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListRequest;
 import ch.rasc.openai4j.common.ListResponse;
+import ch.rasc.openai4j.common.PollConfig;
 import feign.Headers;
 import feign.Param;
 import feign.QueryMap;
@@ -157,30 +157,47 @@ public interface ThreadsRunsClient {
 
 	/**
 	 * Wait for the thread run to finish processing. This method will poll the server
+	 * every 1 second until the run is finished or 2 minutes have passed.
+	 *
+	 * @return The latest VectorStore object
+	 */
+	default ThreadRun waitForProcessing(ThreadRun run) {
+		return waitForProcessing(run, pollConfig -> pollConfig);
+	}
+
+	/**
+	 * Wait for the thread run to finish processing. This method will poll the server
 	 * every pollInterval until the run is finished or until maxWait have passed.
 	 *
 	 * @return The latest ThreadRun object
 	 */
-	default ThreadRun waitForProcessing(ThreadRun run, long pollInterval,
-			TimeUnit pollIntervalTimeUnit, long maxWait, TimeUnit maxWaitTimeUnit) {
-		ThreadRun currentRun = run;
+	default ThreadRun waitForProcessing(ThreadRun run,
+			Function<PollConfig.Builder, PollConfig.Builder> fn) {
+		PollConfig pollConfig = fn.apply(PollConfig.builder()).build();
+
 		long start = System.currentTimeMillis();
+		long maxWaitInMillis = pollConfig.maxWaitTimeUnit()
+				.toMillis(pollConfig.maxWait());
+		long waitUntil = start + maxWaitInMillis;
+
+		ThreadRun currentRun = this.retrieve(run.threadId(), run.id());
+
 		while (!currentRun.status().isTerminal()) {
 			try {
-				pollIntervalTimeUnit.sleep(pollInterval);
+				pollConfig.pollIntervalTimeUnit().sleep(pollConfig.pollInterval());
 			}
 			catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				throw new RuntimeException(e);
 			}
 
-			if (System.currentTimeMillis() - start > maxWaitTimeUnit.toMillis(maxWait)) {
+			if (System.currentTimeMillis() > waitUntil) {
 				throw new RuntimeException("Giving up on waiting for thread run "
-						+ run.id() + " to finish processing after " + maxWait + " "
-						+ maxWaitTimeUnit);
+						+ run.id() + " to finish processing after " + pollConfig.maxWait()
+						+ " " + pollConfig.maxWaitTimeUnit());
 			}
 
-			currentRun = this.retrieve(run.threadId(), run.id());
+			currentRun = this.retrieve(currentRun.threadId(), currentRun.id());
 		}
 		return currentRun;
 	}
