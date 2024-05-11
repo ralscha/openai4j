@@ -72,7 +72,7 @@ public class FileSearchToolResources {
 		 * The vector store attached to this assistant. There can be a maximum of 1 vector
 		 * store attached to the assistant.
 		 */
-		public Builder vectorStoreId(String vectorStoreId) {
+		public Builder vectorStoreIds(String vectorStoreId) {
 			this.vectorStoreIds = List.of(vectorStoreId);
 			return this;
 		}
@@ -81,7 +81,7 @@ public class FileSearchToolResources {
 		 * A helper to create a vector store with file_ids and attach it to this
 		 * assistant. There can be a maximum of 1 vector store attached to the assistant.
 		 */
-		public Builder vectorStore(VectorStore vectorStore) {
+		public Builder vectorStores(VectorStore vectorStore) {
 			this.vectorStores = List.of(vectorStore);
 			return this;
 		}
@@ -90,9 +90,9 @@ public class FileSearchToolResources {
 		 * A helper to create a vector store with file_ids and attach it to this
 		 * assistant. There can be a maximum of 1 vector store attached to the assistant.
 		 */
-		public Builder vectorStore(
+		public Builder vectorStores(
 				Function<VectorStore.Builder, VectorStore.Builder> fn) {
-			return this.vectorStore(fn.apply(VectorStore.builder()).build());
+			return this.vectorStores(fn.apply(VectorStore.builder()).build());
 		}
 
 		public FileSearchToolResources build() {

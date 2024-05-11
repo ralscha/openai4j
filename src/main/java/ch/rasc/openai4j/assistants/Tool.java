@@ -15,7 +15,6 @@
  */
 package ch.rasc.openai4j.assistants;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -32,7 +31,6 @@ public abstract class Tool {
 		this.type = type;
 	}
 
-	@JsonProperty
 	public String type() {
 		return this.type;
 	}

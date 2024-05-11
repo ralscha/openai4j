@@ -26,6 +26,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ch.rasc.openai4j.common.ResponseFormat;
+
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
@@ -36,9 +38,14 @@ public class AssistantModifyRequest {
 	private final String description;
 	private final String instructions;
 	private final List<Tool> tools;
-	@JsonProperty("file_ids")
-	private final List<String> fileIds;
+	@JsonProperty("tool_resources")
+	private final ToolResources toolResources;
 	private final Map<String, String> metadata;
+	private final Double temperature;
+	@JsonProperty("top_p")
+	private final Double topP;
+	@JsonProperty("response_format")
+	private final ResponseFormat responseFormat;
 
 	private AssistantModifyRequest(Builder builder) {
 		this.model = builder.model;
@@ -46,8 +53,11 @@ public class AssistantModifyRequest {
 		this.description = builder.description;
 		this.instructions = builder.instructions;
 		this.tools = builder.tools;
-		this.fileIds = builder.fileIds;
+		this.toolResources = builder.toolResources;
 		this.metadata = builder.metadata;
+		this.temperature = builder.temperature;
+		this.topP = builder.topP;
+		this.responseFormat = builder.responseFormat;
 	}
 
 	public static Builder builder() {
@@ -60,22 +70,25 @@ public class AssistantModifyRequest {
 		private String description;
 		private String instructions;
 		private List<Tool> tools;
-		private List<String> fileIds;
+		private ToolResources toolResources;
 		private Map<String, String> metadata;
+		private Double temperature;
+		private Double topP;
+		private ResponseFormat responseFormat;
 
 		private Builder() {
 		}
 
-		/*
+		/**
 		 * ID of the model to use. You can use the List models API to see all of your
-		 * available models, or see our Model overview for descriptions of them.
+		 * available models.
 		 */
 		public Builder model(String model) {
 			this.model = model;
 			return this;
 		}
 
-		/*
+		/**
 		 * The name of the assistant. The maximum length is 256 characters.
 		 */
 		public Builder name(String name) {
@@ -83,7 +96,7 @@ public class AssistantModifyRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * The description of the assistant. The maximum length is 512 characters.
 		 */
 		public Builder description(String description) {
@@ -91,8 +104,8 @@ public class AssistantModifyRequest {
 			return this;
 		}
 
-		/*
-		 * The system instructions that the assistant uses. The maximum length is 32768
+		/**
+		 * The system instructions that the assistant uses. The maximum length is 256,000
 		 * characters.
 		 */
 		public Builder instructions(String instructions) {
@@ -100,7 +113,7 @@ public class AssistantModifyRequest {
 			return this;
 		}
 
-		/*
+		/**
 		 * A list of tool enabled on the assistant. There can be a maximum of 128 tools
 		 * per assistant. Tools can be of types code_interpreter, file_search, or
 		 * function.
@@ -124,32 +137,18 @@ public class AssistantModifyRequest {
 			return this;
 		}
 
-		/*
-		 * A list of file IDs attached to this assistant. There can be a maximum of 20
-		 * files attached to the assistant. Files are ordered by their creation date in
-		 * ascending order.
+		/**
+		 * A set of resources that are used by the assistant's tools. The resources are
+		 * specific to the type of tool. For example, the code_interpreter tool requires a
+		 * list of file IDs, while the file_search tool requires a list of vector store
+		 * IDs.
 		 */
-		public Builder fileIds(List<String> fileIds) {
-			this.fileIds = new ArrayList<>(fileIds);
+		public Builder toolResources(ToolResources toolResources) {
+			this.toolResources = toolResources;
 			return this;
 		}
 
 		/**
-		 * Add a file IDs to the list of file IDs attached to this assistant
-		 */
-		public Builder addFileIds(String... fileIds) {
-			if (fileIds == null || fileIds.length == 0) {
-				return this;
-			}
-
-			if (this.fileIds == null) {
-				this.fileIds = new ArrayList<>();
-			}
-			this.fileIds.addAll(List.of(fileIds));
-			return this;
-		}
-
-		/*
 		 * Set of 16 key-value pairs that can be attached to an object. This can be useful
 		 * for storing additional information about the object in a structured format.
 		 * Keys can be a maximum of 64 characters long and values can be a maxium of 512
@@ -168,6 +167,52 @@ public class AssistantModifyRequest {
 				this.metadata = new HashMap<>();
 			}
 			this.metadata.put(key, value);
+			return this;
+		}
+
+		/**
+		 * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+		 * make the output more random, while lower values like 0.2 will make it more
+		 * focused and deterministic.
+		 * <p>
+		 * Defaults to 1
+		 */
+		public Builder temperature(Double temperature) {
+			this.temperature = temperature;
+			return this;
+		}
+
+		/**
+		 * An alternative to sampling with temperature, called nucleus sampling, where the
+		 * model considers the results of the tokens with top_p probability mass. So 0.1
+		 * means only the tokens comprising the top 10% probability mass are considered.
+		 * <p>
+		 * We generally recommend altering this or temperature but not both.
+		 * <p>
+		 * Defaults to 1
+		 */
+		public Builder topP(Double topP) {
+			this.topP = topP;
+			return this;
+		}
+
+		/**
+		 * Specifies the format that the model must output. Compatible with GPT-4 Turbo
+		 * and all GPT-3.5 Turbo models since gpt-3.5-turbo-1106.
+		 * <p>
+		 * Setting to { "type": "json_object" } enables JSON mode, which guarantees the
+		 * message the model generates is valid JSON.
+		 * <p>
+		 * Important: when using JSON mode, you must also instruct the model to produce
+		 * JSON yourself via a system or user message. Without this, the model may
+		 * generate an unending stream of whitespace until the generation reaches the
+		 * token limit, resulting in a long-running and seemingly "stuck" request. Also
+		 * note that the message content may be partially cut off if
+		 * finish_reason="length", which indicates the generation exceeded max_tokens or
+		 * the conversation exceeded the max context length.
+		 */
+		public Builder responseFormat(ResponseFormat responseFormat) {
+			this.responseFormat = responseFormat;
 			return this;
 		}
 
