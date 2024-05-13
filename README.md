@@ -14,7 +14,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.2.0</version>
+  <version>1.3.0</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
   var response = client.chatCompletions.create(r -> r
 		.addMessages(SystemMessage.of("You are a helpful assistant"),
 				UserMessage.of("What is the capital of Spain?"))
-		.model("gpt-4-turbo"));
+		.model("gpt-4o"));
   String response = response.choices().get(0).message().content();
 ```
 
@@ -92,7 +92,7 @@ public class ChatCompletionsFunctionExample {
 
 		var response = service.createJavaFunctions(r -> r.addMessages(UserMessage.of(
 				"What are the current temperatures in Oslo, Norway and Helsinki, Finland?"))
-				.model("gpt-4-turbo").javaFunctions(List.of(getWeather)));
+				.model("gpt-4o").javaFunctions(List.of(getWeather)));
 		var choice = response.choices().get(0);
 		System.out.println(choice.message().content());
 
@@ -109,7 +109,7 @@ public class ChatCompletionsFunctionExample {
 
   Assistant assistant = client.assistants.create(c -> c.name("Math Tutor").instructions(
       "You are a personal math tutor. Write and run code to answer math questions.")
-      .addTools(CodeTool.of()).model("gpt-4-turbo"));
+      .addTools(CodeTool.of()).model("gpt-4o"));
   }
 
   var thread = client.threads.create();
@@ -150,7 +150,7 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
-### 1.3.0 - May ??, 2024
+### 1.3.0 - May 13, 2024
   * Support for Assistants API v2
 
 ### 1.2.0 - April 16, 2024
