@@ -38,12 +38,15 @@ public class VectorStoreCreateRequest {
 	private final String name;
 	@JsonProperty("expires_after")
 	private final ExpirationPolicy expiresAfter;
+	@JsonProperty("chunking_strategy")
+	private final ChunkingStrategy chunkingStrategy;
 	private final Map<String, String> metadata;
 
 	private VectorStoreCreateRequest(Builder builder) {
 		this.fileIds = builder.fileIds;
 		this.name = builder.name;
 		this.expiresAfter = builder.expiresAfter;
+		this.chunkingStrategy = builder.chunkingStrategy;
 		this.metadata = builder.metadata;
 	}
 
@@ -55,6 +58,7 @@ public class VectorStoreCreateRequest {
 		private List<String> fileIds;
 		private String name;
 		private ExpirationPolicy expiresAfter;
+		private ChunkingStrategy chunkingStrategy;
 		private Map<String, String> metadata;
 
 		private Builder() {
@@ -98,6 +102,15 @@ public class VectorStoreCreateRequest {
 		public Builder expiresAfterLastActiveAt(int days) {
 			this.expiresAfter = new ExpirationPolicy(
 					ExpirationPolicyAnchor.LAST_ACTIVE_AT, days);
+			return this;
+		}
+
+		/**
+		 * The chunking strategy used to chunk the file(s). If not set, will use the auto
+		 * strategy. Only applicable if file_ids is non-empty.
+		 */
+		public Builder chunkingStrategy(ChunkingStrategy chunkingStrategy) {
+			this.chunkingStrategy = chunkingStrategy;
 			return this;
 		}
 

@@ -49,6 +49,7 @@ public record ThreadRun(String id, String object,
 		@JsonProperty("max_completion_tokens") Integer maxCompletionTokens,
 		@JsonProperty("truncation_strategy") TruncationStrategy truncationStrategy,
 		@JsonProperty("tool_choice") ToolChoice toolChoice,
+		@JsonProperty("parallel_tool_calls") boolean parallelToolCalls,
 		@JsonProperty("response_format") ResponseFormat responseFormat) {
 
 	/**
@@ -253,6 +254,14 @@ public record ThreadRun(String id, String object,
 	@Override
 	public ToolChoice toolChoice() {
 		return this.toolChoice;
+	}
+
+	/**
+	 * Whether to enable parallel function calling during tool use.
+	 */
+	@Override
+	public boolean parallelToolCalls() {
+		return this.parallelToolCalls;
 	}
 
 	/**

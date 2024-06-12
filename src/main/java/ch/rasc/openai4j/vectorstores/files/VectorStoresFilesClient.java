@@ -142,10 +142,10 @@ public interface VectorStoresFilesClient {
 
 	/**
 	 * Retrieves a vector store file.
-	 * 
+	 *
 	 * @param vectorStoreId The ID of the vector store that the file belongs to.
 	 * @param fileId The ID of the file being retrieved.
-	 * 
+	 *
 	 * @return The vector store file object.
 	 */
 	@RequestLine("GET /vector_stores/{vector_store_id}/files/{file_id}")
@@ -155,10 +155,10 @@ public interface VectorStoresFilesClient {
 	/**
 	 * Delete a vector store file. This will remove the file from the vector store but the
 	 * file itself will not be deleted. To delete the file, use the delete file endpoint.
-	 * 
+	 *
 	 * @param vectorStoreId The ID of the vector store that the file belongs to.
 	 * @param fileId The ID of the file to delete.
-	 * 
+	 *
 	 * @return Deletion status
 	 */
 	@RequestLine("DELETE /vector_stores/{vector_store_id}/files/{file_id}")

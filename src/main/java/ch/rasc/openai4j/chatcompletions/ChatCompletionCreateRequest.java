@@ -58,6 +58,8 @@ public class ChatCompletionCreateRequest {
 	private final List<ChatCompletionTool> tools;
 	@JsonProperty("tool_choice")
 	private final ToolChoice toolChoice;
+	@JsonProperty("parallel_tool_calls")
+	private final Boolean parallelToolCalls;
 	private final String user;
 
 	private ChatCompletionCreateRequest(Builder builder) {
@@ -89,6 +91,7 @@ public class ChatCompletionCreateRequest {
 		this.topP = builder.topP;
 		this.tools = builder.tools;
 		this.toolChoice = builder.toolChoice;
+		this.parallelToolCalls = builder.parallelToolCalls;
 		this.user = builder.user;
 	}
 
@@ -159,6 +162,7 @@ public class ChatCompletionCreateRequest {
 		private Double topP;
 		private List<ChatCompletionTool> tools;
 		private ToolChoice toolChoice;
+		private Boolean parallelToolCalls;
 		private String user;
 
 		private Builder() {
@@ -388,6 +392,16 @@ public class ChatCompletionCreateRequest {
 		 */
 		public Builder toolChoice(ToolChoice toolChoice) {
 			this.toolChoice = toolChoice;
+			return this;
+		}
+
+		/**
+		 * Whether to enable parallel function calling during tool use.
+		 * <p>
+		 * Defaults to true
+		 */
+		public Builder parallelToolCalls(Boolean parallelToolCalls) {
+			this.parallelToolCalls = parallelToolCalls;
 			return this;
 		}
 

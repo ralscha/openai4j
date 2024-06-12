@@ -15,14 +15,33 @@
  */
 package ch.rasc.openai4j.assistants;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class FileSearchTool extends Tool {
 
-	FileSearchTool() {
+	record FileSearch(@JsonProperty("max_num_results") int maxNumResults) {
+	}
+
+	@JsonProperty("file_search")
+	private final FileSearch fileSearch;
+
+	FileSearchTool(FileSearch fileSearch) {
 		super("file_search");
+		this.fileSearch = fileSearch;
 	}
 
 	public static FileSearchTool of() {
-		return new FileSearchTool();
+		return new FileSearchTool(null);
+	}
+
+	/**
+	 * @param maxNumResults The maximum number of results the file search tool should
+	 * output. The default is 20 for gpt-4* models and 5 for gpt-3.5-turbo. This number
+	 * should be between 1 and 50 inclusive.<br>
+	 * Note that the file search tool may output fewer than max_num_results results.
+	 */
+	public static FileSearchTool of(int maxNumResults) {
+		return new FileSearchTool(new FileSearch(maxNumResults));
 	}
 
 }

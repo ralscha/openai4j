@@ -20,18 +20,30 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ch.rasc.openai4j.vectorstores.ChunkingStrategy;
+
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class VectorStoreFileCreateRequest {
 	@JsonProperty("file_id")
 	private final String fileId;
 
-	private VectorStoreFileCreateRequest(String fileId) {
+	@JsonProperty("chunking_strategy")
+	private final ChunkingStrategy chunkingStrategy;
+
+	private VectorStoreFileCreateRequest(String fileId,
+			ChunkingStrategy chunkingStrategy) {
 		this.fileId = fileId;
+		this.chunkingStrategy = chunkingStrategy;
 	}
 
 	public static VectorStoreFileCreateRequest of(String fileId) {
-		return new VectorStoreFileCreateRequest(fileId);
+		return new VectorStoreFileCreateRequest(fileId, null);
+	}
+
+	public static VectorStoreFileCreateRequest of(String fileId,
+			ChunkingStrategy chunkingStrategy) {
+		return new VectorStoreFileCreateRequest(fileId, chunkingStrategy);
 	}
 
 }

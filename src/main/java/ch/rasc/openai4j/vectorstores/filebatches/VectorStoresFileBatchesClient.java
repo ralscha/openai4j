@@ -22,7 +22,6 @@ import java.util.function.Function;
 import ch.rasc.openai4j.Beta;
 import ch.rasc.openai4j.common.ListResponse;
 import ch.rasc.openai4j.common.PollConfig;
-import ch.rasc.openai4j.vectorstores.VectorStore;
 import ch.rasc.openai4j.vectorstores.files.VectorStoreFile;
 import ch.rasc.openai4j.vectorstores.files.VectorStoresFilesListRequest;
 import feign.Headers;

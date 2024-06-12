@@ -14,7 +14,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.1</version>
 </dependency>
 ```
 
@@ -149,6 +149,10 @@ public class ChatCompletionsFunctionExample {
 Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) repository for more examples.
 
 ## Changelog
+
+### 1.3.1 - June 12, 2024
+  * Parallel function calling can be disabled in Chat Completions and the Assistants API by passing parallel_tool_calls=false.
+  * Added support for file search customizations.
 
 ### 1.3.0 - May 13, 2024
   * Support for Assistants API v2

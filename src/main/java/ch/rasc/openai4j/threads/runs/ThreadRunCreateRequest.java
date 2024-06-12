@@ -54,6 +54,8 @@ public class ThreadRunCreateRequest {
 	private final TruncationStrategy truncationStrategy;
 	@JsonProperty("tool_choice")
 	private final ToolChoice toolChoice;
+	@JsonProperty("parallel_tool_calls")
+	private final Boolean parallelToolCalls;
 	@JsonProperty("response_format")
 	private final ResponseFormat responseFormat;
 
@@ -73,6 +75,7 @@ public class ThreadRunCreateRequest {
 		this.maxCompletionTokens = builder.maxCompletionTokens;
 		this.truncationStrategy = builder.truncationStrategy;
 		this.toolChoice = builder.toolChoice;
+		this.parallelToolCalls = builder.parallelToolCalls;
 		this.responseFormat = builder.responseFormat;
 	}
 
@@ -93,6 +96,7 @@ public class ThreadRunCreateRequest {
 		private Integer maxCompletionTokens;
 		private TruncationStrategy truncationStrategy;
 		private ToolChoice toolChoice;
+		private Boolean parallelToolCalls;
 		private ResponseFormat responseFormat;
 
 		private Builder() {
@@ -260,6 +264,16 @@ public class ThreadRunCreateRequest {
 		 */
 		public Builder toolChoice(ToolChoice toolChoice) {
 			this.toolChoice = toolChoice;
+			return this;
+		}
+
+		/**
+		 * Whether to enable parallel function calling during tool use.
+		 * <p>
+		 * Defaults to true
+		 */
+		public Builder parallelToolCalls(Boolean parallelToolCalls) {
+			this.parallelToolCalls = parallelToolCalls;
 			return this;
 		}
 

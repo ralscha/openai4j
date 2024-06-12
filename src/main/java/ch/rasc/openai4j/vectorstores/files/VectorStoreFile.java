@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.common.Error;
+import ch.rasc.openai4j.vectorstores.ChunkingStrategy;
 
 /**
  * A list of files attached to a vector store.
@@ -27,7 +28,8 @@ public record VectorStoreFile(String id, String object,
 		@JsonProperty("usage_bytes") long usageBytes,
 		@JsonProperty("created_at") long createdAt,
 		@JsonProperty("vector_store_id") String vectorStoreId,
-		VectorStoreFileStatus status, @JsonProperty("last_error") Error lastError) {
+		VectorStoreFileStatus status, @JsonProperty("last_error") Error lastError,
+		@JsonProperty("chunking_strategy") ChunkingStrategy chunkingStrategy) {
 
 	/**
 	 * The identifier, which can be referenced in API endpoints.
@@ -84,6 +86,13 @@ public record VectorStoreFile(String id, String object,
 	 */
 	public Error lastError() {
 		return this.lastError;
+	}
+
+	/**
+	 * The strategy used to chunk the file.
+	 */
+	public ChunkingStrategy chunkingStrategy() {
+		return this.chunkingStrategy;
 	}
 
 	public enum VectorStoreFileStatus {
