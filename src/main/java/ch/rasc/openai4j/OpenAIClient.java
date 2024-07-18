@@ -33,6 +33,7 @@ import ch.rasc.openai4j.threads.ThreadsClient;
 import ch.rasc.openai4j.threads.messages.ThreadsMessagesClient;
 import ch.rasc.openai4j.threads.runs.ThreadsRunsClient;
 import ch.rasc.openai4j.threads.runs.steps.ThreadsRunsStepsClient;
+import ch.rasc.openai4j.uploads.UploadsClient;
 import ch.rasc.openai4j.vectorstores.VectorStoresClient;
 import ch.rasc.openai4j.vectorstores.filebatches.VectorStoresFileBatchesClient;
 import ch.rasc.openai4j.vectorstores.files.VectorStoresFilesClient;
@@ -62,6 +63,7 @@ public class OpenAIClient {
 	public VectorStoresClient vectorStores;
 	public VectorStoresFilesClient vectorStoresFiles;
 	public VectorStoresFileBatchesClient vectorStoresFileBatches;
+	public UploadsClient uploads;
 
 	public static OpenAIClient create(
 			Function<Configuration.Builder, Configuration.Builder> fn) {
@@ -165,6 +167,8 @@ public class OpenAIClient {
 		client.vectorStoresFileBatches = jsonClientBuilder(configuration, jsonDecoder,
 				jsonEncoder, betaInterceptors).target(VectorStoresFileBatchesClient.class,
 						baseUrl);
+		client.uploads = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
+				interceptors).target(UploadsClient.class, baseUrl);
 
 		return client;
 	}
