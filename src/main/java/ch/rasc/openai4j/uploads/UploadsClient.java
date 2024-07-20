@@ -71,7 +71,7 @@ public interface UploadsClient {
 	 * 
 	 * @return The upload Part object.
 	 */
-	@RequestLine("POST /uploads/{upload_id}/part")
+	@RequestLine("POST /uploads/{upload_id}/parts")
 	@Headers("Content-Type: multipart/form-data")
 	UploadPart addPart(@Param("upload_id") String uploadId, @Param("data") File data);
 

@@ -15,6 +15,7 @@
  */
 package ch.rasc.openai4j.uploads;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -51,7 +52,15 @@ public class UploadCompleteRequest {
 		 * The ordered list of Part IDs.
 		 */
 		public Builder partIds(List<String> partIds) {
-			this.partIds = partIds;
+			this.partIds = new ArrayList<>(partIds);
+			return this;
+		}
+
+		public Builder addPartId(String... partId) {
+			if (this.partIds == null) {
+				this.partIds = new ArrayList<>();
+			}
+			this.partIds.addAll(List.of(partId));
 			return this;
 		}
 

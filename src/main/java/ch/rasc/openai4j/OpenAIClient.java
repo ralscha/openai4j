@@ -143,9 +143,9 @@ public class OpenAIClient {
 		client.models = jsonClientBuilder(configuration, jsonDecoder, jsonEncoder,
 				interceptors).target(ModelsClient.class, baseUrl);
 
-		client.uploads = formAndJsonClientBuilder(configuration, jsonDecoder, formAndJsonEncoder,
-				interceptors).target(UploadsClient.class, baseUrl);
-		
+		client.uploads = formAndJsonClientBuilder(configuration, jsonDecoder,
+				formAndJsonEncoder, interceptors).target(UploadsClient.class, baseUrl);
+
 		var betaInterceptors = new ArrayList<>(interceptors);
 		betaInterceptors.add(new OpenAIBetaRequestInterceptor());
 		client.threads = betaClientBuilder(configuration, jsonDecoder, jsonEncoder,
