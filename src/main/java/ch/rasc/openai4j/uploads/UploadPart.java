@@ -15,10 +15,13 @@
  */
 package ch.rasc.openai4j.uploads;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The upload Part represents a chunk of bytes we can add to an Upload object.
  */
-public record UploadPart(String id, int createdAt, String uploadId, String object) {
+public record UploadPart(String id, @JsonProperty("created_at") int createdAt,
+		@JsonProperty("upload_id") String uploadId, String object) {
 
 	/**
 	 * The upload Part unique identifier, which can be referenced in API endpoints.

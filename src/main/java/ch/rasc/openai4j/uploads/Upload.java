@@ -15,6 +15,7 @@
  */
 package ch.rasc.openai4j.uploads;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.files.FileObject;
@@ -23,8 +24,9 @@ import ch.rasc.openai4j.files.Purpose;
 /**
  * The Upload object can accept byte chunks in the form of Parts.
  */
-public record Upload(String id, int createdAt, String filename, long bytes,
-		Purpose purpose, Status status, int expiresAt, String object, FileObject file) {
+public record Upload(String id, @JsonProperty("created_at") int createdAt,
+		String filename, long bytes, Purpose purpose, Status status,
+		@JsonProperty("expires_at") int expiresAt, String object, FileObject file) {
 
 	public enum Status {
 		PENDING("pending"), COMPLETED("completed"), CANCELLED("cancelled");
