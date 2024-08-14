@@ -21,21 +21,26 @@ import java.util.Map;
 
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionMessage;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.Builder;
+import ch.rasc.openai4j.common.ServiceTier;
 
 @SuppressWarnings({ "hiding" })
 public class ChatCompletionsModelRequest<T> {
 
 	public enum Mode {
-		TOOL, JSON
+		TOOL, JSON_OBJECT, JSON_SCHEMA
 	}
 
 	private final List<ChatCompletionMessage> messages;
 	private final String model;
 	private final Double frequencyPenalty;
 	private final Map<String, Double> logitBias;
+	private final Boolean logprobs;
+	private final Integer topLogprobs;
 	private final Integer maxTokens;
 	private final Double presencePenalty;
 	private final Integer seed;
+	private final ServiceTier serviceTier;
 	private final List<String> stop;
 	private final Double temperature;
 	private final Double topP;
@@ -53,7 +58,7 @@ public class ChatCompletionsModelRequest<T> {
 			throw new IllegalArgumentException("maxRetries must be greater than 0");
 		}
 		if (builder.mode == null) {
-			builder.mode = Mode.TOOL;
+			builder.mode = Mode.JSON_SCHEMA;
 		}
 		if (builder.responseModel == null) {
 			throw new IllegalArgumentException("responseModel must not be null");
@@ -69,9 +74,12 @@ public class ChatCompletionsModelRequest<T> {
 		this.model = builder.model;
 		this.frequencyPenalty = builder.frequencyPenalty;
 		this.logitBias = builder.logitBias;
+		this.logprobs = builder.logprobs;
+		this.topLogprobs = builder.topLogprobs;
 		this.maxTokens = builder.maxTokens;
 		this.presencePenalty = builder.presencePenalty;
 		this.seed = builder.seed;
+		this.serviceTier = builder.serviceTier;
 		this.stop = builder.stop;
 		this.temperature = builder.temperature;
 		this.topP = builder.topP;
@@ -84,8 +92,10 @@ public class ChatCompletionsModelRequest<T> {
 	public ChatCompletionCreateRequest.Builder convertToChatCompletionsCreateRequestBuilder() {
 		return ChatCompletionCreateRequest.builder().messages(this.messages)
 				.model(this.model).frequencyPenalty(this.frequencyPenalty)
-				.logitBias(this.logitBias).maxTokens(this.maxTokens)
-				.presencePenalty(this.presencePenalty).seed(this.seed).stop(this.stop)
+				.logitBias(this.logitBias).logprobs(this.logprobs)
+				.topLogprobs(this.topLogprobs).maxTokens(this.maxTokens)
+				.presencePenalty(this.presencePenalty).seed(this.seed)
+				.serviceTier(this.serviceTier).stop(this.stop)
 				.temperature(this.temperature).topP(this.topP).user(this.user);
 	}
 
@@ -114,9 +124,12 @@ public class ChatCompletionsModelRequest<T> {
 		private String model;
 		private Double frequencyPenalty;
 		private Map<String, Double> logitBias;
+		private Boolean logprobs;
+		private Integer topLogprobs;
 		private Integer maxTokens;
 		private Double presencePenalty;
 		private Integer seed;
+		private ServiceTier serviceTier;
 		private List<String> stop;
 		private Double temperature;
 		private Double topP;
@@ -184,6 +197,29 @@ public class ChatCompletionsModelRequest<T> {
 		}
 
 		/**
+		 * Whether to return log probabilities of the output tokens or not. If true,
+		 * returns the log probabilities of each output token returned in the content of
+		 * message. This option is currently not available on the gpt-4-vision-preview
+		 * model.
+		 * <p>
+		 * Defaults to false
+		 */
+		public Builder logprobs(Boolean logprobs) {
+			this.logprobs = logprobs;
+			return this;
+		}
+
+		/**
+		 * An integer between 0 and 5 specifying the number of most likely tokens to
+		 * return at each token position, each with an associated log probability.
+		 * logprobs must be set to true if this parameter is used.
+		 */
+		public Builder topLogprobs(Integer topLogprobs) {
+			this.topLogprobs = topLogprobs;
+			return this;
+		}
+
+		/**
 		 * The maximum number of tokens to generate in the chat completion. The total
 		 * length of input tokens and generated tokens is limited by the model's context
 		 * length. Example Python code for counting tokens. Defaults to inf
@@ -212,6 +248,26 @@ public class ChatCompletionsModelRequest<T> {
 		 */
 		public Builder<T> seed(Integer seed) {
 			this.seed = seed;
+			return this;
+		}
+
+		/**
+		 * Specifies the latency tier to use for processing the request. This parameter is
+		 * relevant for customers subscribed to the scale tier service:
+		 * <p>
+		 * If set to 'auto', the system will utilize scale tier credits until they are
+		 * exhausted.
+		 * <p>
+		 * If set to 'default', the request will be processed using the default service
+		 * tier with a lower uptime SLA and no latency guarentee.
+		 * <p>
+		 * When not set, the default behavior is 'auto'.
+		 * <p>
+		 * When this parameter is set, the response body will include the service_tier
+		 * utilized.
+		 */
+		public Builder serviceTier(ServiceTier serviceTier) {
+			this.serviceTier = serviceTier;
 			return this;
 		}
 

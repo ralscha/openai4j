@@ -238,7 +238,7 @@ public class ChatCompletionCreateRequest {
 		 * <p>
 		 * Defaults to false
 		 */
-		public Builder logpropbs(Boolean logprobs) {
+		public Builder logprobs(Boolean logprobs) {
 			this.logprobs = logprobs;
 			return this;
 		}

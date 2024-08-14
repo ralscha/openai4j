@@ -212,7 +212,7 @@ public class ChatCompletionsService {
 				.generateStrictSchema(request.responseModel());
 		String functionName = request.responseModel().getSimpleName();
 
-		if (request.mode() == Mode.JSON) {
+		if (request.mode() == Mode.JSON_OBJECT) {
 			requestBuilder.responseFormat(ResponseFormat.jsonObject());
 
 			String jsonSchemaSystemMessage = "Make sure that your response to any message matches the json_schema below, "
@@ -235,6 +235,13 @@ public class ChatCompletionsService {
 				thread.addAll(originalMessages);
 				log.debug("Adding system message: {}", jsonSchemaSystemMessage);
 			}
+		}
+		else if (request.mode() == Mode.JSON_SCHEMA) {
+			ResponseFormat responseFormat = this.jsonSchemaService
+					.createStrictResponseFormat(request.responseModel());
+			requestBuilder.responseFormat(responseFormat);
+			log.debug("Using json schema response format: {}", responseFormat.value());
+			thread = new ArrayList<>(request.messages());
 		}
 		else {
 			thread = new ArrayList<>(request.messages());
@@ -268,11 +275,23 @@ public class ChatCompletionsService {
 
 			try {
 				T responseModelInstance = null;
-				if (request.mode() == Mode.JSON) {
+				String refusal = choice.message().refusal();
+				if (request.mode() == Mode.JSON_OBJECT) {
 					responseModelInstance = this.objectMapper.readValue(
 							choice.message().content(), request.responseModel());
 				}
-				else {
+				else if (request.mode() == Mode.JSON_SCHEMA) {
+					if (refusal == null || refusal.isBlank()) {
+						responseModelInstance = this.objectMapper.readValue(
+								choice.message().content(), request.responseModel());
+					}
+					else {
+						log.debug("json schema refusal: {}", refusal);
+						return new ChatCompletionsModelResponse<>(response, null,
+								"json schema refusal");
+					}
+				}
+				else if (request.mode() == Mode.TOOL) {
 					ToolCall firstToolCall = choice.message().toolCalls().get(0);
 					if (firstToolCall.function().name().equals(functionName)) {
 						responseModelInstance = this.objectMapper.readValue(
@@ -296,7 +315,7 @@ public class ChatCompletionsService {
 					}
 
 					StringBuilder validationErrors;
-					if (request.mode() == Mode.JSON) {
+					if (request.mode() == Mode.JSON_OBJECT) {
 						validationErrors = new StringBuilder("Validation errors found\n");
 					}
 					else {
@@ -316,7 +335,7 @@ public class ChatCompletionsService {
 			}
 			catch (JsonProcessingException e) {
 				String errorMessage;
-				if (request.mode() == Mode.JSON) {
+				if (request.mode() == Mode.JSON_OBJECT) {
 					errorMessage = "Could not deserialize response\n" + e.getMessage();
 				}
 				else {
