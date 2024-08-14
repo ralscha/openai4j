@@ -30,13 +30,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.victools.jsonschema.generator.OptionPreset;
-import com.github.victools.jsonschema.generator.SchemaGenerator;
-import com.github.victools.jsonschema.generator.SchemaGeneratorConfig;
-import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
-import com.github.victools.jsonschema.generator.SchemaVersion;
-import com.github.victools.jsonschema.module.jackson.JacksonModule;
-import com.github.victools.jsonschema.module.jackson.JacksonOption;
 
 import ch.rasc.openai4j.chatcompletions.AssistantMessage;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.ToolChoice;
@@ -50,6 +43,7 @@ import ch.rasc.openai4j.chatcompletions.ToolMessage;
 import ch.rasc.openai4j.chatcompletions.UserMessage;
 import ch.rasc.openai4j.chatcompletions.service.ChatCompletionsModelRequest.Mode;
 import ch.rasc.openai4j.common.FunctionParameters;
+import ch.rasc.openai4j.common.JsonSchemaService;
 import ch.rasc.openai4j.common.ResponseFormat;
 import ch.rasc.openai4j.common.ToolCall;
 import jakarta.validation.ConstraintViolation;
@@ -63,7 +57,7 @@ import jakarta.validation.ValidatorFactory;
 public class ChatCompletionsService {
 	private final static Logger log = LoggerFactory
 			.getLogger(ChatCompletionsService.class);
-	private final SchemaGenerator schemaGenerator;
+	private final JsonSchemaService jsonSchemaService;
 
 	private final ChatCompletionsClient chatCompletionsClient;
 
@@ -73,12 +67,7 @@ public class ChatCompletionsService {
 
 	public ChatCompletionsService(ChatCompletionsClient chatCompletionsClient,
 			ObjectMapper objectMapper) {
-		JacksonModule module = new JacksonModule(
-				JacksonOption.RESPECT_JSONPROPERTY_REQUIRED);
-		SchemaGeneratorConfigBuilder configBuilder = new SchemaGeneratorConfigBuilder(
-				SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON).with(module);
-		SchemaGeneratorConfig config = configBuilder.build();
-		this.schemaGenerator = new SchemaGenerator(config);
+		this.jsonSchemaService = new JsonSchemaService();
 		this.chatCompletionsClient = chatCompletionsClient;
 		this.objectMapper = objectMapper;
 
@@ -116,7 +105,7 @@ public class ChatCompletionsService {
 		List<ChatCompletionTool> tools = new ArrayList<>();
 		for (JavaFunction<?, ?> javaFunction : javaFunctionsRequest.javaFunctions()) {
 			javaFunctionRegistry.put(javaFunction.name(), javaFunction);
-			tools.add(javaFunction.toTool(this.schemaGenerator));
+			tools.add(javaFunction.toTool(this.jsonSchemaService));
 		}
 
 		var requestBuilder = javaFunctionsRequest
@@ -219,8 +208,8 @@ public class ChatCompletionsService {
 
 		List<ChatCompletionMessage> thread;
 		var requestBuilder = request.convertToChatCompletionsCreateRequestBuilder();
-		ObjectNode jsonSchema = this.schemaGenerator
-				.generateSchema(request.responseModel());
+		ObjectNode jsonSchema = this.jsonSchemaService
+				.generateStrictSchema(request.responseModel());
 		String functionName = request.responseModel().getSimpleName();
 
 		if (request.mode() == Mode.JSON) {
@@ -254,8 +243,8 @@ public class ChatCompletionsService {
 			if (descriptionNode != null) {
 				description = descriptionNode.textValue();
 			}
-			List<ChatCompletionTool> tool = List.of(ChatCompletionTool
-					.of(FunctionParameters.of(functionName, description, jsonSchema)));
+			List<ChatCompletionTool> tool = List.of(ChatCompletionTool.of(
+					FunctionParameters.of(functionName, description, jsonSchema, true)));
 			requestBuilder.tools(tool);
 			requestBuilder.toolChoice(ToolChoice.function(functionName));
 

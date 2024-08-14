@@ -16,6 +16,7 @@
 package ch.rasc.openai4j.common;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -52,27 +53,28 @@ public class ResponseFormat {
 	}
 
 	/**
+	 * Setting to { "type": "json_schema", "json_schema": {...} } enables Structured
+	 * Outputs which ensures the model will match your supplied JSON schema.
+	 */
+	public static ResponseFormat jsonSchema(ResponseFormatJsonSchema jsonSchema) {
+		return new ResponseFormat(
+				Map.of("type", "json_schema", "json_schema", jsonSchema));
+	}
+
+	/**
+	 * Setting to { "type": "json_schema", "json_schema": {...} } enables Structured
+	 * Outputs which ensures the model will match your supplied JSON schema.
+	 */
+	public static ResponseFormat jsonSchema(
+			Function<ResponseFormatJsonSchema.Builder, ResponseFormatJsonSchema.Builder> fn) {
+		return jsonSchema(fn.apply(ResponseFormatJsonSchema.builder()).build());
+	}
+
+	/**
 	 * auto is the default value
 	 */
 	public static ResponseFormat auto() {
 		return new ResponseFormat("auto");
-	}
-
-	/**
-	 * Setting to { "type": "json_schema", "schema": schema } enables JSON Schema mode,
-	 * which guarantees the message the model generates is valid according to the provided
-	 * JSON Schema.
-	 * <p>
-	 * Important: when using JSON Schema mode, you must also instruct the model to produce
-	 * JSON yourself via a system or user message. Without this, the model may generate an
-	 * unending stream of whitespace until the generation reaches the token limit,
-	 * resulting in a long-running and seemingly "stuck" request. Also note that the
-	 * message content may be partially cut off if finish_reason="length", which indicates
-	 * the generation exceeded max_tokens or the conversation exceeded the max context
-	 * length.
-	 */
-	public static ResponseFormat jsonSchema(Map<String, Object> schema) {
-		return new ResponseFormat(Map.of("type", "json_schema", "schema", schema));
 	}
 
 	@JsonValue
@@ -80,10 +82,4 @@ public class ResponseFormat {
 		return this.value;
 	}
 
-	/**
-	 * Sets an instance of ResponseFormatJsonSchema.
-	 */
-	public static ResponseFormat jsonSchema(ResponseFormatJsonSchema jsonSchema) {
-		return new ResponseFormat(Map.of("type", "json_schema", "schema", jsonSchema));
-	}
 }
