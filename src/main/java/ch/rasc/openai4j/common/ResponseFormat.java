@@ -58,8 +58,32 @@ public class ResponseFormat {
 		return new ResponseFormat("auto");
 	}
 
+	/**
+	 * Setting to { "type": "json_schema", "schema": schema } enables JSON Schema mode,
+	 * which guarantees the message the model generates is valid according to the provided
+	 * JSON Schema.
+	 * <p>
+	 * Important: when using JSON Schema mode, you must also instruct the model to produce
+	 * JSON yourself via a system or user message. Without this, the model may generate an
+	 * unending stream of whitespace until the generation reaches the token limit,
+	 * resulting in a long-running and seemingly "stuck" request. Also note that the
+	 * message content may be partially cut off if finish_reason="length", which indicates
+	 * the generation exceeded max_tokens or the conversation exceeded the max context
+	 * length.
+	 */
+	public static ResponseFormat jsonSchema(Map<String, Object> schema) {
+		return new ResponseFormat(Map.of("type", "json_schema", "schema", schema));
+	}
+
 	@JsonValue
 	public Object value() {
 		return this.value;
+	}
+
+	/**
+	 * Sets an instance of ResponseFormatJsonSchema.
+	 */
+	public static ResponseFormat jsonSchema(ResponseFormatJsonSchema jsonSchema) {
+		return new ResponseFormat(Map.of("type", "json_schema", "schema", jsonSchema));
 	}
 }
