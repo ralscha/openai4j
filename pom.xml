@@ -78,12 +78,12 @@
 		<dependency>
 		    <groupId>com.github.victools</groupId>
 		    <artifactId>jsonschema-generator</artifactId>
-		    <version>4.35.0</version>
+		    <version>4.36.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.victools</groupId>
 			<artifactId>jsonschema-module-jackson</artifactId>
-			<version>4.35.0</version>
+			<version>4.36.0</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.hibernate.validator</groupId>
@@ -105,6 +105,15 @@
 
 	<build>
 		<plugins>
+	        <plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.5.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+				</configuration>
+	        </plugin>		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -147,7 +156,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>3.8.0</version>
 				<configuration>
 					<additionalOptions>-Xdoclint:none</additionalOptions>
 				</configuration>

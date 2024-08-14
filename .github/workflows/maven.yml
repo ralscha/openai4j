@@ -23,5 +23,3 @@ jobs:
         java-version: '17'
     - name: Build with Java 17
       run: ./mvnw -B clean test
-    - name: Deploy to Sonatype
-      run: ./mvnw -B -Drepo.username=${{secrets.SONATYPE_USERNAME}} -Drepo.password=${{secrets.SONATYPE_PASSWORD}} clean deploy -DskipTests=true --settings mySettings.xml

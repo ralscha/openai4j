@@ -16,6 +16,7 @@
 package ch.rasc.openai4j.common;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -52,6 +53,24 @@ public class ResponseFormat {
 	}
 
 	/**
+	 * Setting to { "type": "json_schema", "json_schema": {...} } enables Structured
+	 * Outputs which ensures the model will match your supplied JSON schema.
+	 */
+	public static ResponseFormat jsonSchema(ResponseFormatJsonSchema jsonSchema) {
+		return new ResponseFormat(
+				Map.of("type", "json_schema", "json_schema", jsonSchema));
+	}
+
+	/**
+	 * Setting to { "type": "json_schema", "json_schema": {...} } enables Structured
+	 * Outputs which ensures the model will match your supplied JSON schema.
+	 */
+	public static ResponseFormat jsonSchema(
+			Function<ResponseFormatJsonSchema.Builder, ResponseFormatJsonSchema.Builder> fn) {
+		return jsonSchema(fn.apply(ResponseFormatJsonSchema.builder()).build());
+	}
+
+	/**
 	 * auto is the default value
 	 */
 	public static ResponseFormat auto() {
@@ -62,4 +81,5 @@ public class ResponseFormat {
 	public Object value() {
 		return this.value;
 	}
+
 }

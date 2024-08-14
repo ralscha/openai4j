@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.common.ResponseFormat;
+import ch.rasc.openai4j.common.ServiceTier;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -51,6 +52,8 @@ public class ChatCompletionCreateRequest {
 	@JsonProperty("response_format")
 	private final ResponseFormat responseFormat;
 	private final Integer seed;
+	@JsonProperty("service_tier")
+	private final ServiceTier serviceTier;
 	private final Object stop;
 	private final Double temperature;
 	@JsonProperty("top_p")
@@ -86,6 +89,7 @@ public class ChatCompletionCreateRequest {
 		this.presencePenalty = builder.presencePenalty;
 		this.responseFormat = builder.responseFormat;
 		this.seed = builder.seed;
+		this.serviceTier = builder.serviceTier;
 		this.stop = builder.stop;
 		this.temperature = builder.temperature;
 		this.topP = builder.topP;
@@ -157,6 +161,7 @@ public class ChatCompletionCreateRequest {
 		private Double presencePenalty;
 		private ResponseFormat responseFormat;
 		private Integer seed;
+		private ServiceTier serviceTier;
 		private Object stop;
 		private Double temperature;
 		private Double topP;
@@ -306,6 +311,26 @@ public class ChatCompletionCreateRequest {
 		 */
 		public Builder seed(Integer seed) {
 			this.seed = seed;
+			return this;
+		}
+
+		/**
+		 * Specifies the latency tier to use for processing the request. This parameter is
+		 * relevant for customers subscribed to the scale tier service:
+		 * <p>
+		 * If set to 'auto', the system will utilize scale tier credits until they are
+		 * exhausted.
+		 * <p>
+		 * If set to 'default', the request will be processed using the default service
+		 * tier with a lower uptime SLA and no latency guarentee.
+		 * <p>
+		 * When not set, the default behavior is 'auto'.
+		 * <p>
+		 * When this parameter is set, the response body will include the service_tier
+		 * utilized.
+		 */
+		public Builder serviceTier(ServiceTier serviceTier) {
+			this.serviceTier = serviceTier;
 			return this;
 		}
 

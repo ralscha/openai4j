@@ -17,10 +17,9 @@ package ch.rasc.openai4j.chatcompletions.service;
 
 import java.util.function.Function;
 
-import com.github.victools.jsonschema.generator.SchemaGenerator;
-
 import ch.rasc.openai4j.chatcompletions.ChatCompletionTool;
 import ch.rasc.openai4j.common.FunctionParameters;
+import ch.rasc.openai4j.common.JsonSchemaService;
 
 public class JavaFunction<T, R> {
 
@@ -79,9 +78,9 @@ public class JavaFunction<T, R> {
 	/**
 	 * Converts the function to a {@link ChatCompletionTool}.
 	 */
-	ChatCompletionTool toTool(SchemaGenerator schemaGenerator) {
+	ChatCompletionTool toTool(JsonSchemaService jsonSchemaService) {
 		return ChatCompletionTool.of(FunctionParameters.of(this.name, this.description,
-				schemaGenerator.generateSchema(this.parameterClass)));
+				jsonSchemaService.generateStrictSchema(this.parameterClass), true));
 	}
 
 	public R call(Object parameter) {

@@ -24,18 +24,22 @@ public class FunctionParameters {
 	private final String name;
 	private final String description;
 	private final Object parameters;
+	private final Boolean strict;
 
-	private FunctionParameters(String name, String description, Object parameters) {
+	private FunctionParameters(String name, String description, Object parameters,
+			Boolean strict) {
 		this.name = name;
 		this.description = description;
 		this.parameters = parameters;
+		this.strict = strict;
 	}
 
 	@JsonCreator
 	public static FunctionParameters of(@JsonProperty("name") String name,
 			@JsonProperty("description") String description,
-			@JsonProperty("parameters") Object parameters) {
-		return new FunctionParameters(name, description, parameters);
+			@JsonProperty("parameters") Object parameters,
+			@JsonProperty("strict") Boolean strict) {
+		return new FunctionParameters(name, description, parameters, strict);
 	}
 
 	/**
@@ -47,7 +51,23 @@ public class FunctionParameters {
 	 * @return A FunctionParameters object with the given name and description.
 	 */
 	public static FunctionParameters of(String name, Object parameters) {
-		return new FunctionParameters(name, null, parameters);
+		return new FunctionParameters(name, null, parameters, null);
+	}
+
+	/**
+	 * Create a FunctionParameters object with the given name and description.
+	 * @param name The name of the function to be called. Must be a-z, A-Z, 0-9, or
+	 * contain
+	 * @param parameters The parameters the functions accepts, described as a JSON Schema
+	 * object.Omitting parameters defines a function with an empty parameter list.
+	 * @param strict Whether to enable strict schema adherence when generating the
+	 * function call. If set to true, the model will follow the exact schema defined in
+	 * the parameters field. Only a subset of JSON Schema is supported when strict is
+	 * true.
+	 * @return A FunctionParameters object with the given name and description.
+	 */
+	public static FunctionParameters of(String name, Object parameters, boolean strict) {
+		return new FunctionParameters(name, null, parameters, strict);
 	}
 
 	/**
@@ -58,7 +78,7 @@ public class FunctionParameters {
 	 * @return A FunctionParameters object with the given name and description.
 	 */
 	public static FunctionParameters of(String name) {
-		return new FunctionParameters(name, null, null);
+		return new FunctionParameters(name, null, null, null);
 	}
 
 	/**
@@ -81,7 +101,7 @@ public class FunctionParameters {
 
 	/**
 	 * The parameters the functions accepts, described as a JSON Schema object.
-	 * 
+	 * <p>
 	 * Omitting parameters defines a function with an empty parameter list.
 	 */
 	@JsonProperty
@@ -89,4 +109,15 @@ public class FunctionParameters {
 		return this.parameters;
 	}
 
+	/**
+	 * Whether to enable strict schema adherence when generating the function call. If set
+	 * to true, the model will follow the exact schema defined in the parameters field.
+	 * Only a subset of JSON Schema is supported when strict is true.
+	 * <p>
+	 * Optional, defaults to false
+	 */
+	@JsonProperty
+	public Boolean strict() {
+		return this.strict;
+	}
 }
