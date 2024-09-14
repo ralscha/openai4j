@@ -16,6 +16,7 @@
 package ch.rasc.openai4j.common;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -32,12 +33,14 @@ public class ListRequest {
 	private final SortOrder order;
 	private final String after;
 	private final String before;
+	private final List<String> include;
 
 	private ListRequest(Builder builder) {
 		this.limit = builder.limit;
 		this.order = builder.order;
 		this.after = builder.after;
 		this.before = builder.before;
+		this.include = builder.include;
 	}
 
 	public Map<String, Object> toMap() {
@@ -54,6 +57,9 @@ public class ListRequest {
 		if (this.before != null && !this.before.isBlank()) {
 			queryParameters.put("before", this.before);
 		}
+		if (this.include != null && !this.include.isEmpty()) {
+			queryParameters.put("include[]", this.include);
+		}
 		return queryParameters;
 	}
 
@@ -66,6 +72,7 @@ public class ListRequest {
 		private SortOrder order;
 		private String after;
 		private String before;
+		private List<String> include;
 
 		private Builder() {
 		}
@@ -107,6 +114,14 @@ public class ListRequest {
 		 */
 		public Builder before(String before) {
 			this.before = before;
+			return this;
+		}
+
+		/**
+		 * A list of additional fields to include in the response. Currently the only supported value is step_details.tool_calls[*].file_search.results[*].content to fetch the file search result content.
+		 */
+		public Builder include(List<String> include) {
+			this.include = include;
 			return this;
 		}
 
