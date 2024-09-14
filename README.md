@@ -14,7 +14,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.3.3</version>
+  <version>1.3.4</version>
 </dependency>
 ```
 
@@ -150,7 +150,11 @@ Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) 
 
 ## Changelog
 
-### 1.3.2 - August 14, 2024
+### 1.3.4 - September 14, 2024
+  * Add completion_tokens_details and reasoning_tokens to usage
+  * Including file search results used by the file search tool, and customizing ranking behavior.
+ 
+### 1.3.3 - August 14, 2024
   * Added support for Structured Outputs
 
 ### 1.3.2 - July 20, 2024
