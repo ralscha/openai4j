@@ -273,7 +273,8 @@ public record ChatCompletionResponse(String id, List<Choice> choices, int create
 
 	public record Usage(@JsonProperty("completion_tokens") int completionTokens,
 			@JsonProperty("prompt_tokens") int promptTokens,
-			@JsonProperty("total_tokens") int totalTokens) {
+			@JsonProperty("total_tokens") int totalTokens,
+			@JsonProperty("completion_tokens_details") CompletionTokensDetails completionTokensDetails) {
 		/**
 		 * Number of tokens in the generated completion.
 		 */
@@ -298,5 +299,24 @@ public record ChatCompletionResponse(String id, List<Choice> choices, int create
 			return this.totalTokens;
 		}
 
+		/**
+		 * Reasoning token details.
+		 */
+		@Override
+		public CompletionTokensDetails completionTokensDetails() {
+			return this.completionTokensDetails;
+		}
+
+	}
+
+	public record CompletionTokensDetails(
+			@JsonProperty("reasoning_tokens") int reasoningTokens) {
+		/**
+		 * The exact number of reasoning tokens used.
+		 */
+		@Override
+		public int reasoningTokens() {
+			return this.reasoningTokens;
+		}
 	}
 }

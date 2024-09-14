@@ -21,7 +21,6 @@ import java.util.Map;
 
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionMessage;
-import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.Builder;
 import ch.rasc.openai4j.common.ServiceTier;
 
 @SuppressWarnings({ "hiding" })
