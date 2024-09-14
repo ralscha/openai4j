@@ -118,7 +118,9 @@ public class ListRequest {
 		}
 
 		/**
-		 * A list of additional fields to include in the response. Currently the only supported value is step_details.tool_calls[*].file_search.results[*].content to fetch the file search result content.
+		 * A list of additional fields to include in the response. Currently the only
+		 * supported value is step_details.tool_calls[*].file_search.results[*].content to
+		 * fetch the file search result content.
 		 */
 		public Builder include(List<String> include) {
 			this.include = include;

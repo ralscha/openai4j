@@ -19,10 +19,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FileSearchTool extends Tool {
 
-	record FileSearch(@JsonProperty("max_num_results") int maxNumResults, @JsonProperty("ranking_options") RankingOptions rankingOptions) {
+	record FileSearch(@JsonProperty("max_num_results") Integer maxNumResults,
+			@JsonProperty("ranking_options") RankingOptions rankingOptions) {
 	}
 
-	record RankingOptions(String ranker, @JsonProperty("score_threshold") double scoreThreshold) {
+	/**
+	 * @param ranker The ranker to use for the file search. If not specified will use the
+	 * auto ranker.
+	 * @param scoreThreshold The score threshold for the file search. All values must be a
+	 * floating point number between 0 and 1.
+	 */
+	record RankingOptions(String ranker,
+			@JsonProperty("score_threshold") double scoreThreshold) {
 	}
 
 	@JsonProperty("file_search")
@@ -42,8 +50,9 @@ public class FileSearchTool extends Tool {
 	 * output. The default is 20 for gpt-4* models and 5 for gpt-3.5-turbo. This number
 	 * should be between 1 and 50 inclusive.<br>
 	 * Note that the file search tool may output fewer than max_num_results results.
+	 * Optional.
 	 */
-	public static FileSearchTool of(int maxNumResults) {
+	public static FileSearchTool of(Integer maxNumResults) {
 		return new FileSearchTool(new FileSearch(maxNumResults, null));
 	}
 
@@ -52,9 +61,12 @@ public class FileSearchTool extends Tool {
 	 * output. The default is 20 for gpt-4* models and 5 for gpt-3.5-turbo. This number
 	 * should be between 1 and 50 inclusive.<br>
 	 * Note that the file search tool may output fewer than max_num_results results.
-	 * @param rankingOptions The ranking options for the file search. If not specified, the file search tool will use the auto ranker and a score_threshold of 0.
+	 * Optional.
+	 * @param rankingOptions The ranking options for the file search. If not specified,
+	 * the file search tool will use the auto ranker and a score_threshold of 0.
 	 */
-	public static FileSearchTool of(int maxNumResults, RankingOptions rankingOptions) {
+	public static FileSearchTool of(Integer maxNumResults,
+			RankingOptions rankingOptions) {
 		return new FileSearchTool(new FileSearch(maxNumResults, rankingOptions));
 	}
 
