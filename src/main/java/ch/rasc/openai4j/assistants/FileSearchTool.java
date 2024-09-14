@@ -19,7 +19,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FileSearchTool extends Tool {
 
-	record FileSearch(@JsonProperty("max_num_results") int maxNumResults) {
+	record FileSearch(@JsonProperty("max_num_results") int maxNumResults, @JsonProperty("ranking_options") RankingOptions rankingOptions) {
+	}
+
+	record RankingOptions(String ranker, @JsonProperty("score_threshold") double scoreThreshold) {
 	}
 
 	@JsonProperty("file_search")
@@ -41,7 +44,18 @@ public class FileSearchTool extends Tool {
 	 * Note that the file search tool may output fewer than max_num_results results.
 	 */
 	public static FileSearchTool of(int maxNumResults) {
-		return new FileSearchTool(new FileSearch(maxNumResults));
+		return new FileSearchTool(new FileSearch(maxNumResults, null));
+	}
+
+	/**
+	 * @param maxNumResults The maximum number of results the file search tool should
+	 * output. The default is 20 for gpt-4* models and 5 for gpt-3.5-turbo. This number
+	 * should be between 1 and 50 inclusive.<br>
+	 * Note that the file search tool may output fewer than max_num_results results.
+	 * @param rankingOptions The ranking options for the file search. If not specified, the file search tool will use the auto ranker and a score_threshold of 0.
+	 */
+	public static FileSearchTool of(int maxNumResults, RankingOptions rankingOptions) {
+		return new FileSearchTool(new FileSearch(maxNumResults, rankingOptions));
 	}
 
 }
