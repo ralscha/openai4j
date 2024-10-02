@@ -14,7 +14,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.3.4</version>
+  <version>1.3.5</version>
 </dependency>
 ```
 
@@ -149,6 +149,10 @@ public class ChatCompletionsFunctionExample {
 Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) repository for more examples.
 
 ## Changelog
+
+### 1.3.5 - October 2, 2024
+  * Add audioTokens and cachedTokens to the usage object of ChatCompletionResponse
+  * Add store and metadata field to ChatCompletionRequest
 
 ### 1.3.4 - September 14, 2024
   * Add completion_tokens_details and reasoning_tokens to usage
