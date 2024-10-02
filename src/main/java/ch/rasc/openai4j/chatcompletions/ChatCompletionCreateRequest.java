@@ -37,6 +37,7 @@ public class ChatCompletionCreateRequest {
 
 	private final List<ChatCompletionMessage> messages;
 	private final String model;
+	private final Boolean store;
 	@JsonProperty("frequency_penalty")
 	private final Double frequencyPenalty;
 	@JsonProperty("logit_bias")
@@ -80,6 +81,7 @@ public class ChatCompletionCreateRequest {
 
 		this.messages = builder.messages;
 		this.model = builder.model;
+		this.store = builder.store;
 		this.frequencyPenalty = builder.frequencyPenalty;
 		this.logitBias = builder.logitBias;
 		this.logprobs = builder.logprobs;
@@ -152,6 +154,7 @@ public class ChatCompletionCreateRequest {
 	public static final class Builder {
 		private List<ChatCompletionMessage> messages;
 		private String model;
+		private Boolean store;
 		private Double frequencyPenalty;
 		private Map<String, Double> logitBias;
 		private Boolean logprobs;
@@ -200,6 +203,17 @@ public class ChatCompletionCreateRequest {
 		 */
 		public Builder model(String model) {
 			this.model = model;
+			return this;
+		}
+
+		/**
+		 * Whether or not to store the output of this chat completion request for use in
+		 * the model distillation or evals products.
+		 * <p>
+		 * Optional. Defaults to false
+		 */
+		public Builder store(Boolean store) {
+			this.store = store;
 			return this;
 		}
 
