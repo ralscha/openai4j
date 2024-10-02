@@ -38,6 +38,7 @@ public class ChatCompletionCreateRequest {
 	private final List<ChatCompletionMessage> messages;
 	private final String model;
 	private final Boolean store;
+	private final Map<String, Object> metadata;
 	@JsonProperty("frequency_penalty")
 	private final Double frequencyPenalty;
 	@JsonProperty("logit_bias")
@@ -82,6 +83,7 @@ public class ChatCompletionCreateRequest {
 		this.messages = builder.messages;
 		this.model = builder.model;
 		this.store = builder.store;
+		this.metadata = builder.metadata;
 		this.frequencyPenalty = builder.frequencyPenalty;
 		this.logitBias = builder.logitBias;
 		this.logprobs = builder.logprobs;
@@ -155,6 +157,7 @@ public class ChatCompletionCreateRequest {
 		private List<ChatCompletionMessage> messages;
 		private String model;
 		private Boolean store;
+		private Map<String, Object> metadata;
 		private Double frequencyPenalty;
 		private Map<String, Double> logitBias;
 		private Boolean logprobs;
@@ -214,6 +217,15 @@ public class ChatCompletionCreateRequest {
 		 */
 		public Builder store(Boolean store) {
 			this.store = store;
+			return this;
+		}
+
+		/**
+		 * Developer-defined tags and values used for filtering completions in the
+		 * dashboard.
+		 */
+		public Builder metadata(Map<String, Object> metadata) {
+			this.metadata = Map.copyOf(metadata);
 			return this;
 		}
 
