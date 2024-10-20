@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -27,6 +28,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import ch.rasc.openai4j.audio.AudioSpeechRequest;
+import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.Builder.Audio;
 import ch.rasc.openai4j.common.ResponseFormat;
 import ch.rasc.openai4j.common.ServiceTier;
 
@@ -34,6 +37,21 @@ import ch.rasc.openai4j.common.ServiceTier;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @SuppressWarnings({ "unused", "hiding" })
 public class ChatCompletionCreateRequest {
+
+	public enum Modality {
+		TEXT("text"), AUDIO("audio");
+
+		private final String value;
+
+		private Modality(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public String getValue() {
+			return this.value;
+		}
+	}
 
 	private final List<ChatCompletionMessage> messages;
 	private final String model;
@@ -49,6 +67,11 @@ public class ChatCompletionCreateRequest {
 	@JsonProperty("max_tokens")
 	private final Integer maxTokens;
 	private final Integer n;
+
+	@JsonProperty("modalities")
+	private final List<Modality> modalities;
+	private final Audio audio;
+
 	@JsonProperty("presence_penalty")
 	private final Double presencePenalty;
 	@JsonProperty("response_format")
@@ -90,6 +113,8 @@ public class ChatCompletionCreateRequest {
 		this.topLogprobs = builder.topLogprobs;
 		this.maxTokens = builder.maxTokens;
 		this.n = builder.n;
+		this.modalities = builder.modalities;
+		this.audio = builder.audio;
 		this.presencePenalty = builder.presencePenalty;
 		this.responseFormat = builder.responseFormat;
 		this.seed = builder.seed;
@@ -164,6 +189,8 @@ public class ChatCompletionCreateRequest {
 		private Integer topLogprobs;
 		private Integer maxTokens;
 		private Integer n;
+		private List<Modality> modalities;
+		private Audio audio;
 		private Double presencePenalty;
 		private ResponseFormat responseFormat;
 		private Integer seed;
@@ -295,6 +322,75 @@ public class ChatCompletionCreateRequest {
 		 */
 		public Builder n(Integer n) {
 			this.n = n;
+			return this;
+		}
+
+		/**
+		 * Output types that you would like the model to generate for this request. Most
+		 * models are capable of generating text, which is the default: ["text"]
+		 * <p>
+		 * The gpt-4o-audio-preview model can also be used to generate audio. To request
+		 * that this model generate both text and audio responses, you can use: ["text",
+		 * "audio"]
+		 * <p>
+		 * Optional.
+		 */
+		public Builder modalities(Modality... modalities) {
+			if (modalities != null && modalities.length > 0) {
+				this.modalities = new ArrayList<>(Set.of(modalities));
+			}
+			return this;
+		}
+
+		public enum AudioFormat {
+			WAV("wav"), MP3("mp3"), FLAC("flac"), OPUS("opus"), PMC16("pcm16");
+
+			private final String value;
+
+			AudioFormat(String value) {
+				this.value = value;
+			}
+
+			@JsonValue
+			public String value() {
+				return this.value;
+			}
+		}
+
+		public enum Voice {
+			ALLOY("alloy"), ECHO("echo"), FABLE("fable"), ONYX("onyx"), NOVA("nova"),
+			SHIMMER("shimmer");
+
+			private final String value;
+
+			Voice(String value) {
+				this.value = value;
+			}
+
+			@JsonValue
+			public String value() {
+				return this.value;
+			}
+		}
+
+		record Audio(Voice voice, AudioFormat format) {
+		}
+
+		/**
+		 * Parameters for audio output. Required when audio output is requested with
+		 * modalities: ["audio"].
+		 * 
+		 * @param voice Specifies the voice type.
+		 * @param format Specifies the output audio format.
+		 */
+		public Builder audio(Voice voice, AudioFormat format) {
+			if (voice == null) {
+				throw new IllegalArgumentException("voice must not be null");
+			}
+			if (format == null) {
+				throw new IllegalArgumentException("format must not be null");
+			}
+			this.audio = new Audio(voice, format);
 			return this;
 		}
 

@@ -18,11 +18,14 @@ package ch.rasc.openai4j.chatcompletions;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import ch.rasc.openai4j.common.ImageDetail;
 import ch.rasc.openai4j.common.ImageUrl;
 
+@JsonInclude(Include.NON_EMPTY)
 public class UserMessage extends ChatCompletionMessage {
 	private final Object content;
 	private final String name;
@@ -86,8 +89,11 @@ public class UserMessage extends ChatCompletionMessage {
 		private final ImageUrl imageUrl;
 
 		private ImageContent(String type, ImageUrl imageUrl) {
-			if (type == null || imageUrl == null) {
-				throw new IllegalArgumentException("type and imageUrl cannot be null");
+			if (type == null) {
+				throw new IllegalArgumentException("type cannot be null");
+			}
+			if (imageUrl == null) {
+				throw new IllegalArgumentException("imageUrl cannot be null");
 			}
 			this.type = type;
 			this.imageUrl = imageUrl;
@@ -135,8 +141,11 @@ public class UserMessage extends ChatCompletionMessage {
 		private final String text;
 
 		private TextContent(String type, String text) {
-			if (type == null || text == null) {
-				throw new IllegalArgumentException("type and text cannot be null");
+			if (type == null) {
+				throw new IllegalArgumentException("type cannot be null");
+			}
+			if (text == null) {
+				throw new IllegalArgumentException("text cannot be null");
 			}
 			this.type = type;
 			this.text = text;
@@ -153,7 +162,7 @@ public class UserMessage extends ChatCompletionMessage {
 		}
 
 		/**
-		 * Gets the text content.
+		 * The text content.
 		 */
 		@JsonProperty
 		public String text() {
@@ -161,11 +170,77 @@ public class UserMessage extends ChatCompletionMessage {
 		}
 
 		/**
-		 * Gets the type of the content. In this case always <code>text</code>.
+		 * The type of the content part. Always <code>text</code>.
 		 */
 		@JsonProperty
 		public String type() {
 			return this.type;
+		}
+	}
+
+	public enum InputAudioFormat {
+		WAV("wav"), MP3("mp3");
+
+		private final String value;
+
+		private InputAudioFormat(String value) {
+			this.value = value;
+		}
+
+		@JsonValue
+		public String getValue() {
+			return this.value;
+		}
+	}
+
+	record InputAudio(String data, InputAudioFormat format) {
+	}
+
+	public static class InputAudioMessageContent implements Content {
+
+		private final String type;
+
+		private final InputAudio inputAudio;
+
+		private InputAudioMessageContent(String type, InputAudio inputAudio) {
+			if (type == null) {
+				throw new IllegalArgumentException("type cannot be null");
+			}
+			if (inputAudio == null) {
+				throw new IllegalArgumentException("inputAudio cannot be null");
+			}
+			this.type = type;
+			this.inputAudio = inputAudio;
+		}
+
+		/**
+		 * Creates a new InputAudioMessageContent instance with the specified inputAudio.
+		 *
+		 * @param inputAudio The input audio content.
+		 * @return A new InputAudioMessageContent instance.
+		 */
+		public static InputAudioMessageContent of(String data, InputAudioFormat format) {
+			if (data == null) {
+				throw new IllegalArgumentException("data cannot be null");
+			}
+			if (format == null) {
+				throw new IllegalArgumentException("format cannot be null");
+			}
+			return new InputAudioMessageContent("input_audio",
+					new InputAudio(data, format));
+		}
+
+		/**
+		 * Always input_audio.
+		 */
+		@JsonProperty
+		public String type() {
+			return this.type;
+		}
+
+		@JsonProperty("input_audio")
+		public InputAudio inputAudio() {
+			return this.inputAudio;
 		}
 	}
 

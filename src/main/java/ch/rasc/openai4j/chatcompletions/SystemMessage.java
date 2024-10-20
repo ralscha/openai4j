@@ -16,8 +16,10 @@
 package ch.rasc.openai4j.chatcompletions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(Include.NON_EMPTY)
 public class SystemMessage extends ChatCompletionMessage {
 	private final String content;
 	private final String name;
