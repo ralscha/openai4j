@@ -34,7 +34,7 @@
         <url>https://github.com/ralscha/openai4j.git</url>
     </scm>
     <properties>
-        <openfeign.version>13.4</openfeign.version>
+        <openfeign.version>13.5</openfeign.version>
     </properties>
     
     <dependencyManagement>
@@ -139,7 +139,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
