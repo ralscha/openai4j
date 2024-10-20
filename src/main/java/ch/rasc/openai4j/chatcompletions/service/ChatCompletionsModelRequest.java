@@ -203,7 +203,7 @@ public class ChatCompletionsModelRequest<T> {
 		 * <p>
 		 * Defaults to false
 		 */
-		public Builder logprobs(Boolean logprobs) {
+		public Builder<T> logprobs(Boolean logprobs) {
 			this.logprobs = logprobs;
 			return this;
 		}
@@ -213,7 +213,7 @@ public class ChatCompletionsModelRequest<T> {
 		 * return at each token position, each with an associated log probability.
 		 * logprobs must be set to true if this parameter is used.
 		 */
-		public Builder topLogprobs(Integer topLogprobs) {
+		public Builder<T> topLogprobs(Integer topLogprobs) {
 			this.topLogprobs = topLogprobs;
 			return this;
 		}
@@ -265,7 +265,7 @@ public class ChatCompletionsModelRequest<T> {
 		 * When this parameter is set, the response body will include the service_tier
 		 * utilized.
 		 */
-		public Builder serviceTier(ServiceTier serviceTier) {
+		public Builder<T> serviceTier(ServiceTier serviceTier) {
 			this.serviceTier = serviceTier;
 			return this;
 		}
