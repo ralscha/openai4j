@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -32,6 +33,7 @@ import ch.rasc.openai4j.audio.AudioSpeechRequest;
 import ch.rasc.openai4j.chatcompletions.ChatCompletionCreateRequest.Builder.Audio;
 import ch.rasc.openai4j.common.ResponseFormat;
 import ch.rasc.openai4j.common.ServiceTier;
+import ch.rasc.openai4j.moderations.ModerationCreateRequest;
 
 @JsonInclude(Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -68,8 +70,9 @@ public class ChatCompletionCreateRequest {
 	private final Integer maxTokens;
 	private final Integer n;
 
-	@JsonProperty("modalities")
 	private final List<Modality> modalities;
+	private final Prediction prediction;
+
 	private final Audio audio;
 
 	@JsonProperty("presence_penalty")
@@ -114,6 +117,7 @@ public class ChatCompletionCreateRequest {
 		this.maxTokens = builder.maxTokens;
 		this.n = builder.n;
 		this.modalities = builder.modalities;
+		this.prediction = builder.prediction;
 		this.audio = builder.audio;
 		this.presencePenalty = builder.presencePenalty;
 		this.responseFormat = builder.responseFormat;
@@ -190,6 +194,7 @@ public class ChatCompletionCreateRequest {
 		private Integer maxTokens;
 		private Integer n;
 		private List<Modality> modalities;
+		private Prediction prediction;
 		private Audio audio;
 		private Double presencePenalty;
 		private ResponseFormat responseFormat;
@@ -339,6 +344,28 @@ public class ChatCompletionCreateRequest {
 			if (modalities != null && modalities.length > 0) {
 				this.modalities = new ArrayList<>(Set.of(modalities));
 			}
+			return this;
+		}
+
+		/**
+		 * Configuration for a Predicted Output, which can greatly improve response times
+		 * when large parts of the model response are known ahead of time. This is most
+		 * common when you are regenerating a file with only minor changes to most of the
+		 * content.
+		 */
+		public Builder prediction(Prediction prediction) {
+			this.prediction = prediction;
+			return this;
+		}
+
+		/**
+		 * Configuration for a Predicted Output, which can greatly improve response times
+		 * when large parts of the model response are known ahead of time. This is most
+		 * common when you are regenerating a file with only minor changes to most of the
+		 * content.
+		 */
+		public Builder prediction(Function<Prediction.Builder, Prediction.Builder> fn) {
+			this.prediction = fn.apply(Prediction.builder()).build();
 			return this;
 		}
 
