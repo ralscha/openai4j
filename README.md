@@ -14,7 +14,7 @@ Legacy, deprecated and streaming endpoints are not implemented.
 <dependency>
   <groupId>ch.rasc</groupId>
   <artifactId>openai4j</artifactId>
-  <version>1.3.5</version>
+  <version>1.3.6</version>
 </dependency>
 ```
 
@@ -149,6 +149,10 @@ public class ChatCompletionsFunctionExample {
 Check out the [openai4j-examples](https://github.com/ralscha/openai4j-examples) repository for more examples.
 
 ## Changelog
+
+### 1.3.6 - December 3, 2024
+  * Add support for Predicted Outputs
+  * Support for gpt-4o-audio-preview model for chat completions, which supports both audio inputs and outputs.
 
 ### 1.3.5 - October 2, 2024
   * Add audioTokens and cachedTokens to the usage object of ChatCompletionResponse
