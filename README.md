@@ -1,3 +1,6 @@
+# OpenAI now provides an official Java SDK: https://github.com/openai/openai-java
+
+
 # openai4j
 
 Unofficial, community-maintained Java implementation of the OpenAI API:
